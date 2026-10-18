@@ -1,0 +1,124 @@
+{
+  "packaging_date": "2026-10-18",
+  "repository": "https://github.com/ilaydagencer/yzm5110-robust-selfmm",
+  "branch": "yzm5110-selfmm",
+  "packaging_head_before_this_change": "92e8a87d038fd1656050b2e20c4c0b89588cff3c",
+  "head_scope": "Packaging observation only; not the final delivery commit or all training revisions.",
+  "data_sha256": "78e0f8b5ef8ff71558e7307848fc1fa929ecb078203f565ab22b9daab2e02524",
+  "original_manifests": {
+    "validation": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/manifest.json",
+      "sha256": "85f3963607f8a63d28f334b214b58a1efe801c9ab8ab211f837d4a3f16806e44"
+    },
+    "inference": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/manifest.json",
+      "sha256": "9661e6bb4124dd0f35f3e1be127decb308628994cdacbb3978ead34ab9cfcc14"
+    },
+    "evaluation_test": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/manifest.json",
+      "sha256": "c331344053e8c34fca8fb1c40fa252952ff96b28e1549b6cd5519972f8122448"
+    }
+  },
+  "copied_csv_sources": {
+    "validation/per_seed_metrics.csv": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/per_seed_metrics.csv",
+      "sha256": "bd1b598863bc9acc092f91fc52e6f2ddd70958bbe7b933d1b58244a2f405f8be"
+    },
+    "validation/summary_metrics.csv": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/summary_metrics.csv",
+      "sha256": "3a1208a6f2428f0770712590364038aa7c278516e620eb1455c29b7231e44eed"
+    },
+    "validation/paired_differences_by_seed.csv": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/paired_differences_by_seed.csv",
+      "sha256": "a65dfda3c2944b5ef8498fdc7b6eb15e0a4f4f08782ea31ee50c79ec55519bc2"
+    },
+    "validation/paired_summary.csv": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/paired_summary.csv",
+      "sha256": "35564b3fd2c8caa22505a49fec3a884482c3af2f17c086c0f38e991d8174e9a9"
+    },
+    "validation/degradation_summary.csv": {
+      "path": "runs/selfmm_abcd_valid_five_seeds_tau1_summary_v1/degradation_summary.csv",
+      "sha256": "02d10aae1d1db50b49ccf4d89a2f89b228ca73ce02aacfe6a6fca70d08c7c31f"
+    },
+    "evaluation_test/per_seed_metrics.csv": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/per_seed_metrics.csv",
+      "sha256": "a3efba53759394523dce33e51b9d1768581e8816c5a4f297dfc0f7a627cac02e"
+    },
+    "evaluation_test/summary_metrics.csv": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/summary_metrics.csv",
+      "sha256": "0c16fa13a4b45d1fafcb0c9185506c561b4f5f5fc3bc80c8710ba39f8fecf37a"
+    },
+    "evaluation_test/paired_differences_by_seed.csv": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/paired_differences_by_seed.csv",
+      "sha256": "7eeb0bcd0f7198ae5fd7c7dc4d62aab9a5a424978a8545ef64135b3c252c011a"
+    },
+    "evaluation_test/paired_summary.csv": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/paired_summary.csv",
+      "sha256": "368a41528b4963f80cea6b2ba702d451bb26c10a33b88dd967845b8a00a698c2"
+    },
+    "evaluation_test/degradation_summary.csv": {
+      "path": "runs/selfmm_abcd_test_five_seeds_tau1_summary_v1/degradation_summary.csv",
+      "sha256": "3267b89e19e4da7bc6e3d56817de9a885d993c68e2efa022ad2ade355aa2cde6"
+    },
+    "inference/batch_timings.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/batch_timings.csv",
+      "sha256": "5501589773c5c59e02d69c284852b8231ea757cd0aaa3504e4a72512635a1526"
+    },
+    "inference/rounds.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/rounds.csv",
+      "sha256": "1450aaf53d5efe084bf7946682204132edfa6190fd6d1ea9b74dd8c340eb89c5"
+    },
+    "inference/summary.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/summary.csv",
+      "sha256": "f479201dd16f863e0c9434aa67a5f0d3d6ce5f360c2246caeeb4186d4b1f9fd9"
+    },
+    "inference/paired_rounds.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/paired_rounds.csv",
+      "sha256": "18679c17a8f795607077b64f591abc7c7fbde358b95e2a2243489bf2601ffd6a"
+    },
+    "inference/paired_summary.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/paired_summary.csv",
+      "sha256": "62b9f0c81967a4d9cc6fcbd48ead0c9b1c8b0bb008647de0a344674613d9b6bd"
+    },
+    "inference/correctness_checks.csv": {
+      "path": "runs/selfmm_inference_k0_seed1111_batch4_r6_v1/correctness_checks.csv",
+      "sha256": "92b4d03c0f91bfe22a0f41d0d4472d93779a26f95440beff25feaae4c3ce6e73"
+    }
+  },
+  "research_code_sha256": {
+    "research/run_selfmm_smoke.py": "3be4a712556a87eee698efbf783fe9b041f15280b62cb5713d957933f7a5dd4f",
+    "research/run_selfmm_dropout.py": "aa5e7756fa5ad48787278e62b88e34ca46d23c0917189d0b7b7219e9bd46ddcb",
+    "research/run_selfmm_seed.py": "ac214afbc50bc640cc69233564a491d562ae891c7bbf9a7340362ea30f9821e2",
+    "research/evaluate_selfmm_checkpoints.py": "aa8c170cf6136be447603a0d3f2a06ab50b77e6291d3183d3f72128095a96868",
+    "research/evaluate_selfmm_abcd_valid.py": "24cc60336eb8b8a47ece8bbab5c1ad135158f4277aa6e1cbcd67ed4934bdd96e",
+    "research/selfmm_corruptions.py": "7328db0b3faf2566057210ba4de913a7c7d5a0d7c93cde35ec50bb10649e0953",
+    "research/check_selfmm_corruptions.py": "a5a4601f2db635ffd789067d19c14bb65061a1696d48f1182161f175f4c051b7",
+    "research/evaluate_selfmm_abcd_corrupt_valid.py": "832934451e18a77949e72967097b71c21ac9edb3d19dcb85fe66bd1cda041c8f",
+    "research/evaluate_selfmm_abcd_seed_valid.py": "98a22a2943021aa0cb2eae8dc0c5964a29d6fb907a18d6c3772d0fb1617a2597",
+    "research/evaluate_selfmm_abcd_test.py": "ad31e2af303fd8539e4c75a37be15d89bccacb797b33790605013c0b99e2a905",
+    "research/evaluate_selfmm_abcd_seed_test.py": "69edad0aa4c2cdc2ebd76d7a83299615197ce11bf317bcd2ab63c359d81b0c39",
+    "research/analyze_selfmm_five_seeds.py": "fa7f54ef010c1aec8339906234be61cad82cba9e3b5750e5d1b1a43a2e13d204",
+    "research/analyze_selfmm_test_five_seeds.py": "fe90ce8c20c7a434fbb7b852d1e434005d10a520e52eff110d14da2e72752dbd",
+    "research/benchmark_selfmm_inference.py": "b978dfca583b9ab700a7bdf9be26b1b465b78678aee90ca80dd9ad1e83a86b91"
+  },
+  "framework_code_sha256": {
+    "src/MMSA/config.py": "b91b1c1f4ee0eda65b91ef96ae1187f9370f5082b0239e3f32c4c49951219124",
+    "src/MMSA/run.py": "002825350c8f5bdc4390aa9a8f0f08687b232dc6bfa28713b3d4f2c064951871",
+    "src/MMSA/data_loader.py": "1c0863c99d6acd5393aeebd87676b37a3d9fb5a6284dd98c1fb44ed18e33eac5",
+    "src/MMSA/models/multiTask/SELF_MM.py": "995c379326922c2f6f2b252e124b4fc6b911de815ba816d597cf79b9c03c7579",
+    "src/MMSA/trains/multiTask/SELF_MM.py": "c3aa83620ecb95d56241c9ba306aa468337e0e0b9ec096de1744f2e3d9126d8e",
+    "src/MMSA/utils/metricsTop.py": "a44f4d1c6641c589025952b6b7b695dc690e538e8ff7a13b3b737cbf2feb5bf5"
+  },
+  "notes": [
+    "CSV files are byte-identical to recorded analysis outputs.",
+    "Original manifests and local configs contain absolute machine paths and are not included.",
+    "Their hashes preserve provenance; public verification does not need those private paths.",
+    "Five-seed quality inputs were verified from saved predictions by the original analysis scripts.",
+    "This package recomputes aggregation of metrics and timings, not predictions or training.",
+    "The final submission commit/tag will be chosen by the student after committing these files."
+  ],
+  "checkpoint_sha256": {
+    "baseline": "41026d3a42c898ba72774755437fd89fca2e51be8d2cf3acfec10a70c7792862",
+    "dropout": "0e8a1f286cf843be2335de188ba1960a7c9b368a74551b30f7d456c273986307"
+  }
+}

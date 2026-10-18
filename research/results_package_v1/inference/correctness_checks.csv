@@ -1,0 +1,5 @@
+﻿method,checkpoint,n,max_prediction_error,tolerance,uniform_control_max_error,uniform_batch_sizes,hooks_restored,passed
+A,baseline,686,0.0,1e-05,0.0,4;2,True,True
+C,baseline,686,0.0,1e-05,0.0,4;2,True,True
+B,dropout,686,0.0,1e-05,0.0,4;2,True,True
+D,dropout,686,0.0,1e-05,0.0,4;2,True,True

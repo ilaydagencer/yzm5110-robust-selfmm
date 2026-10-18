@@ -1,0 +1,7 @@
+# Preserve hash-checked evidence and verifier bytes across Windows/Linux checkouts.
+results_package_v1/** -text
+verify_results_package.py -text
+README.md text eol=lf
+requirements-research.txt text eol=lf
+environment-observed.txt text eol=lf
+configs/*.json text eol=lf

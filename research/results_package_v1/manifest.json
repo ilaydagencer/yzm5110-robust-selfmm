@@ -1,0 +1,101 @@
+{
+  "package_version": 1,
+  "created_date": "2026-10-18",
+  "sd_ddof": 1,
+  "verification_scope": "Recorded metric/timing aggregation only; no model inference or prediction recomputation.",
+  "verifier_sha256": "d1363441350c9a73c517186961b12febd961e95bba2dbc163278ce0c78e5d358",
+  "files": {
+    "DATA_DICTIONARY.md": {
+      "bytes": 3948,
+      "sha256": "04cb975d42afde6e1cc37218dbeb9f4a6a5541da8841e3bb37821016d059b036"
+    },
+    "inference/batch_timings.csv": {
+      "bytes": 162202,
+      "sha256": "5501589773c5c59e02d69c284852b8231ea757cd0aaa3504e4a72512635a1526",
+      "rows": 4128
+    },
+    "inference/correctness_checks.csv": {
+      "bytes": 297,
+      "sha256": "92b4d03c0f91bfe22a0f41d0d4472d93779a26f95440beff25feaae4c3ce6e73",
+      "rows": 4
+    },
+    "inference/paired_rounds.csv": {
+      "bytes": 809,
+      "sha256": "18679c17a8f795607077b64f591abc7c7fbde358b95e2a2243489bf2601ffd6a",
+      "rows": 12
+    },
+    "inference/paired_summary.csv": {
+      "bytes": 376,
+      "sha256": "62b9f0c81967a4d9cc6fcbd48ead0c9b1c8b0bb008647de0a344674613d9b6bd",
+      "rows": 2
+    },
+    "inference/rounds.csv": {
+      "bytes": 5061,
+      "sha256": "1450aaf53d5efe084bf7946682204132edfa6190fd6d1ea9b74dd8c340eb89c5",
+      "rows": 24
+    },
+    "inference/summary.csv": {
+      "bytes": 1329,
+      "sha256": "f479201dd16f863e0c9434aa67a5f0d3d6ce5f360c2246caeeb4186d4b1f9fd9",
+      "rows": 4
+    },
+    "protocol.json": {
+      "bytes": 3180,
+      "sha256": "c87711abc589b81cd8e0be18b76f5820ef032e9b17abf0adbffe59e9788121fb"
+    },
+    "provenance.json": {
+      "bytes": 7683,
+      "sha256": "cd0ec355b843352dfd1700bd84ad00df27768c3b98fd6218d1ea3f77963a3397"
+    },
+    "evaluation_test/degradation_summary.csv": {
+      "bytes": 5291,
+      "sha256": "3267b89e19e4da7bc6e3d56817de9a885d993c68e2efa022ad2ade355aa2cde6",
+      "rows": 32
+    },
+    "evaluation_test/paired_differences_by_seed.csv": {
+      "bytes": 14833,
+      "sha256": "7eeb0bcd0f7198ae5fd7c7dc4d62aab9a5a424978a8545ef64135b3c252c011a",
+      "rows": 160
+    },
+    "evaluation_test/paired_summary.csv": {
+      "bytes": 6945,
+      "sha256": "368a41528b4963f80cea6b2ba702d451bb26c10a33b88dd967845b8a00a698c2",
+      "rows": 32
+    },
+    "evaluation_test/per_seed_metrics.csv": {
+      "bytes": 15186,
+      "sha256": "a3efba53759394523dce33e51b9d1768581e8816c5a4f297dfc0f7a627cac02e",
+      "rows": 160
+    },
+    "evaluation_test/summary_metrics.csv": {
+      "bytes": 5694,
+      "sha256": "0c16fa13a4b45d1fafcb0c9185506c561b4f5f5fc3bc80c8710ba39f8fecf37a",
+      "rows": 32
+    },
+    "validation/degradation_summary.csv": {
+      "bytes": 5343,
+      "sha256": "02d10aae1d1db50b49ccf4d89a2f89b228ca73ce02aacfe6a6fca70d08c7c31f",
+      "rows": 32
+    },
+    "validation/paired_differences_by_seed.csv": {
+      "bytes": 13993,
+      "sha256": "a65dfda3c2944b5ef8498fdc7b6eb15e0a4f4f08782ea31ee50c79ec55519bc2",
+      "rows": 160
+    },
+    "validation/paired_summary.csv": {
+      "bytes": 6649,
+      "sha256": "35564b3fd2c8caa22505a49fec3a884482c3af2f17c086c0f38e991d8174e9a9",
+      "rows": 32
+    },
+    "validation/per_seed_metrics.csv": {
+      "bytes": 15233,
+      "sha256": "bd1b598863bc9acc092f91fc52e6f2ddd70958bbe7b933d1b58244a2f405f8be",
+      "rows": 160
+    },
+    "validation/summary_metrics.csv": {
+      "bytes": 5704,
+      "sha256": "3a1208a6f2428f0770712590364038aa7c278516e620eb1455c29b7231e44eed",
+      "rows": 32
+    }
+  }
+}

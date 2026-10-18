@@ -1,0 +1,3 @@
+﻿comparison,repeats,ms_per_sample_delta_mean,ms_per_sample_delta_sd,latency_ratio_mean,latency_ratio_sd,peak_allocated_mib_delta_mean,peak_allocated_mib_delta_sd
+C-vs-A,6,5.2093032555913945,0.0630861007688589,2.045392663114471,0.015898951313360568,0.00634765625,0.0
+D-vs-B,6,5.276470432464327,0.03510371342813497,2.0401823320516184,0.013492500409162686,0.00634765625,0.0

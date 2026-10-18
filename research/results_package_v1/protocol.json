@@ -1,0 +1,93 @@
+{
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7"
+  ],
+  "batch_size": 4,
+  "tau": 1,
+  "corruption_seed": 1111,
+  "sd_ddof": 1,
+  "paired_tie_tolerance": 1e-12,
+  "sample_counts": {
+    "train": 1284,
+    "validation": 229,
+    "test": 686,
+    "validation_non0": 216,
+    "test_non0": 656
+  },
+  "methods": {
+    "A": "baseline checkpoint, original fusion",
+    "B": "input-dropout-trained checkpoint, original fusion",
+    "C": "baseline checkpoint, two-pass agreement-weighted fusion",
+    "D": "input-dropout-trained checkpoint, two-pass agreement-weighted fusion"
+  },
+  "weighting": "w_m = 3 * softmax(-abs(y_m - mean(y_other))/tau); representation scale before first fusion layer",
+  "dropout": {
+    "train_only": true,
+    "independent_per_sample": true,
+    "audio_probability": 0.2,
+    "vision_probability": 0.2,
+    "text_unchanged": true
+  },
+  "corruptions": {
+    "K0": "clean",
+    "K1": "full audio input zero",
+    "K2": "full vision input zero",
+    "K3": "full audio and vision inputs zero",
+    "K4": "independent valid-frame audio/vision masking p=0.3",
+    "K5": "same nested masks p=0.5",
+    "K6": "same nested masks p=0.7",
+    "K7": "Gaussian feature noise factor=0.5 times train-only per-feature std; valid frames only"
+  },
+  "inference": {
+    "training_seed": 1111,
+    "condition": "K0",
+    "n": 686,
+    "repeats": 6,
+    "warmup_batches": 10,
+    "batch_size": 4,
+    "tail_batch_size": 2,
+    "timing_scope": "Synchronized wall time: original eager forward(s), weight helper and hooks; GPU inputs ready",
+    "memory_scope": "PyTorch CUDA model plus one input batch and temporaries; warmed allocator; not total GPU use",
+    "timed_forward_passes": {
+      "A": 1,
+      "B": 1,
+      "C": 2,
+      "D": 2
+    },
+    "timed_identity_passes": 0,
+    "pair_order": "Alternating within each checkpoint; baseline checkpoint before dropout",
+    "precision": "FP32, no autocast, no compile",
+    "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "torch_version": "2.3.1+cu121",
+    "cuda_version": "12.1",
+    "cudnn_version": 8907,
+    "torch_num_threads": 4,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "cudnn_allow_tf32": true,
+    "matmul_allow_tf32": false
+  },
+  "limitations": [
+    "Same examples and a single corruption seed are shared across training seeds.",
+    "Text is preserved; no raw sensor, text-loss or cross-dataset robustness claim.",
+    "Automatic training-end test and earlier test analyses were already seen; test is not untouched.",
+    "Fixed tau/dropout were not retuned after the final test comparisons.",
+    "Resource results cover one training seed, K0 and one GPU; six timing repeats are not six training seeds.",
+    "Original training gradient accumulation drops the final incomplete accumulation group; validation Loss differs from equal-sample MAE.",
+    "Fresh GPU environment installation and complete training replay have not been verified by this package."
+  ]
+}
