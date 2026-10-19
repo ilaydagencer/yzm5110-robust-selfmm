@@ -192,9 +192,13 @@ henüz doğrulanmış değildir. Kaydedilen 77.28 saniye toplam tekrar süresi;
 yükleme, kontroller ve dosya özeti hesaplamasını içerir, önceki çıkarım
 benchmark'ının yerine kullanılamaz.
 
-Sıradaki adım aynı açık bağımlılık yaklaşımını K1–K7'ye, ardından diğer
-seed'lere genişletmektir. K7 için train-only gürültü ölçeklerinin üretimi
-de taşınabilir hale getirilmelidir. Mevcut deney sonuçları korunur.
+19 Ekim 2026 tarihinde ayrı [K0–K7 giriş noktası](PORTABLE_K0_K7.md)
+mevcut GPU ortamında tamamlandı. Train-only gürültü istatistikleri yeniden
+hesaplandı; 128 metrik, 16 girdi özeti ve 2 train istatistiği kontrolü geçti.
+[K0–K7 doğrulama kaydı](verification/portable_k0_k7_seed1111_v1.json).
+Bu K0 betiğinin kapsamı değişmedi. Sıradaki adım aynı sabit protokolün
+taşınabilir tekrarını önce seed 1112'ye genişletmektir. Mevcut deney sonuçları
+korunur; diğer seed'ler için yeni taşınabilir giriş henüz doğrulanmadı.
 
 Test daha önce eğitim sonlarında ve eski değerlendirmelerde görülmüştür.
 Bu bir dondurulmuş protokol tekrarıdır; yeni test-tabanlı seçim veya el

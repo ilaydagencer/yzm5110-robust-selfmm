@@ -1,0 +1,260 @@
+{
+  "status": "verified",
+  "run_date_utc": "2026-10-19",
+  "training_seed": 1111,
+  "corruption_seed": 1111,
+  "split": "test",
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7"
+  ],
+  "n": 686,
+  "non0_n": 656,
+  "metric_rows": 32,
+  "prediction_rows": 10976,
+  "reference_check_rows": 128,
+  "control_rows": 16,
+  "reference_input_check_rows": 16,
+  "train_stats_check_rows": 2,
+  "corruption_summary_rows": 16,
+  "output_hashes_verified": 8,
+  "current_input_hashes_verified": 106,
+  "max_reference_error": 5.551115123125783e-16,
+  "max_reference_error_by_metric": {
+    "MAE": 0.0,
+    "Non0_acc_2": 0.0,
+    "Non0_F1_score": 2.220446049250313e-16,
+    "Corr": 5.551115123125783e-16
+  },
+  "maximum_uniform_identity_error": 0,
+  "reference_corrupted_inputs_matched": true,
+  "train_statistics_recomputed_and_matched": true,
+  "train_valid_frames": {
+    "audio": 49878,
+    "vision": 54741
+  },
+  "max_train_statistic_error": 0.0,
+  "metrics_recomputed_from_saved_predictions": true,
+  "max_recomputed_error_by_metric": {
+    "MAE": 7.826910941588494e-08,
+    "Non0_acc_2": 0.0,
+    "Non0_F1_score": 2.220446049250313e-16,
+    "Corr": 5.551115123125783e-16
+  },
+  "historical_run_manifests_required": false,
+  "current_environment_gpu_replay_verified": true,
+  "clean_environment_install_verified": false,
+  "relocated_real_gpu_replay_verified": false,
+  "per_sample_historical_predictions_compared": false,
+  "other_training_seeds_portable_replay_verified": false,
+  "training_performed": false,
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "versions": {
+    "torch": "2.3.1+cu121",
+    "numpy": "1.26.4",
+    "transformers": "4.30.2"
+  },
+  "total_replay_seconds": 496.7249807000044,
+  "timing_scope": "total replay including train statistics, loading, identity controls and hashes; not latency benchmark",
+  "source_manifest_sha256": "236eb087c4423540c688d1329703f255dc9da39e454efa63441e681beee875b2",
+  "output_sha256": {
+    "metrics.csv": "84971fd6a9df67f13fc2e53c3aa03f9222073a0d4d5951ed070d08313a05b02d",
+    "reference_checks.csv": "3a3eb04761d1040bb87da6ec7b94bfe38ce95d8747be0ada2e38f392b349b141",
+    "controls.csv": "1d15453d8985038d49f87831f015d4f2815a91d239d1d8e0e0b6c77e650dd631",
+    "predictions_and_weights.csv": "94c6ee3f45159918b758b4e323f9e2bee491ba2d4454563cfdae2d3bc10b2353",
+    "reference_input_checks.csv": "7d7b578469ef33ef1825e57ee7b57077bcf58b32d39fe40644f2fea6e210664e",
+    "corruption_summary.csv": "b161d8258e0829dea83bf7a1b6d7d78415d6acbd8f0ab1d254841fb6bd27cdaf",
+    "train_feature_stats.json": "6b6ad3a8c66f4c28a391e4b707beafaf7cd2df53ac24374fdb75074def604652",
+    "train_stats_checks.csv": "2f0e808cc8ecfcfdfd0db5fc86a03ce780274030fcd7a1ec3cb7657e74f6c7d5"
+  },
+  "corruption_summary": [
+    {
+      "modality": "audio",
+      "condition": "K0",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K0",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K1",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "33641",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K1",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K2",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K2",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "36177",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K3",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "33641",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K3",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "36177",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K4",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "10072",
+      "masked_rate": "0.29939656966201955",
+      "target_mask_rate": "0.3",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K4",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "10846",
+      "masked_rate": "0.2998037427094563",
+      "target_mask_rate": "0.3",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K5",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "16850",
+      "masked_rate": "0.5008769061561785",
+      "target_mask_rate": "0.5",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K5",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "18014",
+      "masked_rate": "0.49794068054288637",
+      "target_mask_rate": "0.5",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K6",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "23559",
+      "masked_rate": "0.7003061740138521",
+      "target_mask_rate": "0.7",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K6",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "25357",
+      "masked_rate": "0.7009149459601404",
+      "target_mask_rate": "0.7",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K7",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.4988918508809735"
+    },
+    {
+      "modality": "vision",
+      "condition": "K7",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.49996481990477026"
+    }
+  ],
+  "verification_schema_version": 1,
+  "batch_size": 4,
+  "tau": 1,
+  "reference_metric_tolerance": 1e-05,
+  "train_statistics_tolerance": 1e-12,
+  "independent_recompute_tolerances": {
+    "MAE": 1e-06,
+    "other_metrics": 1e-12
+  },
+  "verified_run_flags": {
+    "reference_test_labels_matched": true,
+    "reference_metrics_matched": true,
+    "shared_inputs_verified": true,
+    "hooks_restored": true,
+    "text_unchanged": true,
+    "lengths_unchanged": true,
+    "padding_unchanged": true,
+    "source_arrays_unchanged": true,
+    "protected_files_unchanged": true,
+    "data_file_unchanged": true
+  },
+  "scope_note": "Completed GPU replay performed by the student in the existing environment. Post-run audit read saved CSV/JSON files and verified file hashes, then recomputed metrics from the new saved predictions. The audit did not rerun the model or compare historical per-sample predictions. Hash matches record the audited state, not a guarantee about future edits. This is reproduction evidence, not a new independent experiment or an unseen holdout."
+}

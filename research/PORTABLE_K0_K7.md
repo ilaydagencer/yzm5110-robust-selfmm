@@ -193,9 +193,59 @@ engellendi. Bu denetim --check'ten ayrıdır: gerçek veri açıldı, GPU tahmin
 yapılmadı. Eski çalışma manifestleri olmadan ayrı kaynak kopyasında, model/veri
 yükleyicileri engellenerek --check de sınandı.
 
-Yeni giriş noktasının gerçek GPU tahminlerini kullanıcı çalıştıracak. Temiz ML
-kurulumu, başka bilgisayarda gerçek GPU tekrarı ve diğer seed'lerin bu giriş
-noktasından değerlendirilmesi henüz doğrulanmış değildir.
+### Tamamlanan GPU tekrarı — 19 Ekim 2026
+
+Kullanıcı mevcut RTX 3050 Ti Laptop GPU ortamında seed 1111 K0–K7 tekrarını
+tamamladı. Eski çalışma manifestleri gerekmedi; eğitim yapılmadı. Python
+ortamında torch 2.3.1+cu121, numpy 1.26.4 ve transformers 4.30.2 kullanıldı.
+Batch 4, τ=1 ve bozulma seed'i 1111 korundu.
+
+| Denetim | Gözlenen sonuç |
+|---|---|
+| Yöntem/koşul metrik satırı | 32; 4 yöntem × 8 koşul. |
+| Referans metrik karşılaştırması | 128/128 geçti; en büyük mutlak fark 5.55e-16. |
+| Bozulmuş girdi SHA256 karşılaştırması | 16/16 tam eşleşti; iki checkpoint aynı girdileri aldı. |
+| Train istatistiği | 2/2 geçti; ortalama ve std farkları sıfır. |
+| Geçerli train zaman adımı | Ses 49878; görüntü 54741. |
+| Kaydedilen tahmin satırı | 10976; her satırda plain ve weighted tahmin. |
+| Tüm ağırlıklar=1 identity kontrolü | En büyük tahmin farkı sıfır. |
+| Dosya özetleri | 8 çıktı ve 106 kayıtlı girdi denetim sırasında eşleşti. |
+
+Kaydedilen tahminlerden MAE, Non0 accuracy, support-weighted F1 ve Corr
+ayrıca yeniden hesaplandı. Örnek indeksleri, etiketler, sonlu sayılar ve ağırlık
+toplamları kontrol edildi. Bağımsız hesaplamanın float32 MAE ile en büyük
+farkı 7.83e-8 idi (tolerans 1e-6); diğer metriklerde fark 5.56e-16 altında kaldı.
+Bu karşılaştırma, yukarıdaki public paketle 128 referans karşılaştırmasından
+ayrı bir denetimdir. Eski tekil tahmin dosyalarıyla birebir karşılaştırma yapılmadı.
+
+Kayıt ve kontrol CSV'lerinde hook'ların geri alınması, kaynak dizilerin, metnin,
+uzunlukların ve padding'in korunması başarılıdır. Kaynak veri, checkpoint'ler
+ve korunan dosyalar değişmedi. Küçük, kişisel yol içermeyen
+[doğrulama kaydı](verification/portable_k0_k7_seed1111_v1.json) bu sonuçları,
+çıktı dosyalarının özetlerini ve kapsam sınırlarını saklar; büyük varlıkları içermez.
+
+| Koşul | Ses: gerçekleşen maske oranı | Görüntü: gerçekleşen maske oranı | Hedef |
+|---|---:|---:|---:|
+| K4 | %29.94 | %29.98 | %30 |
+| K5 | %50.09 | %49.79 | %50 |
+| K6 | %70.03 | %70.09 | %70 |
+
+K7'de gürültü RMS / train std oranı seste 0.49889, görüntüde 0.49996 oldu;
+0.5 ölçeğiyle uyumludur. Hedefe yakın bu değerler tek başına doğrulama değildir:
+16 girdi SHA256 eşleşmesi, önceki sabit koşullarla tam girdi uyumunu da gösterir.
+Train std yalnız eğitim verisinden yeniden hesaplandı.
+
+Bu sonuç **mevcut ortamda gerçek GPU tekrarını** doğrular. Temiz ML kurulumu,
+taşınmış kaynak kopyasında gerçek GPU çalışması, başka bilgisayarda çalıştırma
+ve diğer seed'lerin taşınabilir tekrarı henüz doğrulanmış değildir.
+Toplam çalışma süresi 496.72 saniyedir (yaklaşık 8 dakika 17 saniye); veri/model
+yüklemesini, train istatistiklerini ve koruma kontrollerini de içerir.
+
+Rapora aktarılabilecek bulgu: Sabit seed 1111 checkpoint'leri, aynı veri ve
+bozulma protokolüyle, eski çalışma manifestleri kullanılmadan değerlendirilmiştir.
+K0–K7 boyunca A/B/C/D yöntemlerinin 128 toplu metriği public sonuç paketiyle
+1e-5 tolerans içinde eşleşmiştir. Bu sonuç çalıştırılabilirlik kanıtını güçlendirir;
+beş-seed kalite karşılaştırmasına yeni bir bağımsız gözlem eklemez.
 
 Test daha önce görülmüştür. Mevcut sabit protokol tekrar edilir; yeni
 hiperparametre veya iyi görünen seed seçilmez. Toplam süre istatistik hesabı,
@@ -219,5 +269,39 @@ and train-statistics/label controls. Preserve existing scripts and outputs.
 Document offline preflight and explicit asset paths.
 
 Pass 10 CPU contract tests and a real-data CPU compatibility audit.
-Real GPU replay through the new entry point remains to be verified.
+Verify real GPU replay in the current environment: all 128 metric,
+16 corrupted-input and two train-statistics checks pass.
+Clean installation and other seeds' portable replay remain unverified.
 ```
+
+### Tamamlanan çalışmayı ayrı belge commit'iyle kaydetme
+
+Giriş noktası ve protokol JSON'u önceki commit'te yer aldıysa bu adımda yalnız
+`README.md`, `PORTABLE_K0_K7.md`, `PORTABLE_MODEL.md` ve
+`verification/portable_k0_k7_seed1111_v1.json` stage edilir.
+
+Başlık: `docs: record verified seed-1111 K0-K7 GPU replay`
+
+```text
+Record successful K0-K7 A/B/C/D replay with existing seed-1111 checkpoints
+on the current RTX 3050 Ti environment, without historical run manifests.
+Verify 128 aggregate metric checks, 16 corrupted-input fingerprints and
+two train-statistics checks. Maximum reference metric error is 5.55e-16.
+
+Independently recompute metrics from 10,976 saved prediction rows and
+verify eight output hashes and 106 recorded input hashes. Add a small
+verification record and update the README and both portable guides.
+
+Keep clean-install, relocated real-GPU and other-seed replay limitations
+explicit. No training, model changes or new independent results.
+```
+
+## Sıradaki adım
+
+Önce taşınabilir değerlendirme giriş noktası eğitim seed'ini açıkça alacak
+şekilde genişletilecek. Mevcut baseline/dropout seed 1112 checkpoint'leriyle
+aynı K0–K7 test akışı doğrulanacak; sonra 1113–1115 ele alınacak. Bozulma
+seed'i 1111 ve protokol sabit kalacak; yeniden eğitim veya testten ayar seçimi
+yapılmayacak. Bu genişletme henüz bu belge güncellemesinin parçası değildir.
+Ardından temiz ortam/taşınmış kaynak GPU kontrolü ve raporun son içerik,
+sayfa, kaynakça ve PDF teslim denetimi tamamlanacak.

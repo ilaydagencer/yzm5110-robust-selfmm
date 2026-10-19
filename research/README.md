@@ -344,8 +344,9 @@ RTX 3050 Ti GPU ile seed 1111 K0 tekrarını tamamladı. Dört yöntemin toplam
 Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
 [Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
-K1–K7, diğer seed'ler, temiz ML kurulumu ve eğitimden baştan tekrar bu
-giriş noktasının henüz doğrulanmış kapsamında değildir. Taşınmış kaynak
+Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
+giriş noktasında doğrulandı. Diğer seed'lerin taşınabilir tekrarı, temiz ML
+kurulumu ve eğitimden baştan tekrar henüz doğrulanmadı. Taşınmış kaynak
 kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
 
 ## Açık dosya yollarıyla K0–K7 tekrarı
@@ -358,6 +359,19 @@ K0 yardımcısı ve eski deneyler değiştirilmez; eski çalışma manifestleri 
 
 Hazırlıkta 10 CPU kontrol testi geçti. Ayrı gerçek-veri CPU denetiminde iki train
 istatistiği ve sekiz koşulun girdi özetleri referansla eşleşti. Model/veri yüklemesi
-engellenmiş ayrı kaynak kopyasında yazmasız --check doğrulandı. Yeni giriş
-noktasının GPU tahminleri kullanıcı tarafından henüz çalıştırılacaktır; temiz
-ML kurulumu ve diğer seed'ler bu adımın doğrulanmış kapsamında değildir.
+engellenmiş ayrı kaynak kopyasında yazmasız --check doğrulandı.
+
+19 Ekim 2026 tarihinde kullanıcı mevcut RTX 3050 Ti ortamında gerçek K0–K7
+tekrarını tamamladı: 32 metrik satırı, 128/128 referans metrik kontrolü,
+16/16 bozulmuş girdi özeti ve 2/2 train istatistiği kontrolü doğrulandı.
+En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı.
+10976 tahmin satırından metrikler ayrıca yeniden hesaplandı; 8 çıktı ve
+106 kayıtlı girdi dosyasının SHA256 özetleri denetim sırasında eşleşti.
+[Doğrulama kaydı](verification/portable_k0_k7_seed1111_v1.json).
+
+Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
+bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
+Temiz ML kurulumu, taşınmış kaynak kopyasında gerçek GPU tekrarı ve diğer
+seed'lerin taşınabilir değerlendirmesi henüz doğrulanmış değildir.
+Sıradaki adım aynı sabit protokolü önce seed 1112 için açık dosya yollarıyla
+çalıştırmaktır; ardından diğer seed'ler ve son teslim kontrolleri tamamlanacaktır.
