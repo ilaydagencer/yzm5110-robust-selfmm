@@ -1,4 +1,4 @@
-"""Offline K0-K7 A/B/C/D replay selected by training seed; registry currently includes 1112.
+"""Offline K0-K7 A/B/C/D replay selected by training seed; registry currently includes 1112 and 1113.
 
 Reuses the verified K0 runner's setup, config, metrics and weighting helpers.
 Computes K7 statistics from TRAIN arrays only. No training or old run manifests.
@@ -215,7 +215,7 @@ def prepare(cli):
     verifier = load_module(verifier_path, 'portable_seed_package_verifier')
     verifier.verify(package)
     require(core.load_json(package / 'provenance.json')['data_sha256'] == frozen['data_sha256'], 'Paket/veri kimligi uyumsuz')
-    # Package provenance.checkpoint_sha256 describes seed 1111. Seed 1112 uses
+    # Package provenance.checkpoint_sha256 describes seed 1111. Each later seed uses
     # the separately audited registry above; never relabel the seed-1111 pair.
     reference = read_reference(package, cli.seed)
     print(f'SEED_SECILDI: egitim={cli.seed}; bozulma=1111; referans metrik seed={cli.seed}', flush=True)
@@ -486,7 +486,7 @@ def parse_args(argv=None):
     here = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     parser.add_argument('--check', action='store_true')
-    parser.add_argument('--seed', type=int, required=True, choices=(1112,), help='Currently registered training seed: 1112')
+    parser.add_argument('--seed', type=int, required=True, choices=(1112, 1113), help='Registered training seeds: 1112, 1113')
     parser.add_argument('--repo-dir', type=Path, default=here.parent)
     parser.add_argument('--config', type=Path)
     parser.add_argument('--dependencies', type=Path, help='Seed/checkpoint registry; default: research/configs/selfmm_portable_seed_dependencies.json')

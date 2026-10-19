@@ -196,9 +196,10 @@ benchmark'ının yerine kullanılamaz.
 mevcut GPU ortamında tamamlandı. Train-only gürültü istatistikleri yeniden
 hesaplandı; 128 metrik, 16 girdi özeti ve 2 train istatistiği kontrolü geçti.
 [K0–K7 doğrulama kaydı](verification/portable_k0_k7_seed1111_v1.json).
-Bu K0 betiğinin kapsamı değişmedi. Sıradaki adım aynı sabit protokolün
-taşınabilir tekrarını önce seed 1112'ye genişletmektir. Mevcut deney sonuçları
-korunur; diğer seed'ler için yeni taşınabilir giriş henüz doğrulanmadı.
+Bu K0 betiğinin kapsamı değişmedi. Seed 1112'nin mevcut ortamda K0–K7 tekrarı
+da tamamlandı; [doğrulama kaydı](verification/portable_k0_k7_seed1112_v1.json).
+Sıradaki adım [ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) seed 1113
+tekrarıdır. Mevcut deney sonuçları korunur.
 
 Test daha önce eğitim sonlarında ve eski değerlendirmelerde görülmüştür.
 Bu bir dondurulmuş protokol tekrarıdır; yeni test-tabanlı seçim veya el

@@ -237,7 +237,8 @@ Train std yalnız eğitim verisinden yeniden hesaplandı.
 
 Bu sonuç **mevcut ortamda gerçek GPU tekrarını** doğrular. Temiz ML kurulumu,
 taşınmış kaynak kopyasında gerçek GPU çalışması, başka bilgisayarda çalıştırma
-ve diğer seed'lerin taşınabilir tekrarı henüz doğrulanmış değildir.
+henüz doğrulanmış değildir. Diğer seed'lerin güncel durumu
+[ortak seed yönergesindedir](PORTABLE_SEED_TEST.md).
 Toplam çalışma süresi 496.72 saniyedir (yaklaşık 8 dakika 17 saniye); veri/model
 yüklemesini, train istatistiklerini ve koruma kontrollerini de içerir.
 
@@ -271,7 +272,7 @@ Document offline preflight and explicit asset paths.
 Pass 10 CPU contract tests and a real-data CPU compatibility audit.
 Verify real GPU replay in the current environment: all 128 metric,
 16 corrupted-input and two train-statistics checks pass.
-Clean installation and other seeds' portable replay remain unverified.
+This seed-1111 replay does not establish clean installation or other-seed replay.
 ```
 
 ### Tamamlanan çalışmayı ayrı belge commit'iyle kaydetme
@@ -298,10 +299,9 @@ explicit. No training, model changes or new independent results.
 
 ## Sıradaki adım
 
-Önce taşınabilir değerlendirme giriş noktası eğitim seed'ini açıkça alacak
-şekilde genişletilecek. Mevcut baseline/dropout seed 1112 checkpoint'leriyle
-aynı K0–K7 test akışı doğrulanacak; sonra 1113–1115 ele alınacak. Bozulma
-seed'i 1111 ve protokol sabit kalacak; yeniden eğitim veya testten ayar seçimi
-yapılmayacak. Bu genişletme henüz bu belge güncellemesinin parçası değildir.
-Ardından temiz ortam/taşınmış kaynak GPU kontrolü ve raporun son içerik,
-sayfa, kaynakça ve PDF teslim denetimi tamamlanacak.
+Seed 1112'nin mevcut ortamda taşınabilir K0–K7 GPU tekrarı tamamlandı:
+[doğrulama kaydı](verification/portable_k0_k7_seed1112_v1.json). Artık
+[ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) seed 1113 değerlendirilecek.
+Bozulma seed'i 1111 ve protokol sabit kalır; yeniden eğitim veya testten ayar
+seçimi yapılmaz. Ardından 1114–1115, temiz ortam/taşınmış kaynak GPU kontrolü
+ve raporun son içerik, sayfa, kaynakça ve PDF teslim denetimi ele alınacaktır.

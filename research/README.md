@@ -345,7 +345,7 @@ Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
 [Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
 Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
-giriş noktasında doğrulandı. Diğer seed'lerin taşınabilir tekrarı, temiz ML
+giriş noktasında doğrulandı. Seed 1112'nin taşınabilir tekrarı da aşağıdaki ortak girişte tamamlandı. Temiz ML
 kurulumu ve eğitimden baştan tekrar henüz doğrulanmadı. Taşınmış kaynak
 kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
 
@@ -371,28 +371,35 @@ En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı
 
 Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
 bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
-Temiz ML kurulumu, taşınmış kaynak kopyasında gerçek GPU tekrarı ve diğer
-seed'lerin taşınabilir değerlendirmesi henüz doğrulanmış değildir.
-Sıradaki adım aynı sabit protokolü önce seed 1112 için açık dosya yollarıyla
-çalıştırmaktır; ardından diğer seed'ler ve son teslim kontrolleri tamamlanacaktır.
+Temiz ML kurulumu ve taşınmış kaynak kopyasında gerçek GPU tekrarı henüz
+doğrulanmış değildir. Seed 1112'nin mevcut ortamda K0–K7 tekrarı da aşağıdaki
+giriş noktasında tamamlandı; sıradaki taşınabilir GPU tekrarı seed 1113'tür.
 
 
-## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112
+## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1113
 
 [`evaluate_selfmm_portable_seed_test.py`](evaluate_selfmm_portable_seed_test.py),
-`--seed 1112` ile mevcut baseline/dropout checkpoint'lerini K0–K7 test
-koşullarında değerlendirir. [Adım adım yönerge](PORTABLE_SEED_TEST.md).
-Bu sürüm yalnız 1112'yi kaydeder; diğer seed'ler için destek henüz eklenmedi.
-Seed 1111 giriş noktaları korunur.
+`--seed 1112` veya `--seed 1113` ile kayıtlı baseline/dropout checkpoint'lerini
+K0–K7 test koşullarında değerlendirir. [Adım adım yönerge](PORTABLE_SEED_TEST.md).
+1114–1115 desteği henüz eklenmedi. Seed 1111 giriş noktaları korunur.
 
-Yeni `configs/selfmm_portable_seed_dependencies.json`, eğitim/test kayıtlarıyla
-karşılaştırılmış seed 1112 checkpoint kimliklerini ve ortak bağımlılıkları
-saklar. Gerçek çalışmada eski run manifestleri ve kişisel config dosyaları
-okunmaz. Eğitim seed'i 1112; bozulma seed'i 1111; batch 4 ve τ=1 sabittir.
-Train-only std yeniden hesaplanır. Karşılaştırılacak 128 metrik seed 1112'den,
-16 bozulmuş girdi özeti ortak seed 1111 referansından gelir.
+`configs/selfmm_portable_seed_dependencies.json`, eğitim/test kayıtlarıyla
+karşılaştırılmış checkpoint kimliklerini ve ortak bağımlılıkları saklar.
+Gerçek çalışmada eski run manifestleri ve kişisel config dosyaları okunmaz.
+Bozulma seed'i 1111, batch 4 ve τ=1 sabittir. Train-only std yeniden hesaplanır.
+128 metrik seçilen eğitim seed'inin public paket satırlarıyla; 16 bozulmuş
+girdi özeti ortak seed 1111 referansıyla karşılaştırılır.
 
-13 CPU kontrol testi ve gerçek dosyalarla yazmasız `--check` geçti. Gerçek
-seed 1112 GPU tahminleri bu yeni giriş noktasında kullanıcı tarafından henüz
-çalıştırılacaktır. Bu hazırlık yeni deney sonucu, temiz kurulum veya başka
-bilgisayarda GPU tekrarı olarak sunulmaz.
+19 Ekim 2026 tarihinde kullanıcı mevcut RTX 3050 Ti ortamında seed 1112
+K0–K7 tekrarını tamamladı: 128/128 metrik, 16/16 girdi ve 2/2 train istatistiği
+kontrolü geçti. En büyük referans metrik farkı 8.88e-16, train istatistiği farkı
+sıfırdı. 10976 tahmin satırından metrikler ayrıca yeniden hesaplandı; 8 çıktı ve
+106 kayıtlı girdinin SHA256 özetleri güncelleme öncesi denetimde eşleşti.
+[Seed 1112 doğrulama kaydı](verification/portable_k0_k7_seed1112_v1.json).
+
+Seed 1113 desteği, CLI seçim listesi ve checkpoint kaydının genişletilmesidir;
+model, metrik ve bozulma hesaplama fonksiyonları aynı kalır. Seed 1112 kaydı
+korunur. Hazırlıkta 15 CPU testi ve seed 1113 için yazmasız ön kontrol geçti;
+eski manifestler olmayan ayrı kaynak kopyasında da --check doğrulandı. Yeni seed'in gerçek GPU tekrarı henüz
+beklenmektedir. Temiz ML kurulumu ve taşınmış kaynakla gerçek GPU doğrulaması
+ayrıca tamamlanacaktır. Bu tekrarlar yeni bağımsız deney değildir.
