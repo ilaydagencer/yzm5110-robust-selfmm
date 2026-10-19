@@ -1,4 +1,4 @@
-"""Offline K0-K7 A/B/C/D replay selected by training seed; registry currently includes 1112 and 1113.
+"""Offline K0-K7 A/B/C/D replay selected by training seed; registry currently includes 1112, 1113 and 1114.
 
 Reuses the verified K0 runner's setup, config, metrics and weighting helpers.
 Computes K7 statistics from TRAIN arrays only. No training or old run manifests.
@@ -486,7 +486,7 @@ def parse_args(argv=None):
     here = Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     parser.add_argument('--check', action='store_true')
-    parser.add_argument('--seed', type=int, required=True, choices=(1112, 1113), help='Registered training seeds: 1112, 1113')
+    parser.add_argument('--seed', type=int, required=True, choices=(1112, 1113, 1114), help='Registered training seeds: 1112, 1113, 1114')
     parser.add_argument('--repo-dir', type=Path, default=here.parent)
     parser.add_argument('--config', type=Path)
     parser.add_argument('--dependencies', type=Path, help='Seed/checkpoint registry; default: research/configs/selfmm_portable_seed_dependencies.json')
