@@ -375,3 +375,24 @@ Temiz ML kurulumu, taşınmış kaynak kopyasında gerçek GPU tekrarı ve diğe
 seed'lerin taşınabilir değerlendirmesi henüz doğrulanmış değildir.
 Sıradaki adım aynı sabit protokolü önce seed 1112 için açık dosya yollarıyla
 çalıştırmaktır; ardından diğer seed'ler ve son teslim kontrolleri tamamlanacaktır.
+
+
+## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112
+
+[`evaluate_selfmm_portable_seed_test.py`](evaluate_selfmm_portable_seed_test.py),
+`--seed 1112` ile mevcut baseline/dropout checkpoint'lerini K0–K7 test
+koşullarında değerlendirir. [Adım adım yönerge](PORTABLE_SEED_TEST.md).
+Bu sürüm yalnız 1112'yi kaydeder; diğer seed'ler için destek henüz eklenmedi.
+Seed 1111 giriş noktaları korunur.
+
+Yeni `configs/selfmm_portable_seed_dependencies.json`, eğitim/test kayıtlarıyla
+karşılaştırılmış seed 1112 checkpoint kimliklerini ve ortak bağımlılıkları
+saklar. Gerçek çalışmada eski run manifestleri ve kişisel config dosyaları
+okunmaz. Eğitim seed'i 1112; bozulma seed'i 1111; batch 4 ve τ=1 sabittir.
+Train-only std yeniden hesaplanır. Karşılaştırılacak 128 metrik seed 1112'den,
+16 bozulmuş girdi özeti ortak seed 1111 referansından gelir.
+
+13 CPU kontrol testi ve gerçek dosyalarla yazmasız `--check` geçti. Gerçek
+seed 1112 GPU tahminleri bu yeni giriş noktasında kullanıcı tarafından henüz
+çalıştırılacaktır. Bu hazırlık yeni deney sonucu, temiz kurulum veya başka
+bilgisayarda GPU tekrarı olarak sunulmaz.
