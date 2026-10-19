@@ -338,6 +338,12 @@ Bu giriş noktası eski `runs` manifestlerini gerektirmez; public sonuç paketin
 Eski arşiv betiklerinin yukarıdaki bağımlılıkları değişmemiştir.
 
 Mevcut ortamda ve ayrı bir kaynak kopyasında yazmasız `--check` doğrulandı;
-10 CPU sözleşme testi geçti. Gerçek checkpoint GPU tekrarı kullanıcı tarafından
-çalıştırılacaktır. K1–K7, diğer seed'ler, temiz ML kurulumu ve eğitimden baştan
-tekrar bu giriş noktasının henüz doğrulanmış kapsamında değildir.
+10 CPU sözleşme testi geçti. 19 Ekim 2026 tarihinde kullanıcı mevcut ortamında
+RTX 3050 Ti GPU ile seed 1111 K0 tekrarını tamamladı. Dört yöntemin toplam
+16 referans metrik kontrolü geçti; en büyük mutlak fark 5.55e-16 idi.
+Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
+4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
+[Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
+K1–K7, diğer seed'ler, temiz ML kurulumu ve eğitimden baştan tekrar bu
+giriş noktasının henüz doğrulanmış kapsamında değildir. Taşınmış kaynak
+kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.

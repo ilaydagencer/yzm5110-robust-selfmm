@@ -1,0 +1,65 @@
+{
+  "status": "verified",
+  "run_date_local": "2026-10-19",
+  "training_seed": 1111,
+  "condition": "K0",
+  "split": "test",
+  "n": 686,
+  "non0_n": 656,
+  "metric_rows": 4,
+  "prediction_rows": 1372,
+  "reference_checks": 16,
+  "output_hashes_verified": 4,
+  "current_input_hashes_verified": 103,
+  "max_reference_error": 5.551115123125783e-16,
+  "maximum_uniform_identity_error": 0,
+  "shared_input_fingerprint_verified": true,
+  "historical_run_manifests_required": false,
+  "metrics_recomputed_from_new_predictions": true,
+  "recomputation_errors": {
+    "A": {
+      "MAE": 1.212348443857536e-09,
+      "Non0_acc_2": 0.0,
+      "Non0_F1_score": 1.1102230246251565e-16,
+      "Corr": 4.440892098500626e-16
+    },
+    "C": {
+      "MAE": 1.117451331467123e-08,
+      "Non0_acc_2": 0.0,
+      "Non0_F1_score": 1.1102230246251565e-16,
+      "Corr": 3.3306690738754696e-16
+    },
+    "B": {
+      "MAE": 4.5670104364958775e-09,
+      "Non0_acc_2": 0.0,
+      "Non0_F1_score": 1.1102230246251565e-16,
+      "Corr": 5.551115123125783e-16
+    },
+    "D": {
+      "MAE": 1.7035328925274484e-08,
+      "Non0_acc_2": 0.0,
+      "Non0_F1_score": 1.1102230246251565e-16,
+      "Corr": 0.0
+    }
+  },
+  "current_environment_gpu_replay_verified": true,
+  "clean_environment_install_verified": false,
+  "relocated_real_gpu_replay_verified": false,
+  "per_sample_historical_predictions_compared": false,
+  "training_performed": false,
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "versions": {
+    "torch": "2.3.1+cu121",
+    "numpy": "1.26.4",
+    "transformers": "4.30.2"
+  },
+  "total_replay_seconds": 77.27669579998474,
+  "timing_scope": "total replay including controls, loading and hashing; not a latency benchmark",
+  "source_manifest_sha256": "3afa600549ce7a0b8eb32044148561675d0ece2ae93ea7109123a2eb45dc3a4a",
+  "output_sha256": {
+    "metrics.csv": "1f599d8c5b701425588e4e251f19e0bac827828dd3af9a1fe334f9aee1422678",
+    "reference_checks.csv": "2a6cd95f311ef0db215bb4e8b8227b89be8b82e8821af80054b526734b455c45",
+    "controls.csv": "4e9f5f81e0dc54aa55d82b2400e91dbc2fad3980f342bcce3e5812281a01b0a1",
+    "predictions_and_weights.csv": "f7984b622a160b9bca4f18cb63c13378c15de3a01c4ebe2751d6e283e5c039f9"
+  }
+}

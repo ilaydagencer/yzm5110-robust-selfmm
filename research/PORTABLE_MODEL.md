@@ -172,11 +172,29 @@ yeniden geçti. Bu kontrolde model, checkpoint ve pickle yükleyicileri hata
 verecek şekilde engellendi; 98 kopya dosyasının değişmediği görüldü. 10 CPU
 sözleşme testi de geçti; bunlar gerçek checkpoint başarısı yerine geçmez.
 
-Gerçek checkpoint'lerle yeni betiğin GPU çalışması kullanıcı tarafından
-yapılacak ve ayrıca kaydedilecektir. Bu aşama temiz bir ML kurulumu veya
-uçtan uca yeniden eğitim doğrulaması değildir. K0 tekrarından sonra aynı
-açık bağımlılık yaklaşımı K1–K7'ye, ardından diğer seed'lere genişletilebilir.
-K7 için train-only gürültü ölçeklerinin üretimi de taşınabilir hale getirilmelidir.
+19 Ekim 2026 tarihinde kullanıcı mevcut Python 3.10.5 ortamında RTX 3050 Ti
+GPU ile gerçek checkpoint tekrarını tamamladı. `status=completed`; dört
+yöntem için 16 referans karşılaştırmasının tamamı geçti. En büyük mutlak
+metrik farkı 5.551115123125783e-16, izin verilen tolerans 1e-5 idi.
+
+Sonradan yapılan bağımsız dosya denetiminde 4 çıktı dosyasının ve kayıtlı
+103 girdinin SHA256 özetleri eşleşti. 1372 tahmin satırında örnek sırası,
+etiket eşleşmesi, sonlu değerler ve ağırlık toplamları doğrulandı. Bu
+tahminlerden MAE, Non0 accuracy, weighted F1 ve Corr yeniden hesaplandı;
+float32 MAE ile bağımsız hesaplama farkına 1e-6 tolerans uygulandı.
+Diğer metriklerde fark 1e-12 altında kaldı. İki checkpoint'in girdi özetleri
+aynı, tüm ağırlıklar=1 identity kontrolünün maksimum hatası sıfırdı.
+[Küçük doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
+
+Bu sonuç mevcut ortamda K0 tekrarını doğrular. Taşınmış kaynak kopyasında
+gerçek GPU çalışması, temiz bir ML kurulumu veya uçtan uca yeniden eğitim
+henüz doğrulanmış değildir. Kaydedilen 77.28 saniye toplam tekrar süresi;
+yükleme, kontroller ve dosya özeti hesaplamasını içerir, önceki çıkarım
+benchmark'ının yerine kullanılamaz.
+
+Sıradaki adım aynı açık bağımlılık yaklaşımını K1–K7'ye, ardından diğer
+seed'lere genişletmektir. K7 için train-only gürültü ölçeklerinin üretimi
+de taşınabilir hale getirilmelidir. Mevcut deney sonuçları korunur.
 
 Test daha önce eğitim sonlarında ve eski değerlendirmelerde görülmüştür.
 Bu bir dondurulmuş protokol tekrarıdır; yeni test-tabanlı seçim veya el
@@ -202,6 +220,26 @@ Add offline preflight checks, output protection and 16 aggregate metric
 comparisons against the public results package.
 Document setup, scope and limitations. Validate read-only preflight in
 a relocated source copy and pass 10 CPU contract tests.
-Real-checkpoint GPU replay and a clean environment installation remain
-to be verified separately.
+Verify real-checkpoint K0 GPU replay in the existing environment:
+all 16 reference metric checks pass, with maximum error 5.55e-16.
+Recompute metrics from saved predictions and verify input/output hashes.
+Clean installation and relocated real-GPU execution remain unverified.
+```
+
+### K0 başarı kaydını ayrı commit olarak ekleme
+
+Önceki kod değişikliği zaten commit edildiyse, bu belge güncellemesinde
+yalnız README, PORTABLE_MODEL ve `verification/portable_k0_seed1111_v1.json`
+stage edilir. Yeni eğitim/değerlendirme çalıştırılması gerekmez.
+
+Başlık: `docs: record verified seed-1111 K0 GPU replay`
+
+```text
+Record successful K0 A/B/C/D replay with the existing seed-1111
+checkpoints on the current RTX 3050 Ti environment. All 16 aggregate
+metric checks pass; maximum absolute error is 5.55e-16.
+
+Verify four output hashes and 103 input hashes, and independently
+recompute metrics from 1,372 saved prediction rows. Update the
+reproduction scope and retain clean-install and relocation limitations.
 ```
