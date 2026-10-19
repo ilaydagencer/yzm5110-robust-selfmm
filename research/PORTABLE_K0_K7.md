@@ -235,9 +235,9 @@ K7'de gürültü RMS / train std oranı seste 0.49889, görüntüde 0.49996 oldu
 16 girdi SHA256 eşleşmesi, önceki sabit koşullarla tam girdi uyumunu da gösterir.
 Train std yalnız eğitim verisinden yeniden hesaplandı.
 
-Bu sonuç **mevcut ortamda gerçek GPU tekrarını** doğrular. Temiz ML kurulumu,
-taşınmış kaynak kopyasında gerçek GPU çalışması, başka bilgisayarda çalıştırma
-henüz doğrulanmış değildir. Diğer seed'lerin güncel durumu
+Bu tarihsel kayıt **mevcut ortamda gerçek GPU tekrarını** doğrular. Daha sonra
+yeni venv ve ayrı kaynak kopyasında seed 1111 tekrarı da tamamlandı; aşağıdaki
+güncel durum ayrı kanıta bağlanır. Başka bilgisayarda çalıştırma doğrulanmadı. Diğer seed'lerin güncel durumu
 [ortak seed yönergesindedir](PORTABLE_SEED_TEST.md).
 Toplam çalışma süresi 496.72 saniyedir (yaklaşık 8 dakika 17 saniye); veri/model
 yüklemesini, train istatistiklerini ve koruma kontrollerini de içerir.
@@ -253,7 +253,9 @@ hiperparametre veya iyi görünen seed seçilmez. Toplam süre istatistik hesab�
 yükleme ve kontrolleri içerir; ayrı çıkarım benchmark'ı yerine kullanılamaz.
 Önceki beş-seed bulguları korunur.
 
-## Fork
+## Önceki K0–K7 adımının Fork kaydı (arşiv)
+
+Güncel belge commit’i [temiz ortam belgesindedir](CLEAN_ENVIRONMENT.md).
 
 Yalnız üç yeni dosyayı ve README değişikliğini stage edin. Veri, checkpoint,
 BERT, `.venv`, `runs` ve kişisel orijinal config değişikliğini eklemeyin.
@@ -300,7 +302,17 @@ explicit. No training, model changes or new independent results.
 ## Sıradaki adım
 
 Seed 1111–1115'in mevcut ortamda taşınabilir GPU tekrarları tamamlandı:
-[beş-seed özeti](verification/portable_five_seeds_v1.json). Sırada ayrı kaynak
-kopyası ve sıfırdan kurulan venv ile [temiz ortam doğrulaması](CLEAN_ENVIRONMENT.md)
-var. Protokol sabit kalır. Sonrasında raporun içerik, kaynakça, sayfa ve PDF
-teslim kontrolleri yapılacaktır.
+[beş-seed özeti](verification/portable_five_seeds_v1.json).
+
+19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
+**seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
+ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
+sekiz çıktı dosyasıyla bayt düzeyinde eşleşme doğrulandı; 10976 satırdaki
+tahmin/etiket/ağırlık farkı sıfırdır.
+[Kurulum, sonuç ve kapsam](CLEAN_ENVIRONMENT.md),
+[küçük doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json).
+Diğer dört seed'in yeni venv'de tekrarı, başka bilgisayar, public Git checkout
+ve eğitimden baştan tekrar bu doğrulamanın kapsamına girmez.
+
+Sırada teslim edilecek commit/tag ile public checkout kontrolü ve raporun
+ister, kaynakça, sayfa ve PDF kontrolleri var. Araştırma protokolü sabit kalır.

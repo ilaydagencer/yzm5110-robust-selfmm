@@ -345,8 +345,9 @@ metrik farkı 1.23e-15 altındadır. Bu toplamlar bağımsız deney sayısı de�
 [Beş-seed doğrulama özeti](verification/portable_five_seeds_v1.json).
 
 Bu adım değerlendirme betiklerini, kayıtlı checkpoint kimliklerini veya sabit
-protokolü değiştirmez. Temiz paket kurulumu ve taşınmış kaynakla gerçek GPU
-tekrarı henüz tamamlanmadı. Sıradaki adım [temiz ortam yönergesidir](CLEAN_ENVIRONMENT.md).
+protokolü değiştirmez. Sonraki temiz ortam aşaması seed 1111 için tamamlandı:
+[sonuçlar ve yeniden kurulum yönergesi](CLEAN_ENVIRONMENT.md).
+Eski doğrulama JSON'ları kendi tarihsel kapsamlarıyla korunur; yeni kanıt ayrı kayıttadır.
 
 
 ## Hazırlık kontrollerinin kapsamı
@@ -354,5 +355,16 @@ tekrarı henüz tamamlanmadı. Sıradaki adım [temiz ortam yönergesidir](CLEAN
 Seed 1115 desteği hazırlanırken 17 CPU testi, mevcut ortamda yazmasız --check
 ve eski manifestler olmayan ayrı kaynak kopyasında --check geçti. Daha sonra
 kullanıcı yukarıda kaydedilen gerçek GPU tekrarını mevcut ortamda tamamladı.
-Temiz venv'e internetten paket kurulumu ve o yeni ortamda gerçek GPU çıkarımı
-bu kontrollerden farklıdır; yeni adımda ayrıca sınanacaktır.
+Temiz venv'e paket kurulumu ve yeni ortamda gerçek GPU çıkarımı bu hazırlık
+kontrollerinden ayrıdır; daha sonra seed 1111 için tamamlandı. Seed 1112–1115'in
+burada belgelenen gerçek GPU sonuçları hâlâ önceki ortama aittir.
+
+19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
+**seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
+ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
+sekiz çıktı dosyasıyla bayt düzeyinde eşleşme doğrulandı; 10976 satırdaki
+tahmin/etiket/ağırlık farkı sıfırdır.
+[Kurulum, sonuç ve kapsam](CLEAN_ENVIRONMENT.md),
+[küçük doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json).
+Diğer dört seed'in yeni venv'de tekrarı, başka bilgisayar, public Git checkout
+ve eğitimden baştan tekrar bu doğrulamanın kapsamına girmez.

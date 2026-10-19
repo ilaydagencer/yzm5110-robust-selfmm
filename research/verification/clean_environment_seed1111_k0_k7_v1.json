@@ -1,0 +1,392 @@
+{
+  "status": "verified_clean_environment_gpu_replay",
+  "run_date_utc": "2026-10-19",
+  "training_seed": 1111,
+  "corruption_seed": 1111,
+  "split": "test",
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7"
+  ],
+  "n": 686,
+  "non0_n": 656,
+  "metric_rows": 32,
+  "prediction_rows": 10976,
+  "reference_check_rows": 128,
+  "control_rows": 16,
+  "reference_input_check_rows": 16,
+  "train_stats_check_rows": 2,
+  "corruption_summary_rows": 16,
+  "output_hashes_verified": 8,
+  "current_input_hashes_verified": 106,
+  "max_reference_error": 5.551115123125783e-16,
+  "max_reference_error_by_metric": {
+    "MAE": 0.0,
+    "Non0_acc_2": 0.0,
+    "Non0_F1_score": 2.220446049250313e-16,
+    "Corr": 5.551115123125783e-16
+  },
+  "maximum_uniform_identity_error": 0,
+  "reference_corrupted_inputs_matched": true,
+  "train_statistics_recomputed_and_matched": true,
+  "train_valid_frames": {
+    "audio": 49878,
+    "vision": 54741
+  },
+  "max_train_statistic_error": 0.0,
+  "metrics_recomputed_from_saved_predictions": true,
+  "max_recomputed_error_by_metric": {
+    "MAE": 7.826910941588494e-08,
+    "Non0_acc_2": 0.0,
+    "Non0_F1_score": 2.220446049250313e-16,
+    "Corr": 5.551115123125783e-16
+  },
+  "historical_run_manifests_required": false,
+  "current_environment_gpu_replay_verified": true,
+  "clean_environment_install_verified": true,
+  "relocated_real_gpu_replay_verified": true,
+  "training_performed": false,
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "versions": {
+    "torch": "2.3.1+cu121",
+    "numpy": "1.26.4",
+    "transformers": "4.30.2"
+  },
+  "total_replay_seconds": 399.6817387000192,
+  "timing_scope": "total replay including train statistics, loading, identity controls and hashes; not latency benchmark",
+  "source_manifest_sha256": "9a0523a3f43647664ac99a6ff40f79095ee79d11b5819504b0c8c29ba9604aaa",
+  "output_sha256": {
+    "metrics.csv": "84971fd6a9df67f13fc2e53c3aa03f9222073a0d4d5951ed070d08313a05b02d",
+    "reference_checks.csv": "3a3eb04761d1040bb87da6ec7b94bfe38ce95d8747be0ada2e38f392b349b141",
+    "controls.csv": "1d15453d8985038d49f87831f015d4f2815a91d239d1d8e0e0b6c77e650dd631",
+    "predictions_and_weights.csv": "94c6ee3f45159918b758b4e323f9e2bee491ba2d4454563cfdae2d3bc10b2353",
+    "reference_input_checks.csv": "7d7b578469ef33ef1825e57ee7b57077bcf58b32d39fe40644f2fea6e210664e",
+    "corruption_summary.csv": "b161d8258e0829dea83bf7a1b6d7d78415d6acbd8f0ab1d254841fb6bd27cdaf",
+    "train_feature_stats.json": "6b6ad3a8c66f4c28a391e4b707beafaf7cd2df53ac24374fdb75074def604652",
+    "train_stats_checks.csv": "2f0e808cc8ecfcfdfd0db5fc86a03ce780274030fcd7a1ec3cb7657e74f6c7d5"
+  },
+  "corruption_summary": [
+    {
+      "modality": "audio",
+      "condition": "K0",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K0",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K1",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "33641",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K1",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K2",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K2",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "36177",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K3",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "33641",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K3",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "36177",
+      "masked_rate": "1.0",
+      "target_mask_rate": "1.0",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K4",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "10072",
+      "masked_rate": "0.29939656966201955",
+      "target_mask_rate": "0.3",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K4",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "10846",
+      "masked_rate": "0.2998037427094563",
+      "target_mask_rate": "0.3",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K5",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "16850",
+      "masked_rate": "0.5008769061561785",
+      "target_mask_rate": "0.5",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K5",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "18014",
+      "masked_rate": "0.49794068054288637",
+      "target_mask_rate": "0.5",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K6",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "23559",
+      "masked_rate": "0.7003061740138521",
+      "target_mask_rate": "0.7",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "vision",
+      "condition": "K6",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "25357",
+      "masked_rate": "0.7009149459601404",
+      "target_mask_rate": "0.7",
+      "noise_rms_div_train_std": "0.0"
+    },
+    {
+      "modality": "audio",
+      "condition": "K7",
+      "n": "686",
+      "valid_frames": "33641",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.4988918508809735"
+    },
+    {
+      "modality": "vision",
+      "condition": "K7",
+      "n": "686",
+      "valid_frames": "36177",
+      "masked_frames": "0",
+      "masked_rate": "0.0",
+      "target_mask_rate": "0.0",
+      "noise_rms_div_train_std": "0.49996481990477026"
+    }
+  ],
+  "schema_version": 1,
+  "source_snapshot_files_rechecked": 125,
+  "package_count": 51,
+  "clean_environment_training_seeds_verified": [
+    1111
+  ],
+  "other_training_seeds_clean_environment_replay_verified": false,
+  "same_machine_and_base_python": true,
+  "existing_external_assets_reused": true,
+  "public_git_clone_verified": false,
+  "full_training_pipeline_repeated": false,
+  "environment_manifest_sha256": "549016a044298a623eac00cb1d7206634916e98e21dff3dec9f46f33d8830ddc",
+  "snapshot_manifest_sha256": "fdee198a11ba3ce89dbcb07dba716d9d289c79bd2f792455d1cca3a0fe932980",
+  "environment_checks": {
+    "isolated": true,
+    "system_site_packages": false,
+    "user_site_enabled": false,
+    "pip_check": "No broken requirements found.",
+    "cuda_runtime": "12.1",
+    "cudnn": 8907,
+    "python_version": "3.10.5",
+    "mmsa_import_from_relocated_copy": true,
+    "checked_at_utc": "2026-10-19T20:19:19.489401+00:00"
+  },
+  "package_versions": {
+    "boto3": "1.43.114",
+    "botocore": "1.43.114",
+    "certifi": "2026.7.22",
+    "charset-normalizer": "3.5.2",
+    "click": "8.5.0",
+    "cloudpickle": "3.1.2",
+    "colorama": "0.4.6",
+    "easydict": "1.13",
+    "einops": "0.7.0",
+    "filelock": "3.32.3",
+    "fsspec": "2026.7.0",
+    "huggingface-hub": "0.16.4",
+    "idna": "3.20",
+    "intel-openmp": "2021.4.0",
+    "Jinja2": "3.1.6",
+    "jmespath": "1.1.0",
+    "joblib": "1.6.0",
+    "MarkupSafe": "3.0.3",
+    "mkl": "2021.4.0",
+    "mpmath": "1.3.0",
+    "networkx": "3.4.2",
+    "numpy": "1.26.4",
+    "nvidia-ml-py3": "7.352.0",
+    "packaging": "26.3",
+    "pandas": "1.5.3",
+    "python-dateutil": "2.9.0.post0",
+    "pytorch-transformers": "1.2.0",
+    "pytz": "2026.5",
+    "PyYAML": "6.0.3",
+    "regex": "2026.9.29",
+    "requests": "2.34.2",
+    "s3transfer": "0.19.2",
+    "sacremoses": "0.2.0",
+    "safetensors": "0.8.0",
+    "scikit-learn": "1.3.2",
+    "scipy": "1.15.3",
+    "sentencepiece": "0.2.2",
+    "six": "1.17.0",
+    "sympy": "1.14.0",
+    "tbb": "2021.13.1",
+    "threadpoolctl": "3.7.0",
+    "tokenizers": "0.13.3",
+    "tqdm": "4.66.5",
+    "transformers": "4.30.2",
+    "typing_extensions": "4.16.0",
+    "urllib3": "2.8.0",
+    "torch": "2.3.1+cu121",
+    "MMSA": "2.2.1",
+    "pip": "24.0",
+    "setuptools": "69.5.1",
+    "wheel": "0.43.0"
+  },
+  "install_logs": {
+    "01-build-tools.log": {
+      "sha256": "e1dd191cdf01120ab2e942082f521232b6f7dfb58debb59634dcf613d9c71c5d",
+      "size_bytes": 643915,
+      "successful_install_lines": [
+        "pip-24.0 setuptools-69.5.1 wheel-0.43.0"
+      ]
+    },
+    "02-torch.log": {
+      "sha256": "0f2cb534b0468c7767e3ba01b81c43bbe62fea3fb8f1e3f0e7192d227ffb24fb",
+      "size_bytes": 564814,
+      "successful_install_lines": [
+        "MarkupSafe-3.0.3 filelock-3.32.3 fsspec-2026.7.0 intel-openmp-2021.4.0 jinja2-3.1.6 mkl-2021.4.0 mpmath-1.3.0 networkx-3.4.2 sympy-1.14.0 tbb-2021.13.1 torch-2.3.1+cu121 typing-extensions-4.16.0"
+      ]
+    },
+    "03-requirements.log": {
+      "sha256": "c6751f8aaa6d055e5c41eb2fe1c9ab9277b961782c000df49da6b103024266b0",
+      "size_bytes": 14472919,
+      "successful_install_lines": [
+        "PyYAML-6.0.3 boto3-1.43.114 botocore-1.43.114 certifi-2026.7.22 charset-normalizer-3.5.2 click-8.5.0 cloudpickle-3.1.2 colorama-0.4.6 easydict-1.13 einops-0.7.0 huggingface-hub-0.16.4 idna-3.20 jmespath-1.1.0 joblib-1.6.0 numpy-1.26.4 nvidia-ml-py3-7.352.0 packaging-26.3 pandas-1.5.3 python-dateutil-2.9.0.post0 pytorch-transformers-1.2.0 pytz-2026.5 regex-2026.9.29 requests-2.34.2 s3transfer-0.19.2 sacremoses-0.2.0 safetensors-0.8.0 scikit-learn-1.3.2 scipy-1.15.3 sentencepiece-0.2.2 six-1.17.0 threadpoolctl-3.7.0 tokenizers-0.13.3 tqdm-4.66.5 transformers-4.30.2 urllib3-2.8.0"
+      ]
+    },
+    "04-mmsa.log": {
+      "sha256": "fea57d8efe0e470cca92853e473dee54994480daf9e30aca2daf20998b7b50d8",
+      "size_bytes": 11026,
+      "successful_install_lines": [
+        "MMSA-2.2.1"
+      ]
+    }
+  },
+  "prior_portable_comparison": {
+    "training_seed": 1111,
+    "split": "test",
+    "conditions": [
+      "K0",
+      "K1",
+      "K2",
+      "K3",
+      "K4",
+      "K5",
+      "K6",
+      "K7"
+    ],
+    "source_manifest_sha256": "236eb087c4423540c688d1329703f255dc9da39e454efa63441e681beee875b2",
+    "byte_identical_outputs": [
+      "controls.csv",
+      "corruption_summary.csv",
+      "metrics.csv",
+      "predictions_and_weights.csv",
+      "reference_checks.csv",
+      "reference_input_checks.csv",
+      "train_feature_stats.json",
+      "train_stats_checks.csv"
+    ],
+    "metric_values_compared": 128,
+    "max_metric_difference": 0.0,
+    "prediction_and_weight_rows_compared": 10976,
+    "columns_compared": [
+      "label",
+      "plain_prediction",
+      "weighted_prediction",
+      "w_text",
+      "w_audio",
+      "w_vision"
+    ],
+    "max_prediction_label_or_weight_difference": 0.0,
+    "original_historical_training_predictions_compared": false
+  },
+  "scope_note": "Fresh isolated venv and relocated allowlisted local source copy on the same computer. Existing dataset, checkpoints and BERT reused. No retraining, no new independent seed, no public Git clone. Other four seeds were previously replayed in the original environment only.",
+  "historical_manifest_note": "Environment and snapshot manifests remain unchanged. Their false GPU fields describe their earlier creation/check stage; the separate completed GPU run is the later evidence.",
+  "original_environment_portable_training_seeds_verified": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "original_environment_five_seed_evidence": "portable_five_seeds_v1.json",
+  "audit_note": "Read-only post-run audit before this documentation update; no model run or Git operation during audit."
+}

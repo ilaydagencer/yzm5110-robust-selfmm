@@ -23,7 +23,17 @@ allocated bellek artışı 6,5 KiB oldu. Bu sonuç belirli kural ve protokole ai
 Bu yol GPU, PyTorch, internet, veri kümesi veya checkpoint istemez.
 Kaydedilmiş seed metriklerinden ortalama/SS/farkları, kaydedilmiş batch
 sürelerinden kaynak özetlerini yeniden hesaplar. Tahminleri yeniden üretmez.
-GPU deney zincirinin temiz bilgisayardan baştan sona tekrarı henüz doğrulanmadı.
+GPU deney zincirinin başka bilgisayarda eğitimden baştan sona tekrarı henüz doğrulanmadı.
+
+19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
+**seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
+ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
+sekiz çıktı dosyasıyla bayt düzeyinde eşleşme doğrulandı; 10976 satırdaki
+tahmin/etiket/ağırlık farkı sıfırdır.
+[Kurulum, sonuç ve kapsam](CLEAN_ENVIRONMENT.md),
+[küçük doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json).
+Diğer dört seed'in yeni venv'de tekrarı, başka bilgisayar, public Git checkout
+ve eğitimden baştan tekrar bu doğrulamanın kapsamına girmez.
 
 ## Hızlı kontrol
 
@@ -188,8 +198,10 @@ Windows uyumluluğu için **sentencepiece, torch/MMSA’dan önce import edilir*
 `requirements-research.txt`, çalışan Windows Python 3.10.5 ortamının gözlenen
 paket sürümlerini sabitler; torch ve yerel MMSA yukarıdaki ayrı adımlarla kurulur.
 Tam ortam bilgisi [environment-observed.txt](environment-observed.txt) içindedir.
-Bu liste hash kilitli bir lockfile değildir. Bu teslim adımında yeni GPU venv’ine
-internet üzerinden kurulum yapılmadı; temiz kurulumun geçtiği iddia edilmez.
+Bu liste hash kilitli bir lockfile değildir. Aynı bilgisayarda yeni venv’e
+kurulum, paket izolasyonu ve seed 1111 GPU tekrarı doğrulandı. Kullanılan
+kurulum komutları, sürümler ve sınırlar [temiz ortam kaydındadır](CLEAN_ENVIRONMENT.md).
+Başka bilgisayarda kurulum henüz doğrulanmadı.
 
 ## Veri ve konfigürasyon
 
@@ -345,9 +357,10 @@ Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
 [Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
 Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
-giriş noktasında doğrulandı. Seed 1112–1115'in taşınabilir tekrarları da aşağıdaki ortak girişte tamamlandı. Temiz ML
-kurulumu ve eğitimden baştan tekrar henüz doğrulanmadı. Taşınmış kaynak
-kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
+giriş noktasında doğrulandı. Seed 1112–1115'in mevcut ortamdaki taşınabilir
+tekrarları da aşağıdaki ortak girişte tamamlandı. Daha sonra yeni venv ve ayrı
+kaynak kopyasıyla seed 1111 K0–K7 tekrarı doğrulandı; bu gelişme K0 yardımcısının
+kapsamını genişletmez. Eğitimden baştan tekrar henüz doğrulanmadı.
 
 ## Açık dosya yollarıyla K0–K7 tekrarı
 
@@ -371,9 +384,9 @@ En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı
 
 Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
 bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
-Temiz ML kurulumu ve taşınmış kaynak kopyasında gerçek GPU tekrarı henüz
-doğrulanmış değildir. Seed 1112–1115'in mevcut ortamda K0–K7 tekrarları aşağıdaki
-giriş noktasında tamamlandı; sırada ayrı kaynak kopyası ve yeni venv doğrulaması var.
+Seed 1112–1115'in mevcut ortamda K0–K7 tekrarları aşağıdaki giriş noktasında
+tamamlandı. Sonraki ayrı kaynak kopyası ve yeni venv denetimi seed 1111 için
+gerçek GPU sonucuyla tamamlandı; [kanıt ve kapsam](CLEAN_ENVIRONMENT.md).
 
 
 ## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1115
@@ -441,13 +454,16 @@ metrik farkı 1.23e-15 altındadır. Bu toplamlar bağımsız deney sayısı de�
 [Beş-seed doğrulama özeti](verification/portable_five_seeds_v1.json).
 
 Bu adım değerlendirme betiklerini, kayıtlı checkpoint kimliklerini veya sabit
-protokolü değiştirmez. Temiz paket kurulumu ve taşınmış kaynakla gerçek GPU
-tekrarı henüz tamamlanmadı. Sıradaki adım [temiz ortam yönergesidir](CLEAN_ENVIRONMENT.md).
+protokolü değiştirmez. Sonraki temiz ortam aşaması seed 1111 için tamamlandı:
+[sonuçlar ve yeniden kurulum yönergesi](CLEAN_ENVIRONMENT.md).
+Eski doğrulama JSON'ları kendi tarihsel kapsamlarıyla korunur; yeni kanıt ayrı kayıttadır.
 
 
 Temiz ortam hazırlığı için iki stdlib tabanlı araç eklendi:
 `prepare_selfmm_clean_copy.py`, seçili küçük kaynakları ayrı klasöre kopyalar;
 `check_selfmm_clean_environment.py`, yeni venv'in izolasyonunu, sürümlerini,
 paket/kaynak yollarını, `pip check` sonucunu ve CUDA görünürlüğünü denetler.
-İnternetli paket kurulumu kullanıcı tarafından yapılacaktır. Bunların hazırlanmış
-olması temiz ortamın veya gerçek GPU tekrarının başarılı olduğu anlamına gelmez.
+Kullanıcı yeni ortamın paket kurulumunu ve seed 1111 gerçek GPU tekrarını
+tamamladı. 51 paketin ortam içindeki yolları, 125 kopya kaynak ve dört kurulum
+logunun dosya özetleri denetlendi. Bu araçların --check sonucu ile gerçek GPU
+sonucu ayrı kanıtlardır; ikisi yeni doğrulama kaydında birlikte izlenebilir.

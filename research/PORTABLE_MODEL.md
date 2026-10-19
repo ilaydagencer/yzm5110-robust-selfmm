@@ -186,9 +186,9 @@ Diğer metriklerde fark 1e-12 altında kaldı. İki checkpoint'in girdi özetler
 aynı, tüm ağırlıklar=1 identity kontrolünün maksimum hatası sıfırdı.
 [Küçük doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
 
-Bu sonuç mevcut ortamda K0 tekrarını doğrular. Taşınmış kaynak kopyasında
-gerçek GPU çalışması, temiz bir ML kurulumu veya uçtan uca yeniden eğitim
-henüz doğrulanmış değildir. Kaydedilen 77.28 saniye toplam tekrar süresi;
+Bu tarihsel K0 kaydı mevcut ortamla sınırlıdır. Yeni venv ve taşınmış kaynak
+ile daha sonra yapılan K0–K7 doğrulaması ayrı kayıttadır; uçtan uca yeniden
+eğitim henüz doğrulanmadı. Kaydedilen 77.28 saniye toplam tekrar süresi;
 yükleme, kontroller ve dosya özeti hesaplamasını içerir, önceki çıkarım
 benchmark'ının yerine kullanılamaz.
 
@@ -201,14 +201,24 @@ Bu K0 betiğinin kapsamı değişmedi. Mevcut ortamda K0–K7 tekrarları
 [seed 1113](verification/portable_k0_k7_seed1113_v1.json) ve
 [seed 1114](verification/portable_k0_k7_seed1114_v1.json) için de tamamlandı.
 Seed 1115 de tamamlandı; [beş-seed kaydı](verification/portable_five_seeds_v1.json).
-Sıradaki adım [temiz ortam doğrulamasıdır](CLEAN_ENVIRONMENT.md).
+19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
+**seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
+ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
+sekiz çıktı dosyasıyla bayt düzeyinde eşleşme doğrulandı; 10976 satırdaki
+tahmin/etiket/ağırlık farkı sıfırdır.
+[Kurulum, sonuç ve kapsam](CLEAN_ENVIRONMENT.md),
+[küçük doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json).
+Diğer dört seed'in yeni venv'de tekrarı, başka bilgisayar, public Git checkout
+ve eğitimden baştan tekrar bu doğrulamanın kapsamına girmez.
 
 Test daha önce eğitim sonlarında ve eski değerlendirmelerde görülmüştür.
 Bu bir dondurulmuş protokol tekrarıdır; yeni test-tabanlı seçim veya el
 değmemiş holdout iddiası yoktur. K0 tekrarını doğrulamak mevcut araştırma
 bulgularını değiştirmez; çalıştırılabilirlik kanıtını güçlendirir.
 
-## Fork kaydı
+## Önceki K0 adımının Fork kaydı (arşiv)
+
+Güncel altı dosyalık belge güncellemesinin commit metni [temiz ortam belgesindedir](CLEAN_ENVIRONMENT.md).
 
 Bu adımda yalnız `evaluate_selfmm_portable_k0.py`, `PORTABLE_MODEL.md`,
 iki yeni config/bağımlılık JSON'u ve güncellenen `README.md` stage edilir.

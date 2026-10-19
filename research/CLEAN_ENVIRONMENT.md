@@ -8,7 +8,81 @@ eğitimden baştan tekrar değildir. Kaynak, mevcut yerel repodan hash'leri kay�
 bir kopyadır; commit edilmeyen değişiklikleri de kapsayabilir. Son teslimde
 Fork commit/tag'i ve public checkout ayrıca doğrulanmalıdır.
 
-**Durum: Hazırlık tamamlandı; yeni bağımlılık kurulumu ve temiz ortam GPU sonucu bekleniyor.**
+**Durum: Yeni venv kurulumu ve seed 1111 K0–K7 A/B/C/D GPU doğrulaması tamamlandı.**
+
+## Tamamlanan doğrulama — 19 Ekim 2026
+
+Yeni venv'e kurulan 51 paketin konumu/sürümü, izole Python çalışması,
+MMSA'nın ayrı kaynak kopyasından import edilmesi ve `pip check` başarıyla
+doğrulandı. Python 3.10.5, torch 2.3.1+cu121, CUDA 12.1, numpy 1.26.4,
+transformers 4.30.2 ve RTX 3050 Ti Laptop GPU kullanıldı.
+
+| Kontrol | Sonuç |
+|---|---|
+| Kaynak kopyası | 125/125 dosya özeti tekrar eşleşti. |
+| Kurulum kanıtı | Dört pip logu ve ortam manifestinin kayıtlı özetleri eşleşti. |
+| Public paket metrikleri | 128/128 geçti; en büyük fark 5.55e-16 (tolerans 1e-5). |
+| Bozulmuş girdiler | 16/16 tam eşleşti; iki checkpoint aynı girdilerle değerlendirildi. |
+| Train istatistikleri | 2/2 geçti; ortalama/std farkı sıfır; 49878 ses ve 54741 görüntü zaman adımı. |
+| Çıktı/girdi bütünlüğü | 8 çıktı ve 106 kayıtlı girdi özeti denetim anında eşleşti. |
+| Önceki portable seed 1111 çıktıları | Sekiz çıktı dosyasının tamamı bayt düzeyinde aynı. |
+| Tahmin ve ağırlık karşılaştırması | 10976 satır; en büyük tahmin/etiket/ağırlık farkı 0. |
+| Kimlik ve koruma kontrolleri | Tüm ağırlıklar=1 hatası 0; hook, metin, uzunluk, padding ve veri korundu. |
+
+32 yöntem/koşul satırı için MAE, Non0 accuracy, weighted F1 ve Corr, kaydedilen
+tahminlerden bağımsız olarak yeniden hesaplandı. Float32 ortalama kullanan
+MAE ile fark en fazla 7.83e-8 (tolerans 1e-6), diğer metriklerde 5.56e-16
+altında kaldı. Bu hesaplama farkı, eski/yeni portable çıktı farkı değildir;
+eski/yeni portable çıktı farkı **sıfırdır**.
+
+Küçük public paketle karşılaştırma toplu metrik düzeyindedir. Tekil tahminlerin
+birebir karşılaştırmasında referans, yerel önceki **portable seed 1111**
+çalışmasıdır; tüm tarihsel eğitim tahminleriyle karşılaştırma iddia edilmez.
+[Kişisel mutlak yol içermeyen doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json),
+ortam/kopya/GPU manifestlerinin ve çıktıların SHA256 özetlerini birlikte saklar.
+
+| K0 yöntemi | Önceki MAE | Yeni MAE | Önceki / yeni Non0 accuracy (%) |
+|---|---:|---:|---:|
+| A: baseline | 0.7448 | 0.7448 | 82.77 / 82.77 |
+| B: dropout | 0.7421 | 0.7421 | 83.54 / 83.54 |
+| C: baseline + ağırlık | 0.8270 | 0.8270 | 82.62 / 82.62 |
+| D: dropout + ağırlık | 0.8413 | 0.8413 | 83.54 / 83.54 |
+
+K1–K7 de önceki portable sonuçlarla tam eşleşti. Seed 1111'de B'nin MAE'si
+K0–K7 boyunca A'dan azdır; C'nin A'dan, D'nin B'den fazladır. Bu, eski bulgunun
+tekrarıdır. Beş-seed test ortalamasında dropout'un üstün olmadığı sonucu
+değişmez. Tekrarı yeni seed gibi sayarak ortalama/SS'ye eklemiyoruz.
+Kaydedilen 399.68 saniye yükleme, train istatistiği, çıkarım ve kontrolleri
+içeren toplam tekrar süresidir; önceki çıkarım benchmark'ıyla hız kıyası yapılmaz.
+
+Ortam manifestindeki `gpu_model_replay_performed=False`, ortam kontrolünün
+model çalıştırmadığını anlatır. O tarihsel kayıt korunur; sonradan tamamlanan
+GPU çalışmasının ayrı `status=completed` manifestiyle birlikte değerlendirilir.
+Kaynak kopyası manifestindeki önceki hazırlık bayrakları da değiştirilmez.
+
+Bu kanıt aynı bilgisayar, aynı temel Python ve sürücü üzerinde **yeni venv +
+ayrı yerel kaynak kopyası + mevcut dış veri/checkpoint/BERT** kapsamındadır.
+Yeni venv'de yalnız seed 1111 sınandı. Seed 1112–1115 önceki ortamda doğrulandı.
+Public Git checkout, başka bilgisayar ve uçtan uca yeniden eğitim doğrulanmadı.
+Test seti daha önce görülmüştür; sabit protokol tekrarında yeni ayar seçilmedi.
+
+## Mevcut çalışmanın ardından
+
+1. Aşağıdaki altı dosyalık belge güncellemesini **asıl MMSA reposuna** uygula.
+2. Fork'ta bu dosyaları gözden geçir, commit ve push yap; commit kimliğini sakla.
+3. Sonraki adımda public depodaki bu commit'ten checkout ve dağıtılan küçük
+   paketin kontrolünü ele al. Yerel kaynak kopyası ile public teslim aynı kanıt değildir.
+4. Ardından raporu hocanın PDF isterleriyle yeniden eşleştir; bu doğrulamayı
+   yeniden üretilebilirlik bölümüne aktar ve Word/PDF son kontrolünü tamamla.
+
+Bu belge güncellemesi Word raporunu değiştirmez. Temiz kopya kanıtını korumak
+için `YZM5110_clean_replay_v1/MMSA` içindeki kaynak/belgeleri güncelleme.
+
+## Yeniden kurulum tarifinin kullanımı
+
+Aşağıdaki adımlar tamamlanan çalışmanın tekrar tarifidir; mevcut temiz köke
+yeniden uygulanmaz. Yeni bir tekrar gerektiğinde kullanılmamış hedef adı
+seçilmeli ve tüm komutlarda aynı yeni kök kullanılmalıdır.
 
 ## Neler hazırlanıyor?
 
@@ -28,23 +102,15 @@ Kaynaklar: [Python venv](https://docs.python.org/3.10/library/venv.html),
 [PyTorch 2.3.1 kurulumu](https://pytorch.org/get-started/previous-versions/#v231).
 Venv'i etkinleştirmek gerekmez; her komutta doğru python.exe yolu kullanılır.
 
-## 1. Teslim dosyalarını mevcut repoya yerleştir
+## 1. Kaynak repoyu seç
+
+Araçlar artık repodadır; eski teslim paketini yeniden kurma. Aşağıdaki örnek
+tamamlanan yerel çalışmanın yollarını kullanır. Bir sonraki baştan kurulumda
+henüz kullanılmamış kök seç.
 
 ```powershell
 Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
-$deliveryDir = 'C:\Users\ilayda\Documents\Codex\2026-10-17\referenced-chatgpt-conversation-this-is-an\outputs\research_clean_environment_v1'
-& "$deliveryDir\Install-CleanEnvironmentDocs.ps1" -CheckOnly
 ```
-
-Kontrol başarılıysa:
-
-```powershell
-& "$deliveryDir\Install-CleanEnvironmentDocs.ps1"
-```
-
-Dört mevcut belge güncellenir; iki doğrulama JSON'u, iki yardımcı Python betiği
-ve bu yönerge eklenir: toplam dokuz dosya. Bütün hedefler yazmadan önce denetlenir.
-Beklenmeyen içerik üzerine yazılmaz. Aynı paket tekrar çalışırsa yazmadan biter.
 
 ## 2. Kaynak kopyasının kontrolü ve oluşturulması
 
@@ -117,8 +183,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Yerel MMSA kurulumu basarisiz.' }
 if ($LASTEXITCODE -ne 0) { throw 'Paket bagimliliklari uyumsuz.' }
 ```
 
-Paket listesi çalışan ortamın gözlenen sürümleridir; bu aşamada internetten
-kurulabilirliği henüz sınanmamıştır. Hash kilitli bağımlılık lockfile'ı değildir.
+Bu paket sürümleriyle yeni venv kurulumu bu bilgisayarda doğrulandı. Liste
+hash kilitli bir bağımlılık lockfile'ı değildir; gelecekteki indirme erişimi veya
+başka bilgisayarda kurulum bu kayıtla garanti edilmez.
 Pip indirme önbelleğini kullanabilir; bu, eski kurulu paketlerin kopyalanması
 değildir. Ağ indirmesi ve model tekrarı farklı aşamalardır; çıkarım çevrimdışıdır.
 Kurulum logları yereldir; Git'e topluca eklenmez.
@@ -186,21 +253,26 @@ Sadece pip kurulumu, CUDA görünürlüğü veya --check yeterli değildir. Bu i
 başarı diğer dört seed'in yeni venv'de çalıştığı veya başka bir bilgisayarda
 sonuçların doğrulandığı anlamına gelmez; kapsam raporda açık yazılacaktır.
 
-## Fork kaydı
+## Güncel belge güncellemesinin Fork kaydı
 
-Başlık: `feat: document five-seed replay and prepare clean-environment validation`
+Başlık: `docs: verify seed-1111 GPU replay in a fresh environment`
 
 ```text
-Record verified seed-1115 replay and the completed five-seed portable series:
-640 metric, 80 input and 10 train-statistics checks pass. Recheck 40 output
-hashes and preserve the fixed model, checkpoints and evaluation protocol.
+Record successful seed-1111 K0-K7 A/B/C/D GPU replay in a fresh isolated
+venv and relocated local source copy on the same Windows computer.
 
-Add a guarded source-copy helper and isolated-environment checker.
-Document fresh-venv installation, dependency logs, preflight and a subsequent
-seed-1111 GPU replay. Update portable guides and add verification records.
+Verify 128 metric, 16 corrupted-input and two train-statistics checks.
+Confirm all eight output files, including 10,976 prediction/weight rows,
+are byte-identical to the prior portable seed-1111 run. Independently
+recompute metrics and recheck 125 copied source files plus 106 run inputs.
 
-Fresh dependency installation and clean-environment GPU replay remain pending.
+Link installation and GPU evidence in a small verification record and
+update five guides. State limits: existing assets reused; no retraining,
+public Git checkout, other-machine or other-seed clean-environment replay.
 ```
 
-Yalnız teslimdeki dokuz küçük dosya stage edilir. Yeni temiz kök, venv,
-kurulum logları, veri/checkpoint ve bütün runs klasörü stage edilmez.
+Beş belge: `README.md`, `PORTABLE_MODEL.md`, `PORTABLE_K0_K7.md`,
+`PORTABLE_SEED_TEST.md`, `CLEAN_ENVIRONMENT.md`. Bir yeni kayıt:
+`verification/clean_environment_seed1111_k0_k7_v1.json`. Toplam altı dosya.
+Yeni temiz kök, venv, kurulum logları, veri/checkpoint ve bütün runs klasörü
+stage edilmez. Kişisel veri yolunu içeren orijinal config bu commit'e dahil değildir.
