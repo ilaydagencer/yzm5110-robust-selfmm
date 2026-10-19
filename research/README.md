@@ -326,3 +326,18 @@ veri yolu değişikliği bu commit’e dahil edilmez. Word son aşamada güncell
 experiment chain. Add portable quality/resource summaries and a standard-library
 verifier that recalculates means, sample SDs and paired differences. Record
 provenance and distinguish package checks from full GPU reproduction.
+
+## Açık dosya yollarıyla gerçek model tekrarı: K0
+
+Seed 1111 için temiz K0 A/B/C/D çıkarımına yeni giriş noktası eklendi:
+[`evaluate_selfmm_portable_k0.py`](evaluate_selfmm_portable_k0.py).
+[Adım adım yönerge](PORTABLE_MODEL.md), gerekli config ve bağımlılık manifestini,
+veri/checkpoint/yerel BERT yollarını, çevrimdışı `--check` ve gerçek çalıştırmayı açıklar.
+Bu giriş noktası eski `runs` manifestlerini gerektirmez; public sonuç paketindeki
+16 K0 metriğiyle yeni tahminlerden hesaplanan metrikleri karşılaştırır.
+Eski arşiv betiklerinin yukarıdaki bağımlılıkları değişmemiştir.
+
+Mevcut ortamda ve ayrı bir kaynak kopyasında yazmasız `--check` doğrulandı;
+10 CPU sözleşme testi geçti. Gerçek checkpoint GPU tekrarı kullanıcı tarafından
+çalıştırılacaktır. K1–K7, diğer seed'ler, temiz ML kurulumu ve eğitimden baştan
+tekrar bu giriş noktasının henüz doğrulanmış kapsamında değildir.
