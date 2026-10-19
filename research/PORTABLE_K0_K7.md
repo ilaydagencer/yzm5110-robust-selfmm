@@ -300,9 +300,10 @@ explicit. No training, model changes or new independent results.
 ## Sıradaki adım
 
 Mevcut ortamda taşınabilir K0–K7 GPU tekrarları
-[seed 1112](verification/portable_k0_k7_seed1112_v1.json) ve
-[seed 1113](verification/portable_k0_k7_seed1113_v1.json) için de tamamlandı.
-[Ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) sırada seed 1114 var.
+[seed 1112](verification/portable_k0_k7_seed1112_v1.json),
+[seed 1113](verification/portable_k0_k7_seed1113_v1.json) ve
+[seed 1114](verification/portable_k0_k7_seed1114_v1.json) için de tamamlandı.
+[Ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) sırada seed 1115 var.
 Bozulma seed'i 1111 ve protokol sabit kalır; yeniden eğitim veya testten ayar
-seçimi yapılmaz. Ardından seed 1115, temiz ortam/taşınmış kaynak GPU kontrolü
-ve raporun son içerik, sayfa, kaynakça ve PDF teslim denetimi ele alınacaktır.
+seçimi yapılmaz. Ardından temiz ortam/taşınmış kaynak GPU kontrolü ve raporun
+son içerik, sayfa, kaynakça ve PDF teslim denetimi ele alınacaktır.

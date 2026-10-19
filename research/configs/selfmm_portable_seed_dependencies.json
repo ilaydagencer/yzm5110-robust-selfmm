@@ -162,6 +162,25 @@
         }
       },
       "original_test_manifest_sha256": "942abe56aa1ede7eaa9ae0ce1ad1e5a8f1e96aecfbb9f4f8779c9507f1cac59c"
+    },
+    "1115": {
+      "checkpoint_sha256": {
+        "baseline": "38fcbf5f12147383e4bcc7dd1435a85b245ac576fd315f7c4d1e4c614df3c3d0",
+        "dropout": "c1b8769d0b1d0a2ef5fa3578ded0e40c584bd62ee1668e0f2329b601dd24cb9f"
+      },
+      "training_provenance": {
+        "baseline": {
+          "training_manifest_sha256": "8679c980771d29782d8441b233170147bd8f4afb76adb0372151ee6a17acd43f",
+          "checkpoint_sha256": "38fcbf5f12147383e4bcc7dd1435a85b245ac576fd315f7c4d1e4c614df3c3d0",
+          "git_head": "53a366864719986d95865738e16309e08fde9c86"
+        },
+        "dropout": {
+          "training_manifest_sha256": "c19d03d866d74110cf3db7d53798d83d2301c1a58c67c2886fe41fda86c741ef",
+          "checkpoint_sha256": "c1b8769d0b1d0a2ef5fa3578ded0e40c584bd62ee1668e0f2329b601dd24cb9f",
+          "git_head": "53a366864719986d95865738e16309e08fde9c86"
+        }
+      },
+      "original_test_manifest_sha256": "5662a572381a78c91c1ac921a96b2d4a434da6cbfafab02b721f1d1c22f1a72c"
     }
   },
   "protocol_sha256_lf": "5b628c189c927e3dcc9568789e04bef4f35a5cc9d350253a483e246d5e2a24d7",

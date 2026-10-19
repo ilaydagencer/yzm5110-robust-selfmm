@@ -345,7 +345,7 @@ Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
 [Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
 Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
-giriş noktasında doğrulandı. Seed 1112 ve 1113'ün taşınabilir tekrarları da aşağıdaki ortak girişte tamamlandı. Temiz ML
+giriş noktasında doğrulandı. Seed 1112–1114'ün taşınabilir tekrarları da aşağıdaki ortak girişte tamamlandı. Temiz ML
 kurulumu ve eğitimden baştan tekrar henüz doğrulanmadı. Taşınmış kaynak
 kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
 
@@ -372,16 +372,16 @@ En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı
 Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
 bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
 Temiz ML kurulumu ve taşınmış kaynak kopyasında gerçek GPU tekrarı henüz
-doğrulanmış değildir. Seed 1112 ve 1113'ün mevcut ortamda K0–K7 tekrarları aşağıdaki
-giriş noktasında tamamlandı; sıradaki taşınabilir GPU tekrarı seed 1114'tür.
+doğrulanmış değildir. Seed 1112–1114'ün mevcut ortamda K0–K7 tekrarları aşağıdaki
+giriş noktasında tamamlandı; sıradaki taşınabilir GPU tekrarı seed 1115'tir.
 
 
-## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1114
+## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1115
 
 [`evaluate_selfmm_portable_seed_test.py`](evaluate_selfmm_portable_seed_test.py),
-`--seed 1112`, `--seed 1113` veya `--seed 1114` ile kayıtlı baseline/dropout checkpoint'lerini
+`--seed 1112`, `--seed 1113`, `--seed 1114` veya `--seed 1115` ile kayıtlı baseline/dropout checkpoint'lerini
 K0–K7 test koşullarında değerlendirir. [Adım adım yönerge](PORTABLE_SEED_TEST.md).
-1115 desteği henüz eklenmedi. Seed 1111 giriş noktaları korunur.
+Seed 1111 kendi giriş noktalarını kullanır; diğer dört seed bu ortak betiktedir.
 
 `configs/selfmm_portable_seed_dependencies.json`, eğitim/test kayıtlarıyla
 karşılaştırılmış checkpoint kimliklerini ve ortak bağımlılıkları saklar.
@@ -404,10 +404,17 @@ referans metrik farkı 1.23e-15 altında; MAE ve accuracy farkları sıfırdır.
 106 kayıtlı girdinin özeti bu güncelleme öncesi denetimde eşleşti.
 [Seed 1113 doğrulama kaydı](verification/portable_k0_k7_seed1113_v1.json).
 
-Seed 1114 desteği, CLI seçim listesi ve checkpoint kaydının genişletilmesidir;
-model, metrik ve bozulma hesaplama fonksiyonları aynı kalır. Seed 1112 ve 1113
-kayıtları korunur. Hazırlıkta 16 CPU testi ve seed 1114 için yazmasız ön kontrol
+19 Ekim 2026 tarihinde seed 1114 K0–K7 tekrarı da mevcut ortamda tamamlandı.
+128/128 metrik, 16/16 girdi ve 2/2 train istatistiği kontrolü geçti. En büyük
+referans metrik farkı 1e-15 altında; MAE ve accuracy farkları sıfırdır.
+10976 tahmin satırından metrikler ayrıca yeniden hesaplandı. 8 çıktı ve
+106 kayıtlı girdinin özeti bu güncelleme öncesi denetimde eşleşti.
+[Seed 1114 doğrulama kaydı](verification/portable_k0_k7_seed1114_v1.json).
+
+Seed 1115 desteği, CLI seçim listesi ve checkpoint kaydının genişletilmesidir;
+model, metrik ve bozulma hesaplama fonksiyonları aynı kalır. Seed 1112–1114
+kayıtları korunur. Hazırlıkta 17 CPU testi ve seed 1115 için yazmasız ön kontrol
 geçti; eski manifestler olmayan ayrı kaynak kopyasında da --check doğrulandı.
-Seed 1114'ün bu giriş noktasındaki gerçek GPU tekrarı henüz beklenmektedir.
+Seed 1115'in bu giriş noktasındaki gerçek GPU tekrarı henüz beklenmektedir.
 Temiz ML kurulumu ve taşınmış kaynakla gerçek GPU doğrulaması ayrıca
 tamamlanacaktır. Bu tekrarlar yeni bağımsız deney değildir.

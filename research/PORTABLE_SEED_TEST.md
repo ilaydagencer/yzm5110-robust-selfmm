@@ -1,18 +1,18 @@
-# Seed 1114: taşınabilir K0–K7 A/B/C/D test tekrarı
+# Seed 1115: taşınabilir K0–K7 A/B/C/D test tekrarı
 
-Bu adım, daha önce eğitilmiş seed 1114 baseline ve dropout checkpoint'lerinin
+Bu adım, daha önce eğitilmiş seed 1115 baseline ve dropout checkpoint'lerinin
 sonuçlarını eski çalışma manifestlerine bağlanmadan yeniden üretir. Eğitim
 yapılmaz. Kullanıcı gerçek GPU komutunu çalıştırır; Git işlemlerini Fork'tan yapar.
 
 ## Ne değişiyor?
 
-Mevcut giriş noktası `evaluate_selfmm_portable_seed_test.py`, artık `--seed 1114` de alır.
-Bu teslimde 1112, 1113 ve 1114 desteklenir; 1115 daha sonra aynı akışa eklenecektir.
+Mevcut giriş noktası `evaluate_selfmm_portable_seed_test.py`, artık `--seed 1115` de alır.
+Bu teslimde 1112, 1113, 1114 ve 1115 desteklenir. Seed 1111 ayrı giriş noktasıyla çalışır.
 Seed 1111'in mevcut betikleri ve bağımlılık kayıtları korunur.
 
 | Ayar | Bu çalışmadaki değer ve anlamı |
 |---|---|
-| Eğitim seed'i | **1114**; kullanılacak iki eğitim checkpoint'ini ve referans metrik satırlarını seçer. |
+| Eğitim seed'i | **1115**; kullanılacak iki eğitim checkpoint'ini ve referans metrik satırlarını seçer. |
 | Bozulma seed'i | **1111**; önceki deneylerdeki maskeler ve gürültü aynen korunur. |
 | Bölüm | Test; 686 örnek. Non0 sınıflandırma metriklerinde 656 örnek. |
 | Batch | 4; son batch 2 örnektir. |
@@ -35,17 +35,17 @@ protokolle aynıdır. Tam eksiklikte de padding korunur; gerçek uzunluklar değ
 
 - `evaluate_selfmm_portable_seed_test.py`: eğitim seed'ini seçer, varlık kimliklerini
   denetler, train istatistiğini hesaplar ve K0–K7 çıkarımını yapar.
-- `configs/selfmm_portable_seed_dependencies.json`: seed 1112, 1113 ve 1114'ün checkpoint
+- `configs/selfmm_portable_seed_dependencies.json`: seed 1112–1115'in checkpoint
   SHA256 özeti, kaynak sürümleri, ortak config/protokol ve sonuç paketi kimlikleri.
   SHA256, dosyanın baytlarından hesaplanan kimliktir; yanlış checkpoint seçimini yakalar.
 - `PORTABLE_SEED_TEST.md`: bu yönerge.
-- `README.md`: desteklenen seed'ler, tamamlanan seed 1111–1113 ve bekleyen seed 1114 durumu.
-- `verification/portable_k0_k7_seed1113_v1.json`: tamamlanan çalışmanın yeni doğrulama kaydı; önceki kayıtlar korunur.
+- `README.md`: desteklenen seed'ler, tamamlanan seed 1111–1114 ve bekleyen seed 1115 durumu.
+- `verification/portable_k0_k7_seed1114_v1.json`: tamamlanan çalışmanın yeni doğrulama kaydı; önceki kayıtlar korunur.
 - `PORTABLE_MODEL.md` ve `PORTABLE_K0_K7.md`: sonraki adım bağlantıları güncellendi.
 
 Kodda yalnız kabul edilen seed listesi genişler; model çalıştırma, metrik,
 ağırlıklandırma ve bozulma fonksiyonları önceki sürümle aynıdır. Yeni bağımlılık
-kaydına 1114 eklenir; 1112 ve 1113 kayıtları değişmez.
+kaydına 1115 eklenir; 1112–1114 kayıtları değişmez.
 
 Yeni kayıt hazırlanırken checkpoint'ler, eğitim config'leri ve önceki test
 kayıtları karşılaştırılmıştır. Bu hazırlık işlemi eski kayıtları okudu;
@@ -56,10 +56,10 @@ Gerekli mevcut dosyalar: portable K0 yardımcısı, `evaluate_selfmm_abcd_valid.
 `selfmm_corruptions.py`, `verify_results_package.py`, `results_package_v1`,
 `configs/selfmm_mosi_portable_k0.json` ve `configs/selfmm_portable_k0_k7_dependencies.json`.
 Ortak protokoldeki `training_seed: 1111`, **girdi referansının** kökenidir;
-seed 1114 checkpoint seçimi yeni bağımlılık kaydından yapılır. Public paketteki
-eski provenance checkpoint çifti de seed 1111'e aittir; seed 1114 diye kullanılmaz.
+seed 1115 checkpoint seçimi yeni bağımlılık kaydından yapılır. Public paketteki
+eski provenance checkpoint çifti de seed 1111'e aittir; seed 1115 diye kullanılmaz.
 
-Model ayarları iki seed 1114 eğitim kaydıyla eşleşir. Veri, checkpoint ve yerel
+Model ayarları iki seed 1115 eğitim kaydıyla eşleşir. Veri, checkpoint ve yerel
 BERT yolları açık komut parametreleridir. `sentencepiece`, torch/MMSA'dan önce
 içe aktarılır. Betik çevrimdışıdır, BERT indirmez. Mevcut çalışan venv'i kullanın.
 Farklı bir repo kopyasında çalıştırırken MMSA kurulumu da o kopyanın `src` yolunu
@@ -69,14 +69,14 @@ kullanmalıdır; yanlış yerel kurulum kontrol sırasında reddedilir.
 
 ```powershell
 Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
-$deliveryDir = 'C:\Users\ilayda\Documents\Codex\2026-10-17\referenced-chatgpt-conversation-this-is-an\outputs\research_portable_seed1114_v1'
-& "$deliveryDir\Install-PortableSeed1114.ps1" -CheckOnly
+$deliveryDir = 'C:\Users\ilayda\Documents\Codex\2026-10-17\referenced-chatgpt-conversation-this-is-an\outputs\research_portable_seed1115_v1'
+& "$deliveryDir\Install-PortableSeed1115.ps1" -CheckOnly
 ```
 
 `YERLESTIRME_KONTROLU_BASARILI` gelirse:
 
 ```powershell
-& "$deliveryDir\Install-PortableSeed1114.ps1"
+& "$deliveryDir\Install-PortableSeed1115.ps1"
 ```
 
 Altı mevcut dosya güncellenir, bir doğrulama kaydı eklenir. Tüm hedefler yazmadan önce kontrol
@@ -90,21 +90,21 @@ Aşağıdaki blok yeni PowerShell oturumunda da kullanılabilir:
 ```powershell
 Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
 $bertDir = Join-Path $env:USERPROFILE '.cache\huggingface\hub\models--bert-base-uncased\snapshots\86b5e0934494bd15c9632b12f734a8a67f723594'
-$portable1114Args = @(
-    '--seed', '1114',
+$portable1115Args = @(
+    '--seed', '1115',
     '--data-file', '..\data\MOSI\Processed\unaligned_50.pkl',
-    '--baseline-checkpoint', '..\runs\selfmm_baseline_seed1114\saved_models\self_mm-mosi.pth',
-    '--dropout-checkpoint', '..\runs\selfmm_dropout_a20_v20_seed1114\saved_models\self_mm-mosi.pth',
+    '--baseline-checkpoint', '..\runs\selfmm_baseline_seed1115\saved_models\self_mm-mosi.pth',
+    '--dropout-checkpoint', '..\runs\selfmm_dropout_a20_v20_seed1115\saved_models\self_mm-mosi.pth',
     '--bert-dir', $bertDir,
-    '--output-dir', '..\runs\selfmm_portable_k0_k7_test_seed1114_v1'
+    '--output-dir', '..\runs\selfmm_portable_k0_k7_test_seed1115_v1'
 )
 & '..\.venv\Scripts\python.exe' -B `
     '.\research\evaluate_selfmm_portable_seed_test.py' `
-    @portable1114Args --check
+    @portable1115Args --check
 ```
 
-`SEED_SECILDI: egitim=1114; bozulma=1111; referans metrik seed=1114`,
-`CUDA: True` ve sonunda `KONTROL_BASARILI: seed1114/K0-K7` beklenir.
+`SEED_SECILDI: egitim=1115; bozulma=1111; referans metrik seed=1115`,
+`CUDA: True` ve sonunda `KONTROL_BASARILI: seed1115/K0-K7` beklenir.
 
 Bu kontrol kaynak/varlık özetlerini ve sürümleri doğrular, yapay CPU verileriyle
 maskeleri, seed tekrarlanabilirliğini, ağırlıklandırmayı, padding'i ve hook
@@ -120,7 +120,7 @@ Kontrol başarılıysa aynı PowerShell oturumunda:
 ```powershell
 & '..\.venv\Scripts\python.exe' -B `
     '.\research\evaluate_selfmm_portable_seed_test.py' `
-    @portable1114Args
+    @portable1115Args
 ```
 
 Önce train bölümünün geçerli ses/görüntü zaman adımlarından özellik ortalaması
@@ -144,8 +144,8 @@ aranır; göreli CLI yolları PowerShell'in bulunduğu klasöre göredir.
 ## 4. Sonuçları paylaş
 
 ```powershell
-$portable1114Dir = '..\runs\selfmm_portable_k0_k7_test_seed1114_v1'
-Get-Content "$portable1114Dir\manifest.json" -Raw |
+$portable1115Dir = '..\runs\selfmm_portable_k0_k7_test_seed1115_v1'
+Get-Content "$portable1115Dir\manifest.json" -Raw |
     ConvertFrom-Json |
     Select-Object status, training_seed, corruption_seed, reference_training_seed,
         input_reference_training_seed, split, conditions,
@@ -158,15 +158,15 @@ Get-Content "$portable1114Dir\manifest.json" -Raw |
         reference_check_rows, reference_input_check_rows, train_stats_check_rows |
     Format-List
 
-Import-Csv "$portable1114Dir\reference_checks.csv" |
+Import-Csv "$portable1115Dir\reference_checks.csv" |
     Group-Object passed | Select-Object Name, Count
 
-Import-Csv "$portable1114Dir\train_stats_checks.csv" | Format-List
+Import-Csv "$portable1115Dir\train_stats_checks.csv" | Format-List
 
-Import-Csv "$portable1114Dir\reference_input_checks.csv" |
+Import-Csv "$portable1115Dir\reference_input_checks.csv" |
     Format-Table checkpoint, condition, shared_inputs, passed -AutoSize
 
-Import-Csv "$portable1114Dir\metrics.csv" |
+Import-Csv "$portable1115Dir\metrics.csv" |
     Sort-Object condition, method |
     Format-Table method, condition, n,
         @{Name='Non0_acc_2';Expression={[math]::Round([double]$_.Non0_acc_2,4)}},
@@ -190,7 +190,7 @@ Import-Csv "$portable1114Dir\metrics.csv" |
 Başarı ölçütü: `status=completed`; metrik 128/128, girdi 16/16 ve train
 istatistiği 2/2 başarılı. Metrik toleransı `1e-5`, train istatistiği toleransı
 `1e-12`; girdi/etiket SHA256 eşleşmesi tamdır. `historical_run_manifests_required`
-False, koruma bayrakları True olmalıdır. Referans metrikler **seed 1114**'e,
+False, koruma bayrakları True olmalıdır. Referans metrikler **seed 1115**'e,
 girdi referansı **seed 1111**'e aittir.
 
 ## Tamamlanan seed 1112 tekrarı — 19 Ekim 2026
@@ -271,40 +271,85 @@ denetlenen betik ve bağımlılık kaydının eski özetlerini saklar. Bu günce
 sonrasında bu iki kaynak dosyanın özeti doğal olarak değişir; tarihsel manifest
 önceki sürümün kaydıdır. Veri ve checkpoint dosyaları korunur.
 
+## Tamamlanan seed 1114 tekrarı — 19 Ekim 2026
+
+Mevcut RTX 3050 Ti Laptop GPU ortamında 128/128 metrik, 16/16 bozulmuş
+girdi ve 2/2 train istatistiği kontrolü geçti. En büyük referans metrik farkı
+9.99201e-16 (Corr), MAE ve accuracy farkları sıfırdır. Train ortalama/std
+farkları ve uniform ağırlık identity hatası sıfırdır. Ses için 49878, görüntü
+için 54741 geçerli train zaman adımı önceki istatistiklerle eşleşti.
+
+10976 tahmin satırından metrikler bağımsız olarak yeniden hesaplandı. Float32
+MAE hesabıyla en büyük fark 1.16e-7 altında (tolerans 1e-6), diğer metriklerde
+1e-15 altındadır. Etiketler, indeksler, sonlu değerler ve ağırlık toplamları
+doğrulandı. 8 çıktı ve 106 kayıtlı girdinin SHA256 özeti eşleşti. Seed 1111 ile
+beş protokol/kontrol dosyası bayt düzeyinde de aynıdır.
+[Doğrulama kaydı](verification/portable_k0_k7_seed1114_v1.json).
+
+| Seed 1114, K0 | Non0 accuracy (%) | MAE | Corr |
+|---|---:|---:|---:|
+| A | 83.38 | 0.7251 | 0.7858 |
+| B | 82.32 | 0.7485 | 0.7726 |
+| C | 83.38 | 0.8348 | 0.7774 |
+| D | 82.32 | 0.8961 | 0.7514 |
+
+K0'da B−A MAE farkı yaklaşık +0.0234, C−A +0.1097,
+D−B +0.1476'dır. K0'da C/A ve D/B accuracy değerleri aynı olmasına
+rağmen ağırlıklandırma MAE'yi artırır. Doğru sınıf oranının korunması, duygu
+şiddetinin de aynı doğrulukla tahmin edildiğini göstermez. K0–K7'nin tamamında
+B'nin MAE'si A'dan, C'nin A'dan ve D'nin B'den yüksektir. Bu seed'deki örüntü,
+önceki test bulgularının tekrar üretimidir; beş-seed analizine yeni bağımsız
+gözlem eklenmez. Test sonuçlarından yeni yöntem veya ayar seçilmez.
+
+199.68 saniye yükleme, train istatistiği, çıkarım ve kontroller dahil toplam
+tekrar süresidir; çıkarım benchmark'ı olarak kullanılmaz. Mevcut ortamda
+doğrulama yapılmıştır; temiz kurulum, taşınmış kaynakla gerçek GPU çalışması
+ve eski tekil tahminlerle birebir karşılaştırma bu kaydın kapsamında değildir.
+
+Dosya özetleri seed 1115 desteği eklenmeden önce denetlendi. Doğrulama kaydı,
+denetlenen betik ve bağımlılık JSON'unun eski özetlerini saklar. Bu güncelleme
+sonrasında bu iki kaynak dosyanın özeti değişir; tarihsel manifest önceki
+sürümün kaydıdır. Veri ve checkpoint dosyaları korunur.
+
 ## Hazırlık doğrulaması ve sınırlar
 
-Seed 1114 hazırlığında 16 CPU testi geçti: seed seçimi, yanlış/karışmış checkpoint
+Seed 1115 hazırlığında 17 CPU testi geçti: seed seçimi, yanlış/karışmış checkpoint
 reddi, seed'e göre referans metrik seçimi, train-only istatistikler, bozulma/girdi
-sırası uyumu, yapay uçtan uca çıktı, hata tanı kayıtları ve seed 1112/1113
+sırası uyumu, yapay uçtan uca çıktı, hata tanı kayıtları ve seed 1112/1113/1114
 akışlarının korunması dahil. Gerçek dosyalarla yazmasız `--check` başarılıdır.
 Eski run manifestleri bulunmayan ayrı kaynak kopyasında model/dataset yükleyicileri
 engellenerek de `--check` geçti; kopya dosyalar değişmedi, çıktı klasörü oluşmadı.
 
-Seed 1114'ün gerçek GPU tekrarı bu giriş noktasında henüz çalıştırılmadı;
+Seed 1115'in gerçek GPU tekrarı bu giriş noktasında henüz çalıştırılmadı;
 kullanıcı sonraki adımda çalıştıracak. CPU yapay testleri gerçek model
 doğrulamasının yerine geçmez. Temiz ML kurulumu ve başka bilgisayarda gerçek
 GPU çalışması doğrulanmadı. Eski tekil tahminler public pakette yoktur; kontrol
 toplu metrikleri ve girdi özetlerini karşılaştırır. 128 kontrol, 128 bağımsız
 deney değildir. Test daha önce görülmüştür; yeni τ, dropout veya seed seçilmez.
 
+Seed 1115 tamamlandığında beş eğitim seed'inin mevcut ortamda taşınabilir
+test tekrarları tamamlanmış olacak. Sonra temiz ortam/taşınmış kaynakla gerçek
+GPU doğrulaması ve raporun içerik, kaynakça, sayfa ve PDF teslim kontrolleri
+ele alınacaktır. Bu aşamalar şimdiden tamamlanmış kabul edilmez.
+
 ## Fork commit'i
 
 Bu güncellemede yedi dosya stage edilir: ortak seed betiği, seed bağımlılık
 JSON'u, README, PORTABLE_SEED_TEST, PORTABLE_MODEL, PORTABLE_K0_K7 ve yeni
-seed 1113 doğrulama JSON'u. Veri, checkpoint, BERT, venv, runs ve kişisel
+seed 1114 doğrulama JSON'u. Veri, checkpoint, BERT, venv, runs ve kişisel
 orijinal config değişikliği eklenmez.
 
-Başlık: `feat: verify seed-1113 replay and enable portable seed 1114`
+Başlık: `feat: verify seed-1114 replay and enable portable seed 1115`
 
 ```text
-Record completed seed-1113 K0-K7 GPU replay: all 128 metric comparisons,
+Record completed seed-1114 K0-K7 GPU replay: all 128 metric comparisons,
 16 input fingerprints and two train-statistics checks pass. Recompute
 metrics from 10,976 prediction rows and verify eight output and 106 input hashes.
 
-Register audited seed-1114 checkpoints and extend CLI seed selection.
-Preserve seed-1112/1113 registry data and model, metric and corruption
-functions. Update guides and add the seed-1113 verification record.
+Register audited seed-1115 checkpoints and extend CLI seed selection.
+Preserve seed-1112/1113/1114 registry data and model, metric and corruption
+functions. Update guides and add the seed-1114 verification record.
 
-Pass 16 CPU tests and read-only preflight, including a relocated source
-copy without historical run manifests. Seed-1114 GPU replay remains pending.
+Pass 17 CPU tests and read-only preflight, including a relocated source
+copy without historical run manifests. Seed-1115 GPU replay remains pending.
 ```
