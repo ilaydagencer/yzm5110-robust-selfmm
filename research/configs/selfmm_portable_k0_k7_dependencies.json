@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "scope": "seed1111_K0_K7_test_existing_checkpoints",
+  "training_seed": 1111,
+  "corruption_seed": 1111,
+  "split": "test",
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7"
+  ],
+  "n": 686,
+  "non0_n": 656,
+  "batch_size": 4,
+  "tau": 1.0,
+  "partial_rates": {
+    "K4": 0.3,
+    "K5": 0.5,
+    "K6": 0.7
+  },
+  "noise_factor": 0.5,
+  "statistics_source": "train_only_valid_frames",
+  "train_n": 1284,
+  "statistics_ddof": 0,
+  "statistics_absolute_tolerance": 1e-12,
+  "metric_absolute_tolerance": 1e-05,
+  "historical_run_manifests_required": false,
+  "reference_scope": "aggregate metrics and exact corrupted-input fingerprints, not historical per-sample predictions",
+  "source_hash_rule": "SHA256 of bytes after CRLF -> LF",
+  "source_sha256_lf": {
+    "research/evaluate_selfmm_portable_k0.py": "2b78e59d6d86dd1f00d1089d16a6d8bba4ec21e946782ab3d75fdad207c59b03",
+    "research/selfmm_corruptions.py": "7328db0b3faf2566057210ba4de913a7c7d5a0d7c93cde35ec50bb10649e0953"
+  },
+  "expected_train_statistics": {
+    "audio": {
+      "valid_frames": 49878,
+      "mean": [
+        0.6572236256465781,
+        0.2551344379529886,
+        0.12075093804863937,
+        -0.028945376293710367,
+        0.3286199813268717
+      ],
+      "std": [
+        0.47463747380347493,
+        0.19609142898786783,
+        0.030728565013212042,
+        0.19621455863603054,
+        1.848785731233925
+      ]
+    },
+    "vision": {
+      "valid_frames": 54741,
+      "mean": [
+        -0.1927072568629335,
+        -0.30160419619189976,
+        -0.028289185580812445,
+        -0.10945677575805786,
+        -0.1254719350073018,
+        0.05254902992352274,
+        0.08850041849224402,
+        0.24547302603685026,
+        0.06790370171438366,
+        0.09502302934542013,
+        0.129867775570823,
+        0.004669718079055306,
+        -0.0013771284268663264,
+        -0.02417242074463713,
+        -0.19282111140444702,
+        -0.10370242963759764,
+        -0.2789126825197077,
+        -0.1286130493779183,
+        0.0030073786393092442,
+        -0.14556421762330027
+      ],
+      "std": [
+        0.12729152074711197,
+        0.2155310931930675,
+        0.15831516314414595,
+        0.1347554587556903,
+        0.124366885399269,
+        0.12408795468149326,
+        0.14793228845208456,
+        0.2886838077212529,
+        0.15268878375930098,
+        0.17867629174757965,
+        0.27312524618891826,
+        0.1275822635557893,
+        0.10436357565059295,
+        0.20237279233484723,
+        0.1670601246504024,
+        0.22419396648219353,
+        0.1987750698327397,
+        0.17192716628288465,
+        0.1628334796171804,
+        0.19982867958916367
+      ]
+    }
+  },
+  "expected_test_input_sha256": {
+    "K0": "908369d4ca1848f6ba2d664b034e1a902eba7f6645fae022924a65d5e1336a4d",
+    "K1": "cd3c031becbacb0243b9aa7e5ecfcb6b732c2f4549ab7d3cd932cb040fee5803",
+    "K2": "1cade530d412b0e8c823022a933255b03cc8cc28dacd10dc183066e6043a65ea",
+    "K3": "864af27b2896b878a6f346fa5261c158c3b3ee73c47b53163e9ab359a78c3a78",
+    "K4": "d5a7cfb6edc449f0378468701775ebdcdad3f22b7a68344a2628bebad70f6346",
+    "K5": "188dc7e9ddbfa8d84c8f1fe3cb17d9f297bacc117bc4bd175fa23e483f16c508",
+    "K6": "43b54857040914b0895dafa7c00a9b908e65fb13e9dfd2a4ac6ae5d6c9815048",
+    "K7": "68f01959dc5966cf808e8ff23d056d7b5235bfd2f356768047c576fbfb170a38"
+  },
+  "expected_test_labels_float32_sha256": "0e0b29aa814159002e5d401d64ab437bd4067a9b9b7a6f601fdc2b42ddc22729",
+  "archived_reference_source_sha256": {
+    "seed1111_test_manifest": "6cd30cb27e1915a718bac24c653b54086cfd88aa58727d8273835e53c27f0906",
+    "seed1111_test_controls": "1c2c163365242d7eef83878e0b7686cfd7834f350fa18021b8c8b2ceca2fc6f2",
+    "train_statistics": "d7ea6401bfeaa93126af5ad2b6dd80efeaa096676953764d83b479a30995cbe2"
+  },
+  "reference_note": "These compact reference values were exported during preparation. Runtime recomputes train statistics and never opens the archived source files."
+}

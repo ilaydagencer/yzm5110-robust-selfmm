@@ -347,3 +347,17 @@ Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 K1–K7, diğer seed'ler, temiz ML kurulumu ve eğitimden baştan tekrar bu
 giriş noktasının henüz doğrulanmış kapsamında değildir. Taşınmış kaynak
 kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
+
+## Açık dosya yollarıyla K0–K7 tekrarı
+
+[`evaluate_selfmm_portable_k0_k7.py`](evaluate_selfmm_portable_k0_k7.py), seed 1111
+checkpoint'lerini bütün K0–K7 test koşullarında çalıştırmak için hazırlandı.
+[Adım adım yönerge](PORTABLE_K0_K7.md), train-only gürültü istatistiklerinin
+yeniden hesabını, 128 metrik ve 16 girdi özeti kontrolünü açıklar.
+K0 yardımcısı ve eski deneyler değiştirilmez; eski çalışma manifestleri okunmaz.
+
+Hazırlıkta 10 CPU kontrol testi geçti. Ayrı gerçek-veri CPU denetiminde iki train
+istatistiği ve sekiz koşulun girdi özetleri referansla eşleşti. Model/veri yüklemesi
+engellenmiş ayrı kaynak kopyasında yazmasız --check doğrulandı. Yeni giriş
+noktasının GPU tahminleri kullanıcı tarafından henüz çalıştırılacaktır; temiz
+ML kurulumu ve diğer seed'ler bu adımın doğrulanmış kapsamında değildir.
