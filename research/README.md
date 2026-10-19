@@ -19,7 +19,7 @@ allocated bellek artışı 6,5 KiB oldu. Bu sonuç belirli kural ve protokole ai
 | Özet CSV’leri yeniden hesaplamak | Aynı dosyalar; boş bir çıktı yolu | Özetleri yeniden üretme |
 | Gerçek modelle değerlendirme veya eğitim | CUDA ortamı, MOSI özellikleri, checkpoint/config ve referans kayıtları | GPU ortamı ve deney zinciri |
 
-**Şu anda bağımsız çalıştırılması doğrulanan yol küçük paketin kontrolüdür.**
+**Küçük paket kontrolü bağımsız doğrulandı; beş seed'in gerçek model tekrarı da mevcut ortamda tamamlandı.**
 Bu yol GPU, PyTorch, internet, veri kümesi veya checkpoint istemez.
 Kaydedilmiş seed metriklerinden ortalama/SS/farkları, kaydedilmiş batch
 sürelerinden kaynak özetlerini yeniden hesaplar. Tahminleri yeniden üretmez.
@@ -345,7 +345,7 @@ Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
 4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
 [Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
 Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
-giriş noktasında doğrulandı. Seed 1112–1114'ün taşınabilir tekrarları da aşağıdaki ortak girişte tamamlandı. Temiz ML
+giriş noktasında doğrulandı. Seed 1112–1115'in taşınabilir tekrarları da aşağıdaki ortak girişte tamamlandı. Temiz ML
 kurulumu ve eğitimden baştan tekrar henüz doğrulanmadı. Taşınmış kaynak
 kopyasında gerçek GPU çalışması ayrıca yapılmadı; o kopyada yalnız --check doğrulandı.
 
@@ -372,8 +372,8 @@ En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı
 Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
 bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
 Temiz ML kurulumu ve taşınmış kaynak kopyasında gerçek GPU tekrarı henüz
-doğrulanmış değildir. Seed 1112–1114'ün mevcut ortamda K0–K7 tekrarları aşağıdaki
-giriş noktasında tamamlandı; sıradaki taşınabilir GPU tekrarı seed 1115'tir.
+doğrulanmış değildir. Seed 1112–1115'in mevcut ortamda K0–K7 tekrarları aşağıdaki
+giriş noktasında tamamlandı; sırada ayrı kaynak kopyası ve yeni venv doğrulaması var.
 
 
 ## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1115
@@ -411,10 +411,43 @@ referans metrik farkı 1e-15 altında; MAE ve accuracy farkları sıfırdır.
 106 kayıtlı girdinin özeti bu güncelleme öncesi denetimde eşleşti.
 [Seed 1114 doğrulama kaydı](verification/portable_k0_k7_seed1114_v1.json).
 
-Seed 1115 desteği, CLI seçim listesi ve checkpoint kaydının genişletilmesidir;
-model, metrik ve bozulma hesaplama fonksiyonları aynı kalır. Seed 1112–1114
-kayıtları korunur. Hazırlıkta 17 CPU testi ve seed 1115 için yazmasız ön kontrol
-geçti; eski manifestler olmayan ayrı kaynak kopyasında da --check doğrulandı.
-Seed 1115'in bu giriş noktasındaki gerçek GPU tekrarı henüz beklenmektedir.
-Temiz ML kurulumu ve taşınmış kaynakla gerçek GPU doğrulaması ayrıca
-tamamlanacaktır. Bu tekrarlar yeni bağımsız deney değildir.
+## Tamamlanan seed 1115 ve beş-seed taşınabilir tekrarları — 19 Ekim 2026
+
+Seed 1115'te 128/128 metrik, 16/16 bozulmuş girdi ve 2/2 train istatistiği
+kontrolü geçti. En büyük referans farkı 1.11023e-15 (Corr), MAE ve accuracy
+farkları sıfırdır. Train istatistiklerinde ve uniform ağırlık identity
+kontrolünde fark sıfırdır. 10976 tahmin satırından bağımsız metrik hesabı
+doğrulandı; float32 MAE ile en büyük fark 1.05e-7 altında (tolerans 1e-6).
+8 çıktı ve 106 girdinin dosya özeti denetim anında eşleşti.
+[Seed 1115 kaydı](verification/portable_k0_k7_seed1115_v1.json).
+
+| Seed 1115, K0 | Non0 accuracy (%) | MAE | Corr |
+|---|---:|---:|---:|
+| A | 84.45 | 0.7149 | 0.7843 |
+| B | 83.08 | 0.7463 | 0.7692 |
+| C | 84.45 | 0.7965 | 0.7681 |
+| D | 82.93 | 0.8539 | 0.7512 |
+
+K0 MAE farkları yaklaşık B−A +0.0314, C−A +0.0816 ve D−B +0.1076'dır.
+K0–K7'nin tümünde B'nin MAE'si A'dan, C'nin A'dan ve D'nin B'den yüksektir.
+C, K0 accuracy'sini korurken duygu şiddeti hatasını artırır. Bu önceki test
+bulgusunun yeniden üretimidir; beş-seed istatistiğine yeni gözlem eklenmez.
+200.42 saniye toplam tekrar süresidir; çıkarım benchmark'ı değildir.
+
+Seed 1111–1115'in tamamı mevcut ortamda tekrarlandı. Toplam 640 metrik,
+80 girdi ve 10 train istatistiği kontrolü başarılıdır. Beş çalışmanın manifest
+kimlikleri ve toplam 40 çıktı dosyası yeniden denetlendi. En büyük referans
+metrik farkı 1.23e-15 altındadır. Bu toplamlar bağımsız deney sayısı değildir.
+[Beş-seed doğrulama özeti](verification/portable_five_seeds_v1.json).
+
+Bu adım değerlendirme betiklerini, kayıtlı checkpoint kimliklerini veya sabit
+protokolü değiştirmez. Temiz paket kurulumu ve taşınmış kaynakla gerçek GPU
+tekrarı henüz tamamlanmadı. Sıradaki adım [temiz ortam yönergesidir](CLEAN_ENVIRONMENT.md).
+
+
+Temiz ortam hazırlığı için iki stdlib tabanlı araç eklendi:
+`prepare_selfmm_clean_copy.py`, seçili küçük kaynakları ayrı klasöre kopyalar;
+`check_selfmm_clean_environment.py`, yeni venv'in izolasyonunu, sürümlerini,
+paket/kaynak yollarını, `pip check` sonucunu ve CUDA görünürlüğünü denetler.
+İnternetli paket kurulumu kullanıcı tarafından yapılacaktır. Bunların hazırlanmış
+olması temiz ortamın veya gerçek GPU tekrarının başarılı olduğu anlamına gelmez.

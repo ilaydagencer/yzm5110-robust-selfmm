@@ -1,4 +1,8 @@
-# Seed 1115: taşınabilir K0–K7 A/B/C/D test tekrarı
+# Seed 1112–1115: tamamlanan taşınabilir K0–K7 test tekrarları
+
+**Durum:** Beş seed mevcut ortamda tamamlandı. Aşağıdaki seed 1115 komutları
+çalışmanın kaydıdır; mevcut çıktı klasöründe tekrar çalıştırılmaz. Yeni adım
+[temiz ortam doğrulamasıdır](CLEAN_ENVIRONMENT.md).
 
 Bu adım, daha önce eğitilmiş seed 1115 baseline ve dropout checkpoint'lerinin
 sonuçlarını eski çalışma manifestlerine bağlanmadan yeniden üretir. Eğitim
@@ -311,45 +315,44 @@ denetlenen betik ve bağımlılık JSON'unun eski özetlerini saklar. Bu güncel
 sonrasında bu iki kaynak dosyanın özeti değişir; tarihsel manifest önceki
 sürümün kaydıdır. Veri ve checkpoint dosyaları korunur.
 
-## Hazırlık doğrulaması ve sınırlar
+## Tamamlanan seed 1115 ve beş-seed taşınabilir tekrarları — 19 Ekim 2026
 
-Seed 1115 hazırlığında 17 CPU testi geçti: seed seçimi, yanlış/karışmış checkpoint
-reddi, seed'e göre referans metrik seçimi, train-only istatistikler, bozulma/girdi
-sırası uyumu, yapay uçtan uca çıktı, hata tanı kayıtları ve seed 1112/1113/1114
-akışlarının korunması dahil. Gerçek dosyalarla yazmasız `--check` başarılıdır.
-Eski run manifestleri bulunmayan ayrı kaynak kopyasında model/dataset yükleyicileri
-engellenerek de `--check` geçti; kopya dosyalar değişmedi, çıktı klasörü oluşmadı.
+Seed 1115'te 128/128 metrik, 16/16 bozulmuş girdi ve 2/2 train istatistiği
+kontrolü geçti. En büyük referans farkı 1.11023e-15 (Corr), MAE ve accuracy
+farkları sıfırdır. Train istatistiklerinde ve uniform ağırlık identity
+kontrolünde fark sıfırdır. 10976 tahmin satırından bağımsız metrik hesabı
+doğrulandı; float32 MAE ile en büyük fark 1.05e-7 altında (tolerans 1e-6).
+8 çıktı ve 106 girdinin dosya özeti denetim anında eşleşti.
+[Seed 1115 kaydı](verification/portable_k0_k7_seed1115_v1.json).
 
-Seed 1115'in gerçek GPU tekrarı bu giriş noktasında henüz çalıştırılmadı;
-kullanıcı sonraki adımda çalıştıracak. CPU yapay testleri gerçek model
-doğrulamasının yerine geçmez. Temiz ML kurulumu ve başka bilgisayarda gerçek
-GPU çalışması doğrulanmadı. Eski tekil tahminler public pakette yoktur; kontrol
-toplu metrikleri ve girdi özetlerini karşılaştırır. 128 kontrol, 128 bağımsız
-deney değildir. Test daha önce görülmüştür; yeni τ, dropout veya seed seçilmez.
+| Seed 1115, K0 | Non0 accuracy (%) | MAE | Corr |
+|---|---:|---:|---:|
+| A | 84.45 | 0.7149 | 0.7843 |
+| B | 83.08 | 0.7463 | 0.7692 |
+| C | 84.45 | 0.7965 | 0.7681 |
+| D | 82.93 | 0.8539 | 0.7512 |
 
-Seed 1115 tamamlandığında beş eğitim seed'inin mevcut ortamda taşınabilir
-test tekrarları tamamlanmış olacak. Sonra temiz ortam/taşınmış kaynakla gerçek
-GPU doğrulaması ve raporun içerik, kaynakça, sayfa ve PDF teslim kontrolleri
-ele alınacaktır. Bu aşamalar şimdiden tamamlanmış kabul edilmez.
+K0 MAE farkları yaklaşık B−A +0.0314, C−A +0.0816 ve D−B +0.1076'dır.
+K0–K7'nin tümünde B'nin MAE'si A'dan, C'nin A'dan ve D'nin B'den yüksektir.
+C, K0 accuracy'sini korurken duygu şiddeti hatasını artırır. Bu önceki test
+bulgusunun yeniden üretimidir; beş-seed istatistiğine yeni gözlem eklenmez.
+200.42 saniye toplam tekrar süresidir; çıkarım benchmark'ı değildir.
 
-## Fork commit'i
+Seed 1111–1115'in tamamı mevcut ortamda tekrarlandı. Toplam 640 metrik,
+80 girdi ve 10 train istatistiği kontrolü başarılıdır. Beş çalışmanın manifest
+kimlikleri ve toplam 40 çıktı dosyası yeniden denetlendi. En büyük referans
+metrik farkı 1.23e-15 altındadır. Bu toplamlar bağımsız deney sayısı değildir.
+[Beş-seed doğrulama özeti](verification/portable_five_seeds_v1.json).
 
-Bu güncellemede yedi dosya stage edilir: ortak seed betiği, seed bağımlılık
-JSON'u, README, PORTABLE_SEED_TEST, PORTABLE_MODEL, PORTABLE_K0_K7 ve yeni
-seed 1114 doğrulama JSON'u. Veri, checkpoint, BERT, venv, runs ve kişisel
-orijinal config değişikliği eklenmez.
+Bu adım değerlendirme betiklerini, kayıtlı checkpoint kimliklerini veya sabit
+protokolü değiştirmez. Temiz paket kurulumu ve taşınmış kaynakla gerçek GPU
+tekrarı henüz tamamlanmadı. Sıradaki adım [temiz ortam yönergesidir](CLEAN_ENVIRONMENT.md).
 
-Başlık: `feat: verify seed-1114 replay and enable portable seed 1115`
 
-```text
-Record completed seed-1114 K0-K7 GPU replay: all 128 metric comparisons,
-16 input fingerprints and two train-statistics checks pass. Recompute
-metrics from 10,976 prediction rows and verify eight output and 106 input hashes.
+## Hazırlık kontrollerinin kapsamı
 
-Register audited seed-1115 checkpoints and extend CLI seed selection.
-Preserve seed-1112/1113/1114 registry data and model, metric and corruption
-functions. Update guides and add the seed-1114 verification record.
-
-Pass 17 CPU tests and read-only preflight, including a relocated source
-copy without historical run manifests. Seed-1115 GPU replay remains pending.
-```
+Seed 1115 desteği hazırlanırken 17 CPU testi, mevcut ortamda yazmasız --check
+ve eski manifestler olmayan ayrı kaynak kopyasında --check geçti. Daha sonra
+kullanıcı yukarıda kaydedilen gerçek GPU tekrarını mevcut ortamda tamamladı.
+Temiz venv'e internetten paket kurulumu ve o yeni ortamda gerçek GPU çıkarımı
+bu kontrollerden farklıdır; yeni adımda ayrıca sınanacaktır.

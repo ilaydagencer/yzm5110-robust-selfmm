@@ -299,11 +299,8 @@ explicit. No training, model changes or new independent results.
 
 ## Sıradaki adım
 
-Mevcut ortamda taşınabilir K0–K7 GPU tekrarları
-[seed 1112](verification/portable_k0_k7_seed1112_v1.json),
-[seed 1113](verification/portable_k0_k7_seed1113_v1.json) ve
-[seed 1114](verification/portable_k0_k7_seed1114_v1.json) için de tamamlandı.
-[Ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) sırada seed 1115 var.
-Bozulma seed'i 1111 ve protokol sabit kalır; yeniden eğitim veya testten ayar
-seçimi yapılmaz. Ardından temiz ortam/taşınmış kaynak GPU kontrolü ve raporun
-son içerik, sayfa, kaynakça ve PDF teslim denetimi ele alınacaktır.
+Seed 1111–1115'in mevcut ortamda taşınabilir GPU tekrarları tamamlandı:
+[beş-seed özeti](verification/portable_five_seeds_v1.json). Sırada ayrı kaynak
+kopyası ve sıfırdan kurulan venv ile [temiz ortam doğrulaması](CLEAN_ENVIRONMENT.md)
+var. Protokol sabit kalır. Sonrasında raporun içerik, kaynakça, sayfa ve PDF
+teslim kontrolleri yapılacaktır.

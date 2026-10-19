@@ -200,8 +200,8 @@ Bu K0 betiğinin kapsamı değişmedi. Mevcut ortamda K0–K7 tekrarları
 [seed 1112](verification/portable_k0_k7_seed1112_v1.json),
 [seed 1113](verification/portable_k0_k7_seed1113_v1.json) ve
 [seed 1114](verification/portable_k0_k7_seed1114_v1.json) için de tamamlandı.
-Sıradaki adım [ortak seed giriş noktasıyla](PORTABLE_SEED_TEST.md) seed 1115
-tekrarıdır. Mevcut deney sonuçları korunur.
+Seed 1115 de tamamlandı; [beş-seed kaydı](verification/portable_five_seeds_v1.json).
+Sıradaki adım [temiz ortam doğrulamasıdır](CLEAN_ENVIRONMENT.md).
 
 Test daha önce eğitim sonlarında ve eski değerlendirmelerde görülmüştür.
 Bu bir dondurulmuş protokol tekrarıdır; yeni test-tabanlı seçim veya el

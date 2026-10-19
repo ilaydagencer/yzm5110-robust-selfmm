@@ -1,0 +1,72 @@
+{
+  "status": "verified_existing_environment",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "corruption_seed": 1111,
+  "metric_checks": 640,
+  "input_checks": 80,
+  "train_statistic_checks": 10,
+  "outputs_rechecked": 40,
+  "max_reference_error": 1.2212453270876722e-15,
+  "records": [
+    {
+      "training_seed": 1111,
+      "verification_file": "portable_k0_k7_seed1111_v1.json",
+      "verification_sha256": "5e06d328afede0ee836213a55e28a6924ac70a2e3130c6fe8a7759bfb3a80181",
+      "metric_checks": 128,
+      "input_checks": 16,
+      "train_statistic_checks": 2,
+      "max_reference_error": 5.551115123125783e-16,
+      "outputs_rechecked": 8
+    },
+    {
+      "training_seed": 1112,
+      "verification_file": "portable_k0_k7_seed1112_v1.json",
+      "verification_sha256": "578f5361055209ac58a16151b40f4fed933a5bffcb6ebbd7523a98f4c38df545",
+      "metric_checks": 128,
+      "input_checks": 16,
+      "train_statistic_checks": 2,
+      "max_reference_error": 8.881784197001252e-16,
+      "outputs_rechecked": 8
+    },
+    {
+      "training_seed": 1113,
+      "verification_file": "portable_k0_k7_seed1113_v1.json",
+      "verification_sha256": "6ca36f99010685899088d1f77f40e83af96b14770b0a2f3be929cdb125c67055",
+      "metric_checks": 128,
+      "input_checks": 16,
+      "train_statistic_checks": 2,
+      "max_reference_error": 1.2212453270876722e-15,
+      "outputs_rechecked": 8
+    },
+    {
+      "training_seed": 1114,
+      "verification_file": "portable_k0_k7_seed1114_v1.json",
+      "verification_sha256": "f031d1f849120205551623e36caf8ff59b680d78a0a54cc41b76bcee98c390c0",
+      "metric_checks": 128,
+      "input_checks": 16,
+      "train_statistic_checks": 2,
+      "max_reference_error": 9.992007221626409e-16,
+      "outputs_rechecked": 8
+    },
+    {
+      "training_seed": 1115,
+      "verification_file": "portable_k0_k7_seed1115_v1.json",
+      "verification_sha256": "5b22325c0ceac9c984c850a84832d2c826165d1e7f89c3dd5db55ba16490af82",
+      "metric_checks": 128,
+      "input_checks": 16,
+      "train_statistic_checks": 2,
+      "max_reference_error": 1.1102230246251565e-15,
+      "outputs_rechecked": 8
+    }
+  ],
+  "scope": "Aggregate of five separately audited portable replays; stored manifests and 40 output hashes rechecked. Historical input-source hashes are audit-time evidence, not compared to later edited source versions.",
+  "fresh_dependency_install_verified": false,
+  "relocated_real_gpu_replay_verified": false,
+  "new_independent_experiments": 0
+}
