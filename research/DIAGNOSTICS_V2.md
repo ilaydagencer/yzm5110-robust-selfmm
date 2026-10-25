@@ -95,3 +95,71 @@ veya yeni ad ver ve bunu not et.
 | `controls.csv`, `manifest.json`, `train_*` | Kontroller, sürümler, girdi özetleri |
 
 `runs` klasörü Git'e eklenmez. Beş seed'in küçük özeti ayrı adımda depoya girer.
+
+## 4. Beş seed validation özeti ve τ seçimi (GPU yok)
+
+[`summarize_selfmm_diagnostics.py`](summarize_selfmm_diagnostics.py) yalnız Python
+standart kütüphanesini kullanır. Beş koşunun tamamlandığını, aynı protokol/betik
+sürümüyle çalıştığını, aynı bozulmuş girdileri aldığını ve çıktı özetlerinin
+değişmediğini denetler; sonra protokolün 5. ve 6. bölümündeki kuralları uygular.
+
+```powershell
+& '..\.venv\Scripts\python.exe' -I -S -B '.\research\summarize_selfmm_diagnostics.py' `
+    --runs-dir '..\runs' --split valid --output-dir '.\research\diagnostics_v2\validation'
+```
+
+Paket ([diagnostics_v2/validation](diagnostics_v2/validation)): seed başına
+metrikler, beş seed ortalama/SS, varyant − plain eşleştirilmiş farklar, hipotez
+kararları (`hypotheses.csv`), ağırlık ve tek modlu başlık yayılımı özetleri ve
+test için `selection.json`. Örnek düzeyindeki tahminler `runs` içinde kalır.
+
+Paketi GPU, veri veya checkpoint olmadan yeniden doğrulamak için:
+
+```powershell
+& '..\.venv\Scripts\python.exe' -I -S -B '.\research\summarize_selfmm_diagnostics.py' `
+    --verify '.\research\diagnostics_v2\validation'
+```
+
+`OZET_DOGRULANDI` beklenir. Bu komut bütün özet tablolarını, hipotez kararlarını
+ve τ\* değerini seed başına metriklerden yeniden hesaplar ve dosya özetlerini denetler.
+
+### Validation sonucu (25 Ekim 2026, beş seed, baseline checkpoint)
+
+| Kod | Karar | Ana sayı |
+|---|---|---|
+| H1 | Desteklendi | K0–K7 ortalama MAE τ=0,25'te 1,230 → τ=16'da 0,722; K0'da τ16 − plain = +0,003 |
+| H2 | Desteklendi | K0'da metin sabit varyant − plain = +0,0005; τ=1 − plain = +0,150; 5/5 seed |
+| H3 | Desteklenmedi | K0'da τ=1 − karıştırılmış = +0,040; τ=1 hiçbir seed'de karıştırılmıştan iyi değil |
+| H4 | Desteklendi | Oracle − plain: K1 +0,0001, K2 −0,0003, K3 +0,0002 |
+| H5a | Desteklendi | plain MAE K0 0,717 → K10 1,464 (+0,748); Non0 accuracy %84,9 → %45,6 |
+| H5b | Desteklenmedi | τ=1 − plain: K9 +0,036 (0/5 seed), K10 +0,001 (3/5 seed) |
+
+Altı kararın altısı da önceden yazılan beklentiyle aynıdır. Seçilen τ\* = 16, yani
+ızgaranın en büyük değeri: validation'da en iyi ağırlıklandırma, ağırlıksız
+füzyona en yakın olanıdır. Kararlar betimseldir; p-değeri yoktur.
+
+## 5. Test koşuları (bir kez, GPU)
+
+Yalnız validation paketi ve `selection.json` commit edilip push edildikten sonra.
+Bölüm 2'deki fonksiyon tanımlıyken:
+
+```powershell
+foreach ($seed in 1111, 1112, 1113, 1114, 1115) {
+    Invoke-Diagnostics $seed 'test' @('--selection', '.\research\diagnostics_v2\validation\selection.json')
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+Test 686 örnek içerdiği için seed başına yaklaşık 15–20 dakika sürer. Her koşu
+K0–K7'de v1 test A/B/C/D sonuçlarıyla 128 metrik ve sekiz girdi özeti kontrolü yapar.
+Sonra özet:
+
+```powershell
+& '..\.venv\Scripts\python.exe' -I -S -B '.\research\summarize_selfmm_diagnostics.py' `
+    --runs-dir '..\runs' --split test `
+    --selection '.\research\diagnostics_v2\validation\selection.json' `
+    --output-dir '.\research\diagnostics_v2\evaluation_test'
+```
+
+Testteki hipotez satırları yeni karar değildir; validation kararlarının testte
+tekrar edip etmediğini betimler.

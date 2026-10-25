@@ -1,0 +1,7 @@
+code,expected,supported,matches_expectation,evidence
+H1,True,True,True,"{""k0_k7_mean_mae_by_tau"": {""0.25"": 1.2300263196229935, ""0.5"": 1.034748089313507, ""1"": 0.8677276074886322, ""16"": 0.7215558364987373, ""2"": 0.779688811302185, ""4"": 0.7413064658641815, ""8"": 0.7271694093942642}, ""k0_tau16_minus_plain_mean"": 0.0034627914428710938, ""largest_step"": -0.005613572895526886}"
+H2,True,True,True,"{""k0_av_minus_plain_mean"": 0.00046101808547973635, ""k0_tau1_minus_plain_mean"": 0.14968591928482056, ""seeds_av_below_tau1"": 5}"
+H3,False,False,True,"{""k0_tau1_minus_shuffled_mean"": 0.040370821952819824, ""seeds_tau1_below_shuffled"": 0}"
+H4,True,True,True,"{""oracle_minus_plain_mean"": {""K1"": 0.00014733076095581056, ""K2"": -0.0002833962440490723, ""K3"": 0.00018851757049560548}}"
+H5a,True,True,True,"{""plain_k10_minus_k0_mean"": 0.7476539254188538}"
+H5b,False,False,True,"{""K10"": {""seeds_tau1_below_plain"": 3, ""tau1_minus_plain_mean"": 0.0008261442184448242}, ""K9"": {""seeds_tau1_below_plain"": 0, ""tau1_minus_plain_mean"": 0.0363006591796875}}"

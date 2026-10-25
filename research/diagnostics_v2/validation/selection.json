@@ -1,0 +1,29 @@
+{
+  "protocol": "selfmm-diagnostics-v2",
+  "split": "valid",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "selected_tau": 16.0,
+  "rule": "baseline checkpoint; K0-K10 equally weighted; five-seed mean validation MAE; ties -> larger tau",
+  "tau_scores": {
+    "0.25": 1.2652229395779695,
+    "0.5": 1.1087580962614578,
+    "1": 0.9761360688643022,
+    "2": 0.9065465862100774,
+    "4": 0.876360256021673,
+    "8": 0.8652628421783447,
+    "16": 0.8608422073450956
+  },
+  "source_run_manifest_sha256": {
+    "1111": "e09452f8a1a85fbb937e960d68efb355e1c4bea4114a4ee3cbf92b6ee4dc8de7",
+    "1112": "92441fdbd5b215482b67f97d4a6c5e2ac87adb41f581a961857cddce01dea5c9",
+    "1113": "8450c6cb6403526c6254dbe4d2dea679add3d3386a72e2b906bc79ad873f728a",
+    "1114": "d8d70fe892f98a55e2f392a7f8e4e2b3906b9922a7ca271a3b3992d23a609f90",
+    "1115": "de95be2df34d7d0b4f3d4ad0246606200e8f93cdc4efd9226ec2d2733e58a220"
+  }
+}

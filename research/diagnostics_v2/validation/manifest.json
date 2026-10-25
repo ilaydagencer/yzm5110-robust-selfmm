@@ -1,0 +1,81 @@
+{
+  "protocol": "selfmm-diagnostics-v2",
+  "split": "valid",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7",
+    "K8",
+    "K9",
+    "K10"
+  ],
+  "variants": [
+    "plain",
+    "agree_tau0.25",
+    "agree_tau0.5",
+    "agree_tau1",
+    "agree_tau2",
+    "agree_tau4",
+    "agree_tau8",
+    "agree_tau16",
+    "agree_av_tau1",
+    "shuffled_tau1",
+    "oracle"
+  ],
+  "protocol_doc_sha256_lf": "f45d39f615011f05a6abf687101bf737bce0d60eacb5b516967453a97b8e0eb1",
+  "run_script_sha256_lf": "2459487ee337d5ffa3b1074dcb3f435d5ee58f8591c2e97eda45fbcafdf4f865",
+  "summary_script_sha256_lf": "6dc0d25afb38d046ffdffbf4f74feb781d4d6ec8f281d27d54313f8ce5154e3b",
+  "source_runs": {
+    "1111": {
+      "directory": "selfmm_diagnostics_v2_valid_seed1111",
+      "manifest_sha256": "e09452f8a1a85fbb937e960d68efb355e1c4bea4114a4ee3cbf92b6ee4dc8de7",
+      "created_at_utc": "2026-10-25T10:52:48.530581+00:00"
+    },
+    "1112": {
+      "directory": "selfmm_diagnostics_v2_valid_seed1112",
+      "manifest_sha256": "92441fdbd5b215482b67f97d4a6c5e2ac87adb41f581a961857cddce01dea5c9",
+      "created_at_utc": "2026-10-25T12:15:08.458185+00:00"
+    },
+    "1113": {
+      "directory": "selfmm_diagnostics_v2_valid_seed1113",
+      "manifest_sha256": "8450c6cb6403526c6254dbe4d2dea679add3d3386a72e2b906bc79ad873f728a",
+      "created_at_utc": "2026-10-25T12:21:34.700206+00:00"
+    },
+    "1114": {
+      "directory": "selfmm_diagnostics_v2_valid_seed1114",
+      "manifest_sha256": "d8d70fe892f98a55e2f392a7f8e4e2b3906b9922a7ca271a3b3992d23a609f90",
+      "created_at_utc": "2026-10-25T12:27:39.972716+00:00"
+    },
+    "1115": {
+      "directory": "selfmm_diagnostics_v2_valid_seed1115",
+      "manifest_sha256": "de95be2df34d7d0b4f3d4ad0246606200e8f93cdc4efd9226ec2d2733e58a220",
+      "created_at_utc": "2026-10-25T12:33:56.333011+00:00"
+    }
+  },
+  "selection": null,
+  "sd_ddof": 1,
+  "created_at_utc": "2026-10-25T12:43:24.745635+00:00",
+  "scope": "Compact copy of five run outputs plus derived tables; per-sample predictions stay in runs/.",
+  "output_sha256": {
+    "per_seed_metrics.csv": "b420004cccd5bc961b66d73dd3709a13c13962ae7c06e6a4d65c4126704af39c",
+    "summary_metrics.csv": "bcc5e630a8712d8f240d0ea67b206c0b3ee1324a63b7171ee5c9391d332a1bab",
+    "paired_differences_by_seed.csv": "5cf73025af22c88f6bc3caadf164492852ac80b53ce230d8f169134a0afdfcdf",
+    "paired_summary.csv": "e6c55d0d51f63b9442a8ce1d0bc95527eed0176e0622fcb61c6d198568f229ee",
+    "hypotheses.csv": "ca50076849899a6f36ee5d5024c6b01a3037ce930c2fb332ee57cb3e8b7e09a7",
+    "weight_summary_by_seed.csv": "f6eafe7c760fb77355c8c0017cb53eb5ceef768716d35b6ac8fca719210c8743",
+    "head_spread_by_seed.csv": "ba85e5d1a80589b131eb70f10e2530555339c7d088c2eb1232300bbc9586d4cd",
+    "selection.json": "d6b6dc70b4a6562e092514803c6783104922dc3053526762d4ef8f8f47f4fe99"
+  }
+}
