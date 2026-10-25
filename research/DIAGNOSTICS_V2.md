@@ -163,3 +163,26 @@ Sonra özet:
 
 Testteki hipotez satırları yeni karar değildir; validation kararlarının testte
 tekrar edip etmediğini betimler.
+
+### Test sonucu (25 Ekim 2026, beş seed, baseline checkpoint, τ\* = 16)
+
+Beş test koşusu validation paketi commit edildikten sonra, commit edilmiş
+`selection.json` ile birer kez çalıştı. Her koşuda 128/128 metrik ve 16/16 girdi
+özeti kontrolü geçti. [Test paketi](diagnostics_v2/evaluation_test).
+
+| Kod | Validation | Test | Test ana sayısı |
+|---|---|---|---|
+| H1 | Desteklendi | Tekrarlandı | K0–K7 ortalama MAE τ=0,25'te 1,205 → τ=16'da 0,724 |
+| H2 | Desteklendi | Tekrarlandı | K0'da metin sabit − plain = −0,0004; τ=1 − plain = +0,118 |
+| H3 | Desteklenmedi | Tekrarlandı | K0'da τ=1 − karıştırılmış = +0,040; 0/5 seed |
+| H4 | Desteklendi | Tekrarlandı | Oracle − plain: K1 −0,0007, K2 −0,0002, K3 −0,0009 |
+| H5a | Desteklendi | Tekrarlandı | plain MAE K0 0,724 → K10 1,399; Non0 accuracy %83,9 → %55,1 |
+| H5b | Desteklenmedi | Tekrarlandı | τ=1 − plain: K9 +0,029 (0/5), K10 −0,0004 (2/5) |
+
+- τ\* = 16 testte plain füzyonla aynıdır (K0 farkı +0,0002); seçilen "en iyi"
+  ağırlıklandırma pratikte ağırlıklandırmama demektir.
+- Tutarsız ayrıntı: K10'da metne sıfır veren oracle, validation'da plain'den
+  iyidir (1,430 ve 1,464), testte kötüdür (1,422 ve 1,399). Bu karşılaştırma için
+  önceden karar ölçütü yoktu; yön bölmeler arasında tutarlı değildir.
+- τ=1'de ortalama metin ağırlığı K0'dan K10'a beş seed'in beşinde artar
+  (testte 0,71–0,81 → 0,91–1,18). Metin bozuldukça kural metne daha çok ağırlık verir.

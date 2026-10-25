@@ -181,6 +181,16 @@ ve karar ölçütleri sonuçlardan önce yazılıp commit edilmiştir; τ yalnı
 validation'da seçilir, test bir kez çalışır.
 [Çalıştırma yönergesi](DIAGNOSTICS_V2.md).
 
+Validation sonucu (beş seed): altı karar da önceden yazılan beklentiyle aynı çıktı.
+Zarar, baskın metin bloğunun ölçeklenmesinden gelir (metin ağırlığı sabit
+tutulunca kaybolur); uyum sinyali rastgele karıştırılmış ağırlıklardan daha iyi
+değildir; ses/görüntü bozulmasında oracle bile iyileşme sağlamaz; metin
+bozulduğunda kural yine yardımcı olmaz. Seçilen τ\* = 16 (ağırlıksıza en yakın).
+Test, validation paketi commit edildikten sonra bir kez çalıştı; altı kararın altısı
+testte de tekrarlandı.
+[Validation paketi](diagnostics_v2/validation), [test paketi](diagnostics_v2/evaluation_test),
+[ayrıntılı tablolar](DIAGNOSTICS_V2.md#validation-sonucu-25-ekim-2026-beş-seed-baseline-checkpoint).
+
 ## GPU ortamını yeni bilgisayarda hazırlama
 
 Bu bölüm gerçek eğitim/değerlendirmeyi planlayan okuyucu içindir. Yukarıdaki

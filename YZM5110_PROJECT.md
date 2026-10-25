@@ -73,9 +73,22 @@ PyTorch 2.3.1 + CUDA 12.1 · MMSA 2.2.1. Paket sürümleri:
 
 - Tamamlandı: beş seed A/B eğitimi; A/B/C/D K0–K7 validation ve test
   değerlendirmesi; çıkarım maliyeti ölçümü; beş seed'in checkpoint'ten gerçek
-  GPU tekrarı; seed 1111'in yeni venv'de tekrarı.
-- Açık: ağırlıklandırmanın neden başarısız olduğunu ayıran validation tanı
-  deneyleri, figür/tablo betikleri, son rapor PDF'i, sunum ve teslim tag'i.
+  GPU tekrarı; seed 1111'in yeni venv'de tekrarı; ağırlıklandırmanın neden
+  başarısız olduğunu ayıran, önceden kaydedilmiş tanı deneyleri (protokol v2,
+  validation ve tek test koşusu).
+- Açık: bootstrap aralıkları, figür/tablo betikleri, son rapor PDF'i, sunum ve
+  teslim tag'i.
+
+## Tanı deneylerinin sonucu (protokol v2)
+
+Önceden yazılan altı kararın altısı validation'da beklentiyle aynı çıktı ve
+testte tekrarlandı. Zarar, baskın metin temsilinin ölçeklenmesinden gelir;
+uyum sinyali rastgele karıştırılmış ağırlıklardan iyi değildir. Ses ve görüntü
+başlıklarının tahminleri örnekler arasında çok az değişir (K0 test SS'si ses
+0,001–0,17, görüntü 0,004–0,44; metin 0,64–1,00), bu yüzden kural metni zayıf
+tahminlerle karşılaştırır.
+Ses/görüntü bozulmasında oracle bile iyileşme sağlamaz; metin bozulduğunda kural
+metne daha çok ağırlık verir. Ayrıntı: [DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md).
 
 Kod ve metin hazırlığında yapay zekâ desteği kullanılmıştır; araçlar ve
 katkıları raporun ekinde açıklanır.

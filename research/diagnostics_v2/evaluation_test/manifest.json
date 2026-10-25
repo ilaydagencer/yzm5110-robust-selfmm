@@ -1,0 +1,108 @@
+{
+  "protocol": "selfmm-diagnostics-v2",
+  "split": "test",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "conditions": [
+    "K0",
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K5",
+    "K6",
+    "K7",
+    "K8",
+    "K9",
+    "K10"
+  ],
+  "variants": [
+    "plain",
+    "agree_tau0.25",
+    "agree_tau0.5",
+    "agree_tau1",
+    "agree_tau2",
+    "agree_tau4",
+    "agree_tau8",
+    "agree_tau16",
+    "agree_av_tau1",
+    "shuffled_tau1",
+    "oracle"
+  ],
+  "protocol_doc_sha256_lf": "f45d39f615011f05a6abf687101bf737bce0d60eacb5b516967453a97b8e0eb1",
+  "run_script_sha256_lf": "2459487ee337d5ffa3b1074dcb3f435d5ee58f8591c2e97eda45fbcafdf4f865",
+  "summary_script_sha256_lf": "6dc0d25afb38d046ffdffbf4f74feb781d4d6ec8f281d27d54313f8ce5154e3b",
+  "source_runs": {
+    "1111": {
+      "directory": "selfmm_diagnostics_v2_test_seed1111",
+      "manifest_sha256": "0c0aa72182acd3fcff0340eb04e8628854679f113106f0b6045c99d42e5b1728",
+      "created_at_utc": "2026-10-25T12:51:47.605269+00:00"
+    },
+    "1112": {
+      "directory": "selfmm_diagnostics_v2_test_seed1112",
+      "manifest_sha256": "ee220017f38071b10ba541d8a48d2333008da6563b2cad2a18c79d582381196c",
+      "created_at_utc": "2026-10-25T13:10:02.411321+00:00"
+    },
+    "1113": {
+      "directory": "selfmm_diagnostics_v2_test_seed1113",
+      "manifest_sha256": "2096b9b9ec294e1f9966f9208fde4de8dfaa36747265bcb8eac4bb32c543e7bd",
+      "created_at_utc": "2026-10-25T13:37:18.647634+00:00"
+    },
+    "1114": {
+      "directory": "selfmm_diagnostics_v2_test_seed1114",
+      "manifest_sha256": "22eaf7f89f93ce6ea854ee8ec54b8078d5a2e90a5f305510012c46f2114a9e9f",
+      "created_at_utc": "2026-10-25T13:56:34.448273+00:00"
+    },
+    "1115": {
+      "directory": "selfmm_diagnostics_v2_test_seed1115",
+      "manifest_sha256": "c1be0e17e8192a853f489f76523b6fdf976b63bc542ecb81e324815932527579",
+      "created_at_utc": "2026-10-25T14:18:20.186262+00:00"
+    }
+  },
+  "selection": {
+    "protocol": "selfmm-diagnostics-v2",
+    "split": "valid",
+    "training_seeds": [
+      1111,
+      1112,
+      1113,
+      1114,
+      1115
+    ],
+    "selected_tau": 16.0,
+    "rule": "baseline checkpoint; K0-K10 equally weighted; five-seed mean validation MAE; ties -> larger tau",
+    "tau_scores": {
+      "0.25": 1.2652229395779695,
+      "0.5": 1.1087580962614578,
+      "1": 0.9761360688643022,
+      "2": 0.9065465862100774,
+      "4": 0.876360256021673,
+      "8": 0.8652628421783447,
+      "16": 0.8608422073450956
+    },
+    "source_run_manifest_sha256": {
+      "1111": "e09452f8a1a85fbb937e960d68efb355e1c4bea4114a4ee3cbf92b6ee4dc8de7",
+      "1112": "92441fdbd5b215482b67f97d4a6c5e2ac87adb41f581a961857cddce01dea5c9",
+      "1113": "8450c6cb6403526c6254dbe4d2dea679add3d3386a72e2b906bc79ad873f728a",
+      "1114": "d8d70fe892f98a55e2f392a7f8e4e2b3906b9922a7ca271a3b3992d23a609f90",
+      "1115": "de95be2df34d7d0b4f3d4ad0246606200e8f93cdc4efd9226ec2d2733e58a220"
+    }
+  },
+  "sd_ddof": 1,
+  "created_at_utc": "2026-10-25T14:46:06.464690+00:00",
+  "scope": "Compact copy of five run outputs plus derived tables; per-sample predictions stay in runs/.",
+  "output_sha256": {
+    "per_seed_metrics.csv": "80bc5d4b9258d154c1e7df13056bbf600b3522a9a9b490dfdf5c1591a5b31f02",
+    "summary_metrics.csv": "020f83d22b578e53641c43855e7c5159ae390638f2e401b93301a261f53bc8a5",
+    "paired_differences_by_seed.csv": "4d0cb5cd387a71a33a3e2b7121c08536e96ab4ced01944a68d2333aae9812050",
+    "paired_summary.csv": "3555e0291665f78b831e3a8e5650cb75c43b17c3d67a83864467797395c3ce14",
+    "hypotheses.csv": "1f07a4efdec3803c8fc5fdde99703dba07291f6966400b916bd59eabbbb1e703",
+    "weight_summary_by_seed.csv": "8874a9b1cc56d481fd8be75a00b753b15d060b4e23411c57c5d9cb26c2cd2a62",
+    "head_spread_by_seed.csv": "4624f95724fdd7e693d9301f2c0d6e1c8bc2cfcd0d93fa3f57ddc472eb135070"
+  }
+}
