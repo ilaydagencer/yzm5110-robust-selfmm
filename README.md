@@ -1,3 +1,41 @@
+## YZM5110 araştırma projesi (bu fork)
+
+**Konu:** CMU-MOSI üzerinde Self-MM'in uyarlanmış yeniden üretimi ve tek modlu
+tahmin uyumunun, eksik veya gürültülü ses/görüntü girdilerinde füzyon ağırlığı
+olarak sınanması.
+
+**Ana makale:** Yu ve ark., *Learning Modality-Specific Representations with
+Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 2021
+([arXiv:2102.04830](https://arxiv.org/abs/2102.04830)).
+
+**Öğrenci:** İlayda Gençer · **Çalışma dalı:** `yzm5110-selfmm`
+
+| Aradığın | Yeri |
+|---|---|
+| Kurulum, veri erişimi, komutlar, yöntemler ve sonuç tabloları | [research/README.md](research/README.md) |
+| Kısa proje özeti | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
+| Kaydedilmiş validation, test ve çıkarım maliyeti sonuçları | [research/results_package_v1](research/results_package_v1) |
+| Gerçek model tekrarlarının doğrulama kayıtları | [research/verification](research/verification) |
+
+GPU, veri kümesi veya checkpoint gerektirmeyen hızlı kontrol (depo kökünde,
+Python 3.10+):
+
+```powershell
+py -3.10 -I -S -B .\research\verify_results_package.py --check
+```
+
+Beklenen son satır `PAKET_KONTROLU_BASARILI` olur. Bu kontrol kaydedilmiş
+metriklerden ortalama, standart sapma ve eşleştirilmiş farkları yeniden hesaplar;
+modeli yeniden çalıştırmaz. Gerçek eğitim ve değerlendirme için gereken CUDA
+ortamı, MOSI özellik dosyası ve checkpoint'ler [research/README.md](research/README.md)
+içinde açıklanmıştır.
+
+Bu bölümün altındaki metin MMSA'nın değiştirilmemiş özgün README'sidir. MMSA,
+[MIT lisansı](LICENSE) ile dağıtılır; çerçeveyi kullanırken aşağıdaki atıf
+bölümüne uyulmalıdır.
+
+---
+
 [![](https://badgen.net/badge/license/MIT/green)](#License)
 [![](https://badgen.net/pypi/v/MMSA)](https://pypi.org/project/MMSA/) 
 ![](https://badgen.net/pypi/python/MMSA/)
