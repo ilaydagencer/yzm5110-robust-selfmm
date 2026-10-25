@@ -1,0 +1,63 @@
+{
+  "protocol": "selfmm-diagnostics-v2",
+  "split": "test",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "rows": 75460,
+  "columns": [
+    "training_seed",
+    "checkpoint",
+    "condition",
+    "index",
+    "label",
+    "pred_plain",
+    "pred_agree_tau1",
+    "pred_agree_tau16",
+    "pred_agree_av_tau1",
+    "pred_shuffled_tau1",
+    "pred_oracle",
+    "y_T",
+    "w1_T"
+  ],
+  "float_format": "shortest decimal that round-trips to the run float32 value",
+  "pred_oracle_note": "empty unless condition is K1, K2, K3 or K10",
+  "mae_recomputed": 590,
+  "mae_max_abs_difference_vs_package": 2.1823087248407091e-07,
+  "summary_package_manifest_sha256": "acb96a59f65074090dc42234409bf2e09c62be3a393650d7fa393ebfc7524598",
+  "source_runs": {
+    "1111": {
+      "directory": "selfmm_diagnostics_v2_test_seed1111",
+      "manifest_sha256": "0c0aa72182acd3fcff0340eb04e8628854679f113106f0b6045c99d42e5b1728",
+      "predictions_sha256": "d96f9fbd4dcc17dee47f2f0d3dee486f4f737e6c0f463fcc392c0961f46fe3a5"
+    },
+    "1112": {
+      "directory": "selfmm_diagnostics_v2_test_seed1112",
+      "manifest_sha256": "ee220017f38071b10ba541d8a48d2333008da6563b2cad2a18c79d582381196c",
+      "predictions_sha256": "8ad1bcb463c1a31cb6c74190e6f1738b225c5c1fa269bf668ba6c8bc9a322a95"
+    },
+    "1113": {
+      "directory": "selfmm_diagnostics_v2_test_seed1113",
+      "manifest_sha256": "2096b9b9ec294e1f9966f9208fde4de8dfaa36747265bcb8eac4bb32c543e7bd",
+      "predictions_sha256": "5c0b74d1c232fc56cd46cb9bbf9636d622eb559040bbd5212de263f54bd11c8a"
+    },
+    "1114": {
+      "directory": "selfmm_diagnostics_v2_test_seed1114",
+      "manifest_sha256": "22eaf7f89f93ce6ea854ee8ec54b8078d5a2e90a5f305510012c46f2114a9e9f",
+      "predictions_sha256": "94b54d1c237fdf2e07ec14c3b62ad08192a15dd11b1a28ae7016f307ab9f5634"
+    },
+    "1115": {
+      "directory": "selfmm_diagnostics_v2_test_seed1115",
+      "manifest_sha256": "c1be0e17e8192a853f489f76523b6fdf976b63bc542ecb81e324815932527579",
+      "predictions_sha256": "c825eb9f6d77c6bc2ee213ca5e34e5be2789a36d385b0d2faafef4a739c21c3e"
+    }
+  },
+  "created_at_utc": "2026-10-25T15:04:35.562182+00:00",
+  "output_sha256": {
+    "predictions_test.csv.gz": "94192f5ffb1d58f9aa2a234d1fac5e8fd3d934f43acba8bcd62f84e70d80f365"
+  }
+}

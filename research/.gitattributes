@@ -1,6 +1,7 @@
 # Preserve hash-checked evidence and verifier bytes across Windows/Linux checkouts.
 results_package_v1/** -text
 diagnostics_v2/** -text
+report_tables/** -text
 verify_results_package.py -text
 README.md text eol=lf
 requirements-research.txt text eol=lf

@@ -1,0 +1,16 @@
+{
+  "self_mm_paper": {
+    "source": "Yu, Xu, Yuan and Wu (2021), AAAI, Table 1, MOSI row of Self-MM (BERT features); arXiv:2102.04830",
+    "note": "Authors' reported five-run average; no SD reported in the table. Re-check against the paper before submission.",
+    "MAE": 0.713,
+    "Corr": 0.798,
+    "Has0_acc_2_pct": 84.00,
+    "Non0_acc_2_pct": 85.98,
+    "Has0_F1_pct": 84.42,
+    "Non0_F1_pct": 85.95
+  },
+  "mmsa_result_stat": {
+    "source": "results/result-stat.md in this repository (THUIAR/MMSA), Regression / MOSI / self_mm row",
+    "note": "Read from the file at table-generation time; MAE and Corr are stored x100 there."
+  }
+}

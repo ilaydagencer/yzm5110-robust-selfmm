@@ -1,0 +1,22 @@
+{
+  "created_at_utc": "2026-10-25T15:04:41.470509+00:00",
+  "matplotlib": "3.8.4",
+  "numpy": "1.26.4",
+  "inputs": {
+    "diagnostics_v2/validation/summary_metrics.csv": "bcc5e630a8712d8f240d0ea67b206c0b3ee1324a63b7171ee5c9391d332a1bab",
+    "diagnostics_v2/evaluation_test/summary_metrics.csv": "020f83d22b578e53641c43855e7c5159ae390638f2e401b93301a261f53bc8a5",
+    "diagnostics_v2/evaluation_test/weight_summary_by_seed.csv": "8874a9b1cc56d481fd8be75a00b753b15d060b4e23411c57c5d9cb26c2cd2a62",
+    "diagnostics_v2/bootstrap/bootstrap_test.csv": "7a968d22c7cafaaaf824474f2c1344d7695cbbdaa5061be65f0f57ce6dc7cb99",
+    "diagnostics_v2/predictions/predictions_test.csv.gz": "94192f5ffb1d58f9aa2a234d1fac5e8fd3d934f43acba8bcd62f84e70d80f365",
+    "diagnostics_v2/validation/selection.json": "d6b6dc70b4a6562e092514803c6783104922dc3053526762d4ef8f8f47f4fe99",
+    "results_package_v1/inference/summary.csv": "f479201dd16f863e0c9434aa67a5f0d3d6ce5f360c2246caeeb4186d4b1f9fd9"
+  },
+  "figures": [
+    "fig1_conditions_abcd.png",
+    "fig2_tau_sweep.png",
+    "fig3_variants_bootstrap.png",
+    "fig4_mechanism.png",
+    "fig5_inference_cost.png"
+  ],
+  "note": "PNG bytes can differ across font/freetype builds; the inputs are hash-pinned."
+}

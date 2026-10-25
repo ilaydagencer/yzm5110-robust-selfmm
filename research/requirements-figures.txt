@@ -1,0 +1,17 @@
+# Separate figure environment (Windows, Python 3.10.5), 2026-10-25.
+# Kept apart from the GPU research venv so the verified training/evaluation
+# environment is not changed. Only make_selfmm_figures.py needs it.
+#   py -3.10 -m venv ..\.venv-figures
+#   ..\.venv-figures\Scripts\python.exe -m pip install -r research\requirements-figures.txt
+contourpy==1.3.2
+cycler==0.12.1
+fonttools==4.65.0
+kiwisolver==1.5.1
+matplotlib==3.8.4
+numpy==1.26.4
+packaging==26.3
+pillow==12.3.0
+pyparsing==3.3.3
+python-dateutil==3.0.0
+six==1.17.0
+tzdata==2026.5

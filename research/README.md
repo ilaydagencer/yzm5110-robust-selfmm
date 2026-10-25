@@ -191,6 +191,44 @@ testte de tekrarlandı.
 [Validation paketi](diagnostics_v2/validation), [test paketi](diagnostics_v2/evaluation_test),
 [ayrıntılı tablolar](DIAGNOSTICS_V2.md#validation-sonucu-25-ekim-2026-beş-seed-baseline-checkpoint).
 
+## Belirsizlik, rapor tabloları ve figürler
+
+Rapordaki bütün tablo ve figürler depodaki dosyalardan betikle üretilir; GPU,
+veri kümesi veya checkpoint gerekmez. Komutlar depo kökünde çalışır.
+
+| Çıktı | Betik | Girdi |
+|---|---|---|
+| [Sıkıştırılmış test tahminleri](diagnostics_v2/predictions) (2,97 MB, kayıpsız float32) | `export_selfmm_predictions.py` | `runs/` içindeki beş test koşusu (bir kez çalıştırıldı) |
+| [Bootstrap aralıkları](diagnostics_v2/bootstrap/bootstrap_test.csv) | `bootstrap_selfmm_diagnostics.py` | Sıkıştırılmış test tahminleri |
+| [Rapor tabloları](report_tables/tables.md) | `make_selfmm_report_tables.py` | Sonuç paketleri, bootstrap, [eğitim kayıtları](report_tables/training_resources.csv), [yayımlanan skorlar](configs/published_reference.json) |
+| [Figürler](figures) | `make_selfmm_figures.py` | Sonuç paketleri, bootstrap, sıkıştırılmış tahminler |
+
+Bootstrap, 686 test örneğini 2000 kez yeniden örnekler; aynı örnek kümesi bütün
+seed, yöntem ve koşullara uygulanır (eşleştirilmiş). İstatistik beş seed ortalamalı
+farktır; aralık %95 yüzdeliktir. Seed SS eğitim değişkenliğini, bootstrap aralığı
+test örneklemesini gösterir; ikisi birlikte raporlanır.
+
+Yeniden doğrulama (dosya yazmaz):
+
+```powershell
+& '..\.venv\Scripts\python.exe' -B '.\research\bootstrap_selfmm_diagnostics.py' --verify '.\research\diagnostics_v2\bootstrap'
+& '..\.venv\Scripts\python.exe' -I -S -B '.\research\make_selfmm_report_tables.py' --verify
+```
+
+`BOOTSTRAP_DOGRULANDI` ve `TABLOLAR_DOGRULANDI` beklenir. Bootstrap doğrulaması
+byte düzeyindedir ve numpy 1.26.4'e bağlıdır.
+
+Figürler, doğrulanmış GPU ortamını değiştirmemek için ayrı bir venv'de çizilir:
+
+```powershell
+py -3.10 -m venv ..\.venv-figures
+& '..\.venv-figures\Scripts\python.exe' -m pip install -r '.\research\requirements-figures.txt'
+& '..\.venv-figures\Scripts\python.exe' -B '.\research\make_selfmm_figures.py' --replace
+```
+
+PNG baytları yazı tipi derlemesine göre değişebilir; girdilerin özetleri
+`figures/figures_manifest.json` içindedir.
+
 ## GPU ortamını yeni bilgisayarda hazırlama
 
 Bu bölüm gerçek eğitim/değerlendirmeyi planlayan okuyucu içindir. Yukarıdaki

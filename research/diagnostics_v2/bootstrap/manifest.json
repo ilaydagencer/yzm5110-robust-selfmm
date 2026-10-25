@@ -1,0 +1,26 @@
+{
+  "split": "test",
+  "training_seeds": [
+    1111,
+    1112,
+    1113,
+    1114,
+    1115
+  ],
+  "n": 686,
+  "resamples": 2000,
+  "rng": "numpy PCG64",
+  "rng_seed": 1111,
+  "numpy_version": "1.26.4",
+  "interval": "95% percentile, numpy linear",
+  "statistic": "five-seed mean of per-example differences; same resampled indices for every comparison",
+  "comparisons": 74,
+  "point_estimates_checked": 48,
+  "point_max_abs_difference": 7.846138110056966e-08,
+  "input": "diagnostics_v2/predictions/predictions_test.csv.gz",
+  "input_sha256": "94192f5ffb1d58f9aa2a234d1fac5e8fd3d934f43acba8bcd62f84e70d80f365",
+  "created_at_utc": "2026-10-25T15:04:37.531752+00:00",
+  "output_sha256": {
+    "bootstrap_test.csv": "7a968d22c7cafaaaf824474f2c1344d7695cbbdaa5061be65f0f57ce6dc7cb99"
+  }
+}
