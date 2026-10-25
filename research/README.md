@@ -169,6 +169,18 @@ girdileri bütün modellerde ortaktır. Eğitim seed’leri 1111–1115, bozulma
 seed’i 1111’dir. Validation/test RNG alanları ayrıdır. Train/valid/test
 1284/229/686; Non0 valid/test 216/656 örnektir.
 
+## Tanı deneyleri: ağırlıklandırma neden işe yaramadı? (protokol v2)
+
+Yukarıdaki sonuçlar τ=1 kuralının zararlı olduğunu gösterir, nedenini göstermez.
+[Protokol v2](selfmm_diagnostics_protocol_v2.md), aynı 10 checkpoint üzerinde
+yalnız çıkarımla şu soruları ayırır: τ taraması (ölçekleme miktarı), metin
+ağırlığı sabit varyant (baskın metin bloğu), örnekler arası karıştırılmış ağırlık
+(sinyal içeriği), bilinen eksik modaliteye sıfır veren oracle (iyileşme alanı)
+ve `[UNK]` ile metin bozulması K8–K10 (baskın modalite bozulduğunda). Hipotezler
+ve karar ölçütleri sonuçlardan önce yazılıp commit edilmiştir; τ yalnız
+validation'da seçilir, test bir kez çalışır.
+[Çalıştırma yönergesi](DIAGNOSTICS_V2.md).
+
 ## GPU ortamını yeni bilgisayarda hazırlama
 
 Bu bölüm gerçek eğitim/değerlendirmeyi planlayan okuyucu içindir. Yukarıdaki

@@ -1,0 +1,97 @@
+# Ağırlıklandırma tanı deneyleri (protokol v2): çalıştırma yönergesi
+
+Ne ve neden: [protokol v2](selfmm_diagnostics_protocol_v2.md).
+Betik: [`diagnose_selfmm_weighting.py`](diagnose_selfmm_weighting.py).
+
+Bu adım yeni eğitim yapmaz. Mevcut 10 checkpoint'i (5 seed × baseline/dropout)
+önce **validation**'da, K0–K10 koşulları ve protokoldeki ağırlık varyantlarıyla
+çalıştırır. Test yalnız validation özeti commit edildikten sonra, bir kez çalışır.
+
+## Sıra
+
+1. Protokol ve betik commit edilir (GPU koşusundan **önce**).
+2. Validation koşuları (bu belge, bölüm 2–3).
+3. Beş seed'in validation özeti, hipotez kararları ve τ\* commit edilir (ayrı adım).
+4. Test koşuları `--selection` ile bir kez yapılır (ayrı adım).
+
+## 1. GPU gerektirmeyen öz-denetim
+
+Depo kökünde (`MMSA` klasörü):
+
+```powershell
+& '..\.venv\Scripts\python.exe' -B '.\research\diagnose_selfmm_weighting.py' --self-test
+```
+
+Beklenen son satırlar `TANI_OZTESTLERI_BASARILI` ve "Ozdenetim dosya yazmadi".
+Bu test sahte (dummy) bir modelle bütün işlem hattını CPU'da çalıştırır; gerçek
+veri, checkpoint veya BERT açmaz.
+
+## 2. Beş seed için --check
+
+`--check`, veri ve checkpoint'leri bayt olarak okuyup SHA256 özetlerini, kaynak
+kodunu, config'i ve sonuç paketini doğrular. Model veya veri kümesi kurulmaz,
+dosya yazılmaz.
+
+PowerShell'i depo kökünde (`MMSA` klasörü) aç; komutlardaki `..\` yolları
+bu klasöre göredir.
+
+```powershell
+$bertDir = Join-Path $env:USERPROFILE '.cache\huggingface\hub\models--bert-base-uncased\snapshots\86b5e0934494bd15c9632b12f734a8a67f723594'
+function Invoke-Diagnostics([int]$Seed, [string]$Split, [string[]]$Extra) {
+    $baseline = if ($Seed -eq 1111) { '..\runs\selfmm_seed1111' } else { "..\runs\selfmm_baseline_seed$Seed" }
+    & '..\.venv\Scripts\python.exe' -B '.\research\diagnose_selfmm_weighting.py' `
+        --seed $Seed --split $Split `
+        --data-file '..\data\MOSI\Processed\unaligned_50.pkl' `
+        --baseline-checkpoint "$baseline\saved_models\self_mm-mosi.pth" `
+        --dropout-checkpoint "..\runs\selfmm_dropout_a20_v20_seed$Seed\saved_models\self_mm-mosi.pth" `
+        --bert-dir $bertDir `
+        --output-dir "..\runs\selfmm_diagnostics_v2_${Split}_seed$Seed" @Extra
+}
+foreach ($seed in 1111, 1112, 1113, 1114, 1115) {
+    Invoke-Diagnostics $seed 'valid' @('--check')
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+Her seed için `KONTROL_BASARILI: seed…/valid` beklenir.
+
+## 3. Validation koşuları (GPU)
+
+Önce yalnız seed 1111'i çalıştırıp süreyi ve referans kontrolünü gör:
+
+```powershell
+Invoke-Diagnostics 1111 'valid' @()
+```
+
+Her koşul için `baseline/K… : plain MAE=…; tau1 MAE=…; … sn` satırı yazılır.
+Sonunda `TANI_V2_TAMAMLANDI: seed1111/valid; 128/128 referans kontrolu gecti`
+beklenir. Bu satır, yeni betiğin K0–K7'de v1 validation A/B/C/D sonuçlarını
+1e-5 toleransla yeniden ürettiğini gösterir; yeni sayılara ancak bundan sonra
+güvenilir.
+
+Sonra kalan dört seed:
+
+```powershell
+foreach ($seed in 1112, 1113, 1114, 1115) {
+    Invoke-Diagnostics $seed 'valid' @()
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+Bir koşu hata verirse çıktı klasöründeki `manifest.json` içindeki `status` ve
+`error` alanlarına bak. Toleransı veya protokolü değiştirme; hatayı paylaş.
+Var olan çıktı klasörünün üzerine yazılmaz; tekrar denemek için klasörü sil
+veya yeni ad ver ve bunu not et.
+
+## Çıktılar (`..\runs\selfmm_diagnostics_v2_valid_seed<seed>\`)
+
+| Dosya | İçerik |
+|---|---|
+| `metrics.csv` | 294 satır: 2 checkpoint × 11 koşul × varyant (+ tek modlu başlıklar) |
+| `reference_checks.csv` | 128 satır: K0–K7 plain/τ=1 ile paket A/B/C/D karşılaştırması |
+| `predictions.csv` | 5038 satır: örnek başına bütün varyant tahminleri, tek modlu tahminler, d ve ağırlıklar |
+| `weight_summary.csv` | Varyant başına ağırlık ortalaması/SS/min/maks |
+| `input_summary.csv` | Koşul başına maskelenme oranları ve girdi özeti |
+| `controls.csv`, `manifest.json`, `train_*` | Kontroller, sürümler, girdi özetleri |
+
+`runs` klasörü Git'e eklenmez. Beş seed'in küçük özeti ayrı adımda depoya girer.
