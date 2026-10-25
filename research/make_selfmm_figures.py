@@ -35,6 +35,7 @@ TAUS = (0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0)
 BLUE, ORANGE = '#2a78d6', '#eb6834'
 INK, INK_2, INK_3, GRID = '#0b0b0b', '#52514e', '#8a8984', '#e4e3df'
 SURFACE = '#ffffff'
+SHOW_TITLES = False
 INPUTS = ('diagnostics_v2/validation/summary_metrics.csv', 'diagnostics_v2/evaluation_test/summary_metrics.csv',
           'diagnostics_v2/evaluation_test/weight_summary_by_seed.csv', 'diagnostics_v2/bootstrap/bootstrap_test.csv',
           'diagnostics_v2/predictions/predictions_test.csv.gz', 'diagnostics_v2/validation/selection.json',
@@ -70,6 +71,12 @@ def decimal_axis(ax, axis='y', digits=2):
     (ax.yaxis if axis == 'y' else ax.xaxis).set_major_formatter(formatter)
 
 
+def title(ax, text):
+    # The report adds numbered captions in Word; titles inside the PNG are optional.
+    if SHOW_TITLES:
+        ax.set_title(text)
+
+
 def save(fig, path):
     fig.savefig(path, dpi=200, bbox_inches='tight', metadata={'Software': None})
     plt.close(fig)
@@ -100,7 +107,7 @@ def fig_conditions(out):
     ax.set_ylim(0.6, 1.58)
     decimal_axis(ax)
     ax.set_ylabel('Test MAE (düşük iyi)')
-    ax.set_title('Şekil 1. Koşullara göre A/B/C/D, beş seed ortalaması ± SS')
+    title(ax, 'Şekil 1. Koşullara göre A/B/C/D, beş seed ortalaması ± SS')
     ax.legend(ncol=2, loc='upper left', bbox_to_anchor=(0.01, 0.9), handlelength=2.6)
     save(fig, out / 'fig1_conditions_abcd.png')
 
@@ -124,7 +131,7 @@ def fig_tau(out):
     ax.annotate(f"validation’da seçilen τ* = {selection['selected_tau']:g}", (16, 0.73), xytext=(-8, 30),
                 textcoords='offset points', ha='right', fontsize=8, color=INK_2,
                 arrowprops=dict(arrowstyle='-', color=INK_3, linewidth=0.8))
-    ax.set_title('Şekil 2. Ağırlıklandırmanın dozu: τ büyüdükçe zarar kaybolur (baseline)')
+    title(ax, 'Şekil 2. Ağırlıklandırmanın dozu: τ büyüdükçe zarar kaybolur (baseline)')
     ax.legend(loc='upper right', ncol=2)
     save(fig, out / 'fig2_tau_sweep.png')
 
@@ -154,7 +161,7 @@ def fig_variants(out):
     ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(0.05))
     decimal_axis(ax, 'x', 2)
     ax.set_xlabel('Test MAE farkı (pozitif = daha kötü); nokta ve %95 bootstrap aralığı, beş seed ortalaması')
-    ax.set_title('Şekil 3. Zarar metin ölçeklemesinden gelir; uyum sinyali rastgeleden iyi değil')
+    title(ax, 'Şekil 3. Zarar metin ölçeklemesinden gelir; uyum sinyali rastgeleden iyi değil')
     save(fig, out / 'fig3_variants_bootstrap.png')
 
 
@@ -197,8 +204,9 @@ def fig_mechanism(out):
     right.set_xlabel('Koşul (K8–K10: metin bozulur)')
     decimal_axis(right)
     right.set_title('(b) Metin bozuldukça ağırlığı artar', fontsize=9)
-    fig.suptitle('Şekil 4. Uyum kuralının mekanizması (baseline, test; ince çizgi/nokta = seed)', x=0.01, ha='left',
-                 fontsize=10, fontweight='bold', color=INK)
+    if SHOW_TITLES:
+        fig.suptitle('Şekil 4. Uyum kuralının mekanizması (baseline, test; ince çizgi/nokta = seed)', x=0.01, ha='left',
+                     fontsize=10, fontweight='bold', color=INK)
     fig.tight_layout()
     save(fig, out / 'fig4_mechanism.png')
 
@@ -218,7 +226,7 @@ def fig_cost(out):
     ax.set_ylabel('ms / örnek (batch 4)')
     ax.set_ylim(0, 12)
     decimal_axis(ax, 'y', 0)
-    ax.set_title('Şekil 5. Çıkarım maliyeti (seed 1111, K0, 6 tur)')
+    title(ax, 'Şekil 5. Çıkarım maliyeti (seed 1111, K0, 6 tur)')
     save(fig, out / 'fig5_inference_cost.png')
 
 
@@ -227,11 +235,14 @@ def main(argv=None):
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--output-dir', type=Path, default=HERE / 'figures')
     parser.add_argument('--replace', action='store_true', help='Overwrite existing figure files')
+    parser.add_argument('--with-titles', action='store_true', help='Draw titles inside the PNGs (report captions omit them)')
     cli = parser.parse_args(argv)
     out = cli.output_dir
     if out.exists() and any(out.iterdir()) and not cli.replace:
         raise SystemExit(f'Figur klasoru dolu; yeniden cizmek icin --replace verin: {out}')
     out.mkdir(exist_ok=True)
+    global SHOW_TITLES
+    SHOW_TITLES = cli.with_titles
     style()
     for draw in (fig_conditions, fig_tau, fig_variants, fig_mechanism, fig_cost):
         draw(out)
