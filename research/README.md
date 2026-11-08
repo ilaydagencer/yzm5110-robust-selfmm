@@ -56,7 +56,7 @@ py -3.10 -m venv ..\.venv-check
 | Konu | Yer |
 |---|---|
 | Rapordaki bütün tablolar | [report_tables/tables.md](report_tables/tables.md) |
-| Rapordaki figürler | [figures/](figures) |
+| Rapordaki figürler | [figures/](figures) (Türkçe), [figures_en/](figures_en) (İngilizce, `make_selfmm_figures.py --lang en`) |
 | Ön kayıt: hipotezler ve karar ölçütleri | [selfmm_diagnostics_protocol_v2.md](selfmm_diagnostics_protocol_v2.md) |
 | Tanı deneylerinin sonuçları ve komutları | [DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) |
 | v1 sonuç paketi (A/B/C/D, K0–K7, maliyet) | [results_package_v1/](results_package_v1) |

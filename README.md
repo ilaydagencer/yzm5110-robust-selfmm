@@ -17,7 +17,7 @@ Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 202
 |---|---|
 | Reader's guide: what was done, what was found, how to verify it | [research/README.md](research/README.md) |
 | Short project summary | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
-| Tables and figures used in the report | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures](research/figures) |
+| Tables and figures used in the report | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures_en](research/figures_en) (English), [research/figures](research/figures) (Turkish) |
 | Pre-registered diagnostic protocol and its results | [research/selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
 | Saved result packages | [research/results_package_v1](research/results_package_v1), [research/diagnostics_v2](research/diagnostics_v2) |
 
