@@ -1,40 +1,44 @@
-## YZM5110 araştırma projesi (bu fork)
+## YZM5110 Research Project: Sentiment Analysis with Self-MM under Missing and Noisy Modalities
 
-**Konu:** CMU-MOSI üzerinde Self-MM'in uyarlanmış yeniden üretimi ve tek modlu
-tahmin uyumunun, eksik veya gürültülü ses/görüntü girdilerinde füzyon ağırlığı
-olarak sınanması.
+This repository is built on a fork of the THUIAR/MMSA framework. This section
+describes the course project; the text further below is MMSA's original README.
 
-**Ana makale:** Yu ve ark., *Learning Modality-Specific Representations with
+**Topic:** An adapted reproduction of Self-MM on CMU-MOSI, and a test of whether the
+agreement between its unimodal predictions can serve as fusion weights when the
+audio or visual input is missing or noisy.
+
+**Main paper:** Yu et al., *Learning Modality-Specific Representations with
 Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 2021
 ([arXiv:2102.04830](https://arxiv.org/abs/2102.04830)).
 
-**Öğrenci:** İlayda Gençer · **Teslim sürümü:** tag `v1.0-submission` · **Çalışma dalı:** `yzm5110-selfmm`
+**Student:** İlayda Gençer · **Submitted version:** tag `v1.0-submission` · **Working branch:** `yzm5110-selfmm`
 
-| Aradığın | Yeri |
+| What you are looking for | Where |
 |---|---|
-| Okuyucu için kısa yol: ne yapıldı, ne bulundu, nasıl doğrulanır | [research/README.md](research/README.md) |
-| Kısa proje özeti | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
-| Rapordaki tablolar ve figürler | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures](research/figures) |
-| Önceden kaydedilmiş tanı protokolü ve sonuçları | [research/selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
-| Kaydedilmiş sonuç paketleri | [research/results_package_v1](research/results_package_v1), [research/diagnostics_v2](research/diagnostics_v2) |
+| Reader's guide: what was done, what was found, how to verify it | [research/README.md](research/README.md) |
+| Short project summary | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
+| Tables and figures used in the report | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures](research/figures) |
+| Pre-registered diagnostic protocol and its results | [research/selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
+| Saved result packages | [research/results_package_v1](research/results_package_v1), [research/diagnostics_v2](research/diagnostics_v2) |
 
-GPU, veri kümesi, checkpoint veya internet gerektirmeyen kontroller (depo kökünde,
-Python 3.10):
+Checks that need no GPU, dataset, checkpoint or internet connection (run from the
+repository root with Python 3.10):
 
 ```powershell
 py -3.10 -B .\research\run_cpu_checks.py
 ```
 
-Sonda `KONTROLLER_TAMAM` beklenir. Betik kaydedilmiş sonuç paketlerini, hipotez
-kararlarını, rapor tablolarını, bootstrap aralıklarını ve figürleri yeniden üretip
-karşılaştırır; isteğe bağlı paketi eksik olan kontrolü nedeniyle birlikte ATLANDI
-olarak bildirir. Gerçek eğitim ve değerlendirme için gereken CUDA ortamı, MOSI
-özellik dosyası ve checkpoint'ler [research/README.md](research/README.md) içinde
-açıklanmıştır.
+The last line should read `KONTROLLER_TAMAM` ("all checks done"). The script
+recomputes the saved result packages, hypothesis decisions, report tables, bootstrap
+intervals and figures and compares them with the committed files. Each check is
+reported as `[PASS]`, `[FAIL]` or `[SKIP]`; a check whose optional package is missing
+is skipped with an install hint and does not count as a failure. The CUDA environment,
+MOSI feature file and checkpoints needed for training and model evaluation are
+described in [research/README.md](research/README.md).
 
-Bu bölümün altındaki metin MMSA'nın değiştirilmemiş özgün README'sidir. MMSA,
-[MIT lisansı](LICENSE) ile dağıtılır; çerçeveyi kullanırken aşağıdaki atıf
-bölümüne uyulmalıdır.
+The text below this section is MMSA's unmodified original README. MMSA is released
+under the [MIT License](LICENSE); please follow its citation section when using the
+framework.
 
 ---
 

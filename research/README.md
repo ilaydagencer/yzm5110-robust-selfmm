@@ -32,8 +32,9 @@ py -3.10 -B .\research\run_cpu_checks.py
 ```
 
 Sonda `KONTROLLER_TAMAM` beklenir. Betik yedi kontrolü ayrı süreçlerde çalıştırır ve
-her birini GEÇTİ, KALDI ya da ATLANDI olarak bildirir. Eksik isteğe bağlı paket bir
-kontrolü başarısız saymaz; ATLANDI satırı neyin kurulacağını söyler.
+her birini `[PASS]` (geçti), `[FAIL]` (kaldı) ya da `[SKIP]` (atlandı) olarak bildirir.
+Eksik isteğe bağlı paket bir kontrolü başarısız saymaz; `[SKIP]` satırı neyin
+kurulacağını söyler.
 
 | Kontrol | Gereken |
 |---|---|
