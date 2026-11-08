@@ -71,6 +71,23 @@ edilmesi gerekir. Eğitimden baştan tekrar başka bir bilgisayarda doğrulanmam
 
 ## Doğrulama geçmişi
 
+8 Kasım 2026, temiz GitHub klonu: depo, geliştirme klasörlerinden ayrı boş bir
+klasöre `yzm5110-selfmm` dalından (commit `81c543d`) klonlandı; Git satır sonlarını
+Windows’taki gibi dönüştürdü (`core.autocrlf=true`). Üç ortam denendi:
+
+| Ortam | Kurulum | `run_cpu_checks.py` |
+|---|---|---|
+| Paketsiz Python 3.10 venv | Yok | 4 geçti, 3 atlandı (numpy, matplotlib, araştırma ortamı yok) |
+| Küçük kontrol ortamı | Yukarıdaki `.venv-check` komutları | 6 geçti, 1 atlandı (tanı öz-testi) |
+| Tam araştırma ortamı | Aşağıdaki “GPU ortamı” komutları aynen (torch 2.3.1+cu121, `pip check` temiz) | 6 geçti, 1 atlandı (figürler); `--python ..\.venv-check` ile figürler de geçti |
+
+Hiçbir kontrol kalmadı; yedi kontrolün her biri en az bir ortamda geçti. Aynı klonda,
+yerel veri ve checkpoint’lerle `diagnose_selfmm_weighting.py --check` (seed 1113) ve
+`evaluate_selfmm_portable_seed_test.py --check` (seed 1114) da geçti: klondaki kaynak
+kodu, CRLF dönüşümüne rağmen dondurulmuş SHA256 kayıtlarıyla eşleşir. Klonun çalışma
+ağacında hiçbir izlenen dosya değişmedi. Bu test GPU ile model çalıştırmayı veya
+eğitimden baştan tekrarı kapsamaz.
+
 19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
 **seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
 ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
