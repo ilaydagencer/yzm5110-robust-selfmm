@@ -37,6 +37,7 @@ BLUE, ORANGE = '#2a78d6', '#eb6834'
 INK, INK_2, INK_3, GRID = '#0b0b0b', '#52514e', '#8a8984', '#e4e3df'
 SURFACE = '#ffffff'
 SHOW_TITLES = False
+TRANSPARENT = False
 LANG = 'tr'
 TEXT = {
     'tr': dict(text_corr='metin bozulması', av_corr='ses/görüntü bozulması', c_label='C: A + τ=1 ağırlık',
@@ -46,7 +47,7 @@ TEXT = {
                v_c='τ=1 kuralı (C) − ağırlıksız', v_shuf='τ=1 kuralı − karıştırılmış ağırlık',
                v_text='Metin sabit, yalnız ses/görüntü ağırlıklı − ağırlıksız', v_t16='τ=16 − ağırlıksız',
                v_oracle='Oracle (ses+görüntü yok, K3) − ağırlıksız', v_k10='τ=1 kuralı − ağırlıksız, metin yok (K10)',
-               diff_axis='Test MAE farkı (pozitif = daha kötü); nokta ve %95 bootstrap aralığı, beş seed ortalaması',
+               diff_axis='Test MAE farkı (pozitif = daha kötü)' + chr(10) + 'nokta: beş seed ortalaması; çizgi: %95 bootstrap aralığı',
                equal='eşit ağırlık', strength='Metin başlığının tahmin şiddeti |ŷ_T| (n = {n})',
                text_weight='τ=1 metin ağırlığı', panel_a='(a) Güçlü metin tahmini bastırılır (K0)',
                panel_b='(b) Metin bozuldukça ağırlığı artar', cond_axis='Koşul (K8–K10: metin bozulur)',
@@ -111,7 +112,7 @@ def title(ax, text):
 
 
 def save(fig, path):
-    fig.savefig(path, dpi=200, bbox_inches='tight', metadata={'Software': None})
+    fig.savefig(path, dpi=200, bbox_inches='tight', metadata={'Software': None}, transparent=TRANSPARENT)
     plt.close(fig)
 
 
@@ -267,6 +268,7 @@ def main(argv=None):
     parser.add_argument('--output-dir', type=Path, help='Default: research/figures (tr) or research/figures_en (en)')
     parser.add_argument('--lang', choices=tuple(TEXT), default='tr', help='Label language; numbers are identical')
     parser.add_argument('--replace', action='store_true', help='Overwrite existing figure files')
+    parser.add_argument('--transparent', action='store_true', help='Transparent background, e.g. for slides')
     parser.add_argument('--with-titles', action='store_true', help='Draw titles inside the PNGs (report captions omit them)')
     cli = parser.parse_args(argv)
     global LANG
@@ -275,8 +277,8 @@ def main(argv=None):
     if out.exists() and any(out.iterdir()) and not cli.replace:
         raise SystemExit(f'Figur klasoru dolu; yeniden cizmek icin --replace verin: {out}')
     out.mkdir(exist_ok=True)
-    global SHOW_TITLES
-    SHOW_TITLES = cli.with_titles
+    global SHOW_TITLES, TRANSPARENT
+    SHOW_TITLES, TRANSPARENT = cli.with_titles, cli.transparent
     style()
     for draw in (fig_conditions, fig_tau, fig_variants, fig_mechanism, fig_cost):
         draw(out)

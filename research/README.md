@@ -1,49 +1,58 @@
-# YZM5110 Self-MM araştırma çalışması
+# YZM5110 Self-MM research project
 
-İlayda Gençer — CMU-MOSI üzerinde Self-MM’in uyarlanmış yeniden üretimi ve
-tek modlu tahmin uyumunun eksik/gürültülü modalitelerde füzyon ağırlığı olarak
-incelenmesi. Kod tabanı [MMSA](https://github.com/thuiar/MMSA), temel çalışma
-[Self-MM](https://arxiv.org/abs/2102.04830)’dir.
+İlayda Gençer — an adapted reproduction of Self-MM on CMU-MOSI, and a study of
+whether the agreement between its unimodal predictions can serve as a fusion
+weight when modalities are missing or noisy. The code base is
+[MMSA](https://github.com/thuiar/MMSA); the base paper is
+[Self-MM](https://arxiv.org/abs/2102.04830).
 
-## Okuyucu için kısa yol
+## Short path for the reader
 
-**Ne yapıldı?** Self-MM, CMU-MOSI’de 4 GB GPU’ya uyarlanmış ayarlarla beş eğitim
-seed’i kullanılarak yeniden üretildi. Tek modlu tahmin uyumuna dayalı ek
-parametresiz füzyon ağırlığı (C/D) ve eğitimde ses/görüntü dropout’u (B) on bir
-koşulda (K0–K10) sınandı. Olumsuz sonucun nedeni, sonuçlardan önce commit edilen
-bir tanı protokolüyle ([protokol v2](selfmm_diagnostics_protocol_v2.md)) ayrıştırıldı.
+**What was done?** Self-MM was reproduced on CMU-MOSI with settings adapted to a
+4 GB GPU, using five training seeds. A parameter-free fusion weight based on the
+agreement of the unimodal predictions (C/D) and audio/video dropout during
+training (B) were tested in eleven conditions (K0–K10). The cause of the negative
+result was separated with a diagnostic protocol committed before the results
+([protocol v2](selfmm_diagnostics_protocol_v2.md), pre-registered Turkish original;
+[English translation](selfmm_diagnostics_protocol_v2_en.md)).
 
-**Ne bulundu?**
+**What was found?**
 
-- Temiz test MAE’si 0,7240 ± 0,0146 (makalede 0,713); Non0 accuracy makalenin 2,08 yüzde puan altında.
-- τ=1 ağırlıklandırması K0–K7’nin her koşulunda ve her seed’de MAE’yi artırdı
-  (K0’da +0,118, %95 bootstrap aralığı [+0,091; +0,148]) ve çıkarım süresini yaklaşık
-  iki katına çıkardı. Dropout’un küçük validation kazancı testte korunmadı.
-- Protokol v2’nin altı kararının altısı da önceden yazılan beklentiyle uyuştu ve testte
-  tekrarlandı: zarar baskın metin bloğunun ölçeklenmesinden gelir; uyum sinyali rastgele
-  karıştırılmış ağırlıklardan iyi değildir; ses/görüntü bozulmasında oracle ağırlık bile
-  iyileşme sağlamaz; metin bozulduğunda kural metne daha çok ağırlık verir.
+- Clean test MAE 0.7240 ± 0.0146 (0.713 in the paper); Non0 accuracy 2.08 percentage points below the paper.
+- τ=1 weighting increased MAE in every K0–K7 condition and every seed
+  (+0.118 at K0, 95% bootstrap interval [+0.091; +0.148]) and roughly doubled
+  inference time. The small validation gain of dropout did not carry over to test.
+- All six decisions of protocol v2 matched the expectation written beforehand and
+  replicated on test: the harm comes from rescaling the dominant text block; the
+  agreement signal is no better than randomly shuffled weights; even oracle weights
+  do not help under audio/video corruption; when text is corrupted, the rule gives
+  text more weight.
 
-**Tek komutla kontrol.** GPU, veri kümesi, checkpoint veya internet gerekmez. Depo
-kökünde (bu klasörün bir üstü, `MMSA`) çalıştırın:
+**Report and presentation.** The submitted report is
+[report/Gencer_YZM5110_Research_Report.docx](report) (the PDF export sits next to it);
+the slides are in the same folder.
+
+**One-command check.** No GPU, dataset, checkpoint or internet connection is needed.
+Run it from the repository root (the folder above this one, `MMSA`):
 
 ```powershell
 py -3.10 -B .\research\run_cpu_checks.py
 ```
 
-Sonda `KONTROLLER_TAMAM` beklenir. Betik yedi kontrolü ayrı süreçlerde çalıştırır ve
-her birini `[PASS]` (geçti), `[FAIL]` (kaldı) ya da `[SKIP]` (atlandı) olarak bildirir.
-Eksik isteğe bağlı paket bir kontrolü başarısız saymaz; `[SKIP]` satırı neyin
-kurulacağını söyler.
+The last line should be `ALL_CHECKS_PASSED`. The script runs seven checks in
+separate processes and reports each as `[PASS]`, `[FAIL]` or `[SKIP]`. A missing
+optional package does not fail a check; the `[SKIP]` line says what to install.
+After each `[PASS]` the script repeats the status line of the checked script; some
+of these scripts print Turkish ASCII tokens (see [Language note](#language-note)).
 
-| Kontrol | Gereken |
+| Check | Needs |
 |---|---|
-| v1 sonuç paketi, iki protokol v2 özeti, rapor tabloları | Yalnız Python 3.10 standart kütüphanesi |
-| Bootstrap aralıkları (byte düzeyinde) | numpy 1.26.4 |
-| Figürlerin geçici klasöre yeniden çizimi | [requirements-figures.txt](requirements-figures.txt) |
-| Tanı betiği öz-testi (sahte modelle CPU hattı) | Aşağıdaki GPU ortamı bölümündeki araştırma ortamı |
+| v1 result package, the two protocol v2 summaries, report tables (Turkish and English) | Python 3.10 standard library only |
+| Bootstrap intervals (byte for byte) | numpy 1.26.4 |
+| Figures redrawn into a temporary folder, Turkish and English labels | [requirements-figures.txt](requirements-figures.txt) |
+| Diagnostic script self-test (CPU pipeline with a fake model) | The research environment in the GPU environment section below |
 
-İlk altı kontrolü tek seferde çalıştırmak için ayrı bir venv yeterlidir:
+A separate venv is enough to run the first six checks in one go:
 
 ```powershell
 py -3.10 -m venv ..\.venv-check
@@ -51,84 +60,115 @@ py -3.10 -m venv ..\.venv-check
 & '..\.venv-check\Scripts\python.exe' -B '.\research\run_cpu_checks.py'
 ```
 
-**Nerede ne var?**
+**Where is what?**
 
-| Konu | Yer |
+| Topic | Location |
 |---|---|
-| Rapordaki bütün tablolar | [report_tables/tables.md](report_tables/tables.md) |
-| Rapordaki figürler | [figures/](figures) (Türkçe), [figures_en/](figures_en) (İngilizce, `make_selfmm_figures.py --lang en`) |
-| Ön kayıt: hipotezler ve karar ölçütleri | [selfmm_diagnostics_protocol_v2.md](selfmm_diagnostics_protocol_v2.md) |
-| Tanı deneylerinin sonuçları ve komutları | [DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) |
-| v1 sonuç paketi (A/B/C/D, K0–K7, maliyet) | [results_package_v1/](results_package_v1) |
-| v2 paketleri, sıkıştırılmış test tahminleri, bootstrap | [diagnostics_v2/](diagnostics_v2) |
-| GPU gerektiren checkpoint tekrarları | [PORTABLE_MODEL.md](PORTABLE_MODEL.md), [PORTABLE_K0_K7.md](PORTABLE_K0_K7.md), [PORTABLE_SEED_TEST.md](PORTABLE_SEED_TEST.md), [CLEAN_ENVIRONMENT.md](CLEAN_ENVIRONMENT.md) |
-| Kurulum, sürümler, veri erişimi | Bu dosyada aşağıda |
+| Report (English) | [report/](report) |
+| All report tables | [report_tables/tables_en.md](report_tables/tables_en.md) (English); [tables.md](report_tables/tables.md) has the same numbers with Turkish labels |
+| Report figures | [figures_en/](figures_en) (English, `make_selfmm_figures.py --lang en`); [figures/](figures) has Turkish labels |
+| Pre-registration: hypotheses and decision criteria | [selfmm_diagnostics_protocol_v2.md](selfmm_diagnostics_protocol_v2.md) (Turkish original), [English translation](selfmm_diagnostics_protocol_v2_en.md) |
+| Results and commands of the diagnostic experiments | [DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) |
+| v1 result package (A/B/C/D, K0–K7, cost) | [results_package_v1/](results_package_v1) |
+| v2 packages, compressed test predictions, bootstrap | [diagnostics_v2/](diagnostics_v2) |
+| Checkpoint re-runs that need a GPU | [PORTABLE_MODEL.md](PORTABLE_MODEL.md), [PORTABLE_K0_K7.md](PORTABLE_K0_K7.md), [PORTABLE_SEED_TEST.md](PORTABLE_SEED_TEST.md), [CLEAN_ENVIRONMENT.md](CLEAN_ENVIRONMENT.md) (Turkish records, summarized below) |
+| Setup, versions, data access | Further down in this file |
 
-**Ek kaynak gerektiren sonuçlar.** Eğitim ve model değerlendirmeleri CUDA’lı bir ortam,
-lisans koşullarıyla ayrıca indirilen MOSI özellik dosyası ve on checkpoint (beş seed ×
-baseline/dropout) gerektirir. Checkpoint’ler boyutları nedeniyle depoda yoktur; bu
-sonuçlar depodaki kayıtlarla doğrulanır, sıfırdan yeniden üretmek için eğitimin tekrar
-edilmesi gerekir. Eğitimden baştan tekrar başka bir bilgisayarda doğrulanmamıştır.
+**Results that need extra resources.** Training and model evaluation need a CUDA
+environment, the MOSI feature file downloaded separately under its licence terms,
+and ten checkpoints (five seeds × baseline/dropout). The checkpoints are not in the
+repository because of their size; these results are verified against the records in
+the repository, and reproducing them from scratch requires repeating the training.
+A full re-run from training on another computer has not been verified.
 
-## Doğrulama geçmişi
+## Language note
 
-8 Kasım 2026, temiz GitHub klonu: depo, geliştirme klasörlerinden ayrı boş bir
-klasöre `yzm5110-selfmm` dalından (commit `81c543d`) klonlandı; Git satır sonlarını
-Windows’taki gibi dönüştürdü (`core.autocrlf=true`). Üç ortam denendi:
+The course language is English, and all submission documents are in English. Some
+files were written in Turkish during the work and are kept unchanged, either because
+their SHA-256 is recorded elsewhere (changing them would break the evidence chain) or
+because they are dated historical records:
 
-| Ortam | Kurulum | `run_cpu_checks.py` |
+| File | Content in one line |
+|---|---|
+| [selfmm_diagnostics_protocol_v2.md](selfmm_diagnostics_protocol_v2.md) | Pre-registered diagnostic protocol (hash recorded in the run manifests); see the [English translation](selfmm_diagnostics_protocol_v2_en.md) |
+| [selfmm_corruption_protocol_v1.md](selfmm_corruption_protocol_v1.md) | The fixed corruption protocol of v1 (conditions K0–K7, seeds, masks, noise scale), summarized in the table below |
+| [results_package_v1/DATA_DICTIONARY.md](results_package_v1/DATA_DICTIONARY.md) | Column definitions of the v1 result package (hash-checked part of the package) |
+| [PORTABLE_MODEL.md](PORTABLE_MODEL.md) | How to re-run seed 1111 K0 A/B/C/D inference from explicit file paths; 16/16 metrics matched |
+| [PORTABLE_K0_K7.md](PORTABLE_K0_K7.md) | The same for seed 1111 on all K0–K7 conditions; 128/128 metrics, 16/16 inputs matched |
+| [PORTABLE_SEED_TEST.md](PORTABLE_SEED_TEST.md) | The same for seeds 1112–1115 with one shared entry point; all passed |
+| [CLEAN_ENVIRONMENT.md](CLEAN_ENVIRONMENT.md) | Seed 1111 K0–K7 GPU re-run in a fresh venv from a separate source copy; byte-identical outputs |
+| [report_tables/tables.md](report_tables/tables.md), [figures/](figures) | Turkish-labelled tables and figures; the English versions have identical numbers |
+
+The older scripts print Turkish ASCII status tokens. The ones you will see:
+`PAKET_KONTROLU_BASARILI` (package check passed), `OZET_DOGRULANDI` (summary verified),
+`TABLOLAR_DOGRULANDI` (tables verified), `BOOTSTRAP_DOGRULANDI` (bootstrap verified),
+`FIGURLER_YAZILDI` (figures written), `TANI_OZTESTLERI_BASARILI` (diagnostic self-tests
+passed), `OZETLER_YENIDEN_HESAPLANDI` (summaries recomputed). Error messages start with
+`HATA` (error).
+
+## Verification history
+
+8 November 2026, fresh GitHub clone: the repository was cloned from the
+`yzm5110-selfmm` branch (commit `81c543d`) into an empty folder separate from the
+development folders; Git converted line endings as on Windows (`core.autocrlf=true`).
+Three environments were tried:
+
+| Environment | Setup | `run_cpu_checks.py` |
 |---|---|---|
-| Paketsiz Python 3.10 venv | Yok | 4 geçti, 3 atlandı (numpy, matplotlib, araştırma ortamı yok) |
-| Küçük kontrol ortamı | Yukarıdaki `.venv-check` komutları | 6 geçti, 1 atlandı (tanı öz-testi) |
-| Tam araştırma ortamı | Aşağıdaki “GPU ortamı” komutları aynen (torch 2.3.1+cu121, `pip check` temiz) | 6 geçti, 1 atlandı (figürler); `--python ..\.venv-check` ile figürler de geçti |
+| Python 3.10 venv without packages | None | 4 passed, 3 skipped (no numpy, matplotlib or research environment) |
+| Small check environment | The `.venv-check` commands above | 6 passed, 1 skipped (diagnostic self-test) |
+| Full research environment | The “GPU environment” commands below, as written (torch 2.3.1+cu121, `pip check` clean) | 6 passed, 1 skipped (figures); with `--python ..\.venv-check` the figures passed too |
 
-Hiçbir kontrol kalmadı; yedi kontrolün her biri en az bir ortamda geçti. Aynı klonda,
-yerel veri ve checkpoint’lerle `diagnose_selfmm_weighting.py --check` (seed 1113) ve
-`evaluate_selfmm_portable_seed_test.py --check` (seed 1114) da geçti: klondaki kaynak
-kodu, CRLF dönüşümüne rağmen dondurulmuş SHA256 kayıtlarıyla eşleşir. Klonun çalışma
-ağacında hiçbir izlenen dosya değişmedi. Bu test GPU ile model çalıştırmayı veya
-eğitimden baştan tekrarı kapsamaz.
+No check failed; each of the seven checks passed in at least one environment. In the
+same clone, with local data and checkpoints, `diagnose_selfmm_weighting.py --check`
+(seed 1113) and `evaluate_selfmm_portable_seed_test.py --check` (seed 1114) also
+passed: the source code in the clone matches the frozen SHA256 records despite the
+CRLF conversion. No tracked file changed in the clone’s working tree. This test does
+not cover running models on a GPU or repeating training. At that commit the runner
+printed Turkish labels and ended with `KONTROLLER_TAMAM`; it now prints English labels
+and ends with `ALL_CHECKS_PASSED`, with the same seven checks.
 
-19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
-**seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
-ve 2/2 train istatistiği kontrolü geçti. Önceki taşınabilir seed 1111 çalışmasının
-sekiz çıktı dosyasıyla bayt düzeyinde eşleşme doğrulandı; 10976 satırdaki
-tahmin/etiket/ağırlık farkı sıfırdır.
-[Kurulum, sonuç ve kapsam](CLEAN_ENVIRONMENT.md),
-[küçük doğrulama kaydı](verification/clean_environment_seed1111_k0_k7_v1.json).
-Diğer dört seed'in yeni venv'de tekrarı, başka bilgisayar, public Git checkout
-ve eğitimden baştan tekrar bu doğrulamanın kapsamına girmez.
+19 October 2026: on the same computer, with a new isolated venv and a separate source
+copy, the **seed 1111 K0–K7 real GPU re-run was completed**. 128/128 metric, 16/16
+input and 2/2 train-statistic checks passed. A byte-level match with the eight output
+files of the earlier portable seed 1111 run was verified; the prediction/label/weight
+difference over 10976 rows is zero.
+[Setup, result and scope](CLEAN_ENVIRONMENT.md),
+[short verification record](verification/clean_environment_seed1111_k0_k7_v1.json).
+Re-running the other four seeds in a new venv, another computer, a public Git checkout
+and a re-run from training are outside the scope of this verification.
 
-## Hızlı kontrol
+## Quick check
 
-Komutları deponun ana klasöründe, yani `research` klasörünün bir üstünde çalıştır.
-Python 3.10 kurulu bir bilgisayarda:
+Run the commands in the repository root folder, i.e. one level above the `research`
+folder. On a computer with Python 3.10 installed:
 
 ```powershell
 py -3.10 -I -S -B '.\research\verify_results_package.py' --check
 ```
 
-Mevcut proje venv’iyle aynı işlem:
+The same with the existing project venv:
 
 ```powershell
 & '..\.venv\Scripts\python.exe' -I -S -B `
     '.\research\verify_results_package.py' --check
 ```
 
-`-I -S` kullanıcı/site paketlerini yüklemeden çalıştırır; `-B` bytecode dosyası
-yazılmasını engeller. Denetim yalnız Python standart kütüphanesini kullanır.
-Sonuçta `PAKET_KONTROLU_BASARILI` görülmelidir. `--check` dosya yazmaz.
+`-I -S` runs without loading user/site packages; `-B` prevents writing bytecode
+files. The check uses only the Python standard library. `PAKET_KONTROLU_BASARILI`
+should appear at the end. `--check` writes no files.
 
-Kontrol, 19 paket dosyasının SHA-256/boyut/satır sayısını; iki bölmenin
-160’ar seed/yöntem/koşul satırını; ortalama, örneklem SS ve eşleştirilmiş
-farklarını; kaynak ölçümünün 4.128 batch ve 24 tur kaydını denetler.
-Örnek tahminlerinden MAE/F1 hesaplamaz; eski checkpoint veya veri hash’lerini
-yerelde yeniden doğrulamaz. Kaydedilmiş doğruluk bayrakları tarihsel kanıttır.
+The check verifies the SHA-256/size/row count of the 19 package files; the 160
+seed/method/condition rows of each of the two splits; the means, sample SDs and paired
+differences; and the 4,128 batch and 24 round records of the resource measurement. It
+does not compute MAE/F1 from sample predictions and does not re-verify old checkpoint
+or data hashes locally. The recorded correctness flags are historical evidence.
 
-## Özetleri yeniden üretme
+## Recomputing the summaries
 
-Kontrol geçtikten sonra aşağıdaki komut, aynı hesapları yeni klasöre 11 CSV
-olarak yazar. Orijinal paket değişmez. Var olan hedef üzerine yazılmaz.
+After the check passes, the command below writes the same computations to a new folder
+as 11 CSV files. The original package does not change. An existing target is not
+overwritten.
 
 ```powershell
 if (-not (Test-Path -LiteralPath '..\runs')) {
@@ -140,13 +180,13 @@ if (-not (Test-Path -LiteralPath '..\runs')) {
     --output-dir '..\runs\selfmm_public_summary_recheck_v1'
 ```
 
-Venv’i olmayan okuyucu aynı komutta başlatıcı olarak `py -3.10` kullanabilir.
-`OZETLER_YENIDEN_HESAPLANDI` mesajını bekle. Hedef varsa önceki sonucu silmek
-yerine yeni bir klasör adı seç. Yeniden hesaplanan sayılar karşılaştırma
-toleransı içinde eşleşir; CSV satır sırası veya sayı yazımı nedeniyle dosya
-byte’larının orijinal CSV ile aynı olması gerekmez.
+A reader without the venv can use `py -3.10` as the launcher in the same command.
+Wait for the `OZETLER_YENIDEN_HESAPLANDI` message. If the target exists, choose a new
+folder name instead of deleting the earlier result. The recomputed numbers match
+within the comparison tolerance; because of CSV row order or number formatting, the
+file bytes need not be identical to the original CSV.
 
-## Paket içeriği ve sonuçları okuma
+## Package contents and reading the results
 
 ```text
 research/
@@ -161,19 +201,19 @@ research/
     protocol.json
     provenance.json
     DATA_DICTIONARY.md
-    validation/            # Beş seed validation, 5 CSV
-    evaluation_test/       # Beş seed test, 5 CSV
-    inference/             # Seed 1111 K0 kaynak ölçümü, 6 CSV
+    validation/            # Five-seed validation, 5 CSV
+    evaluation_test/       # Five-seed test, 5 CSV
+    inference/             # Seed 1111 K0 resource measurement, 6 CSV
 ```
 
-`evaluation_test` adı, depo kökündeki `test*` ignore kuralının sonuçları
-gizlememesi için kullanılır. Ayrıntılı kolon açıklamaları
-[veri sözlüğündedir](results_package_v1/DATA_DICTIONARY.md).
-`.gitattributes`, hash denetimli paket ve kontrol betiğinde Git’in otomatik
-LF/CRLF dönüşümünü kapatır. Böylece başka bilgisayardaki checkout dosya
-özetlerini sırf satır sonu dönüşümü nedeniyle değiştirmez; bu dosya da commit’e eklenir.
+The name `evaluation_test` is used so that the `test*` ignore rule in the repository
+root does not hide the results. Detailed column descriptions are in the
+[data dictionary](results_package_v1/DATA_DICTIONARY.md) (Turkish).
+`.gitattributes` turns off Git’s automatic LF/CRLF conversion for the hash-checked
+package and check script, so that a checkout on another computer does not change the
+file digests merely by converting line endings; this file is committed as well.
 
-Örnek görüntüleme:
+Example view:
 
 ```powershell
 Import-Csv '.\research\results_package_v1\evaluation_test\summary_metrics.csv' |
@@ -181,127 +221,134 @@ Import-Csv '.\research\results_package_v1\evaluation_test\summary_metrics.csv' |
     Format-Table method, MAE_mean, MAE_sd, Non0_acc_2_mean -AutoSize
 ```
 
-| K0 yöntemi | Validation MAE ± SS | Test MAE ± SS |
+| K0 method | Validation MAE ± SD | Test MAE ± SD |
 |---|---:|---:|
-| A | 0,7168 ± 0,0202 | 0,7240 ± 0,0146 |
-| B | 0,7049 ± 0,0117 | 0,7574 ± 0,0244 |
-| C | 0,8665 ± 0,0513 | 0,8424 ± 0,0412 |
-| D | 0,9293 ± 0,0667 | 0,9163 ± 0,0747 |
+| A | 0.7168 ± 0.0202 | 0.7240 ± 0.0146 |
+| B | 0.7049 ± 0.0117 | 0.7574 ± 0.0244 |
+| C | 0.8665 ± 0.0513 | 0.8424 ± 0.0412 |
+| D | 0.9293 ± 0.0667 | 0.9163 ± 0.0747 |
 
-Kaynak: [validation](results_package_v1/validation/summary_metrics.csv) ve
-[test](results_package_v1/evaluation_test/summary_metrics.csv) özetleri.
-MAE düşük olduğunda iyidir. Accuracy/F1 CSV’de 0–1 ölçeğindedir.
-`Non0_acc_pp_delta` zaten yüzde puandır. SS, beş eğitim seed’i üzerinde
-ddof=1 ile hesaplanır. Eşleştirilmiş fark önce aynı seed içinde alınır.
-SS güven aralığı değildir; sekiz ilişkili koşul sekiz bağımsız tekrar sayılmaz.
+Source: the [validation](results_package_v1/validation/summary_metrics.csv) and
+[test](results_package_v1/evaluation_test/summary_metrics.csv) summaries.
+Lower MAE is better. Accuracy/F1 are on a 0–1 scale in the CSV.
+`Non0_acc_pp_delta` is already in percentage points. The SD is computed over the five
+training seeds with ddof=1. A paired difference is first taken within the same seed.
+The SD is not a confidence interval; eight related conditions do not count as eight
+independent repetitions.
 
-Kaynak ölçümünde A/B/C/D süreleri sırasıyla 4,9833 / 5,0731 / 10,1926 /
-10,3496 ms/örnektir. Bunlar batch 4 üzerinden amortize maliyettir;
-batch=1 gecikmesi değildir. C/A=2,0454 ve D/B=2,0402, altı tur içindeki
-oranların ortalamasıdır. Yükleme, aktarım, ısınma ve kontrol geçişleri süreye
-dahil değildir. Bellek PyTorch allocated/reserved ölçüsüdür; toplam sistem
-GPU belleği değildir. Kaynak SS’si zamanlama tekrarlarına aittir.
-[Kaynak özeti](results_package_v1/inference/summary.csv),
-[eşleştirilmiş maliyet](results_package_v1/inference/paired_summary.csv).
+In the resource measurement, the A/B/C/D times are 4.9833 / 5.0731 / 10.1926 /
+10.3496 ms per sample. These are costs amortised over batches of 4, not batch-1
+latency. C/A=2.0454 and D/B=2.0402 are means of the ratios within six rounds. Loading,
+transfer, warm-up and check passes are not included in the time. Memory is the PyTorch
+allocated/reserved measure, not total system GPU memory. The resource SD belongs to
+the timing repetitions.
+[Resource summary](results_package_v1/inference/summary.csv),
+[paired cost](results_package_v1/inference/paired_summary.csv).
 
-## Yöntemler ve koşullar
+## Methods and conditions
 
-| Yöntem | Eğitim | Çıkarım |
+| Method | Training | Inference |
 |---|---|---|
-| A | Standart Self-MM | Özgün füzyon, tek forward |
-| B | Yalnız eğitimde örnek başına bağımsız %20 ses/%20 görüntü giriş dropout’u | Özgün füzyon, tek forward |
-| C | A’nın aynı checkpoint’i | Uyum ağırlığı ile iki forward |
-| D | B’nin aynı checkpoint’i | Uyum ağırlığı ile iki forward |
+| A | Standard Self-MM | Original fusion, one forward pass |
+| B | Independent 20% audio / 20% video input dropout per sample, in training only | Original fusion, one forward pass |
+| C | The same checkpoint as A | Two forward passes with the agreement weight |
+| D | The same checkpoint as B | Two forward passes with the agreement weight |
 
-Metin ve uzunluklar korunur. Dropout değerlendirmede kapalıdır. Üç yardımcı
-tahmin için d_m = abs(y_m − mean(y_other)); w = 3 × softmax(−d/τ), τ=1.
-Ağırlıklar ilk füzyon katmanından önce temsil bloklarına uygulanır.
-Toplamları 3’tür; olasılık veya kalibre güven değeri değildir. Eksik girdinin
-ağırlığı otomatik sıfır olmaz. Yeni öğrenilen parametre eklenmez.
+Text and lengths are kept. Dropout is off during evaluation. For the three auxiliary
+predictions, d_m = abs(y_m − mean(y_other)); w = 3 × softmax(−d/τ), τ=1. The weights
+are applied to the representation blocks before the first fusion layer. They sum to 3;
+they are not probabilities or calibrated confidence values. A missing input does not
+automatically get zero weight. No newly learned parameters are added.
 
-| Koşul | Ses/görüntü işlemi |
+| Condition | Audio/video operation |
 |---|---|
-| K0 | Temiz girdiler |
-| K1 | Tam ses girdisi sıfır |
-| K2 | Tam görüntü girdisi sıfır |
-| K3 | İkisi de sıfır |
-| K4/K5/K6 | Geçerli zaman adımlarında bağımsız %30/%50/%70 maskeleme; oranlar arasında iç içe maskeler |
-| K7 | Train geçerli adımlarından bulunan özellik std’sinin 0,5 katı ölçekli Gauss gürültüsü |
+| K0 | Clean inputs |
+| K1 | Whole audio input zero |
+| K2 | Whole video input zero |
+| K3 | Both zero |
+| K4/K5/K6 | Independent 30%/50%/70% masking of valid time steps; masks nested across rates |
+| K7 | Gaussian noise scaled to 0.5 × the feature std found on valid train steps |
 
-K4–K7’de padding korunur. Ses/görüntü RNG’leri bağımsızdır; aynı bölme/koşul
-girdileri bütün modellerde ortaktır. Eğitim seed’leri 1111–1115, bozulma
-seed’i 1111’dir. Validation/test RNG alanları ayrıdır. Train/valid/test
-1284/229/686; Non0 valid/test 216/656 örnektir.
+Padding is kept in K4–K7. The audio and video RNGs are independent; the inputs of the
+same split/condition are shared by all models. The training seeds are 1111–1115 and
+the corruption seed is 1111. The validation and test RNG spaces are separate.
+Train/valid/test are 1284/229/686 samples; Non0 valid/test are 216/656 samples.
+Protocol v2 adds text corruption with `[UNK]`: K8 (30%), K9 (60%), K10 (all tokens).
 
-## Tanı deneyleri: ağırlıklandırma neden işe yaramadı? (protokol v2)
+## Diagnostic experiments: why did the weighting not work? (protocol v2)
 
-Yukarıdaki sonuçlar τ=1 kuralının zararlı olduğunu gösterir, nedenini göstermez.
-[Protokol v2](selfmm_diagnostics_protocol_v2.md), aynı 10 checkpoint üzerinde
-yalnız çıkarımla şu soruları ayırır: τ taraması (ölçekleme miktarı), metin
-ağırlığı sabit varyant (baskın metin bloğu), örnekler arası karıştırılmış ağırlık
-(sinyal içeriği), bilinen eksik modaliteye sıfır veren oracle (iyileşme alanı)
-ve `[UNK]` ile metin bozulması K8–K10 (baskın modalite bozulduğunda). Hipotezler
-ve karar ölçütleri sonuçlardan önce yazılıp commit edilmiştir; τ yalnız
-validation'da seçilir, test bir kez çalışır.
-[Çalıştırma yönergesi](DIAGNOSTICS_V2.md).
+The results above show that the τ=1 rule is harmful, not why.
+[Protocol v2](selfmm_diagnostics_protocol_v2.md) ([English translation](selfmm_diagnostics_protocol_v2_en.md))
+separates the following questions on the same 10 checkpoints, with inference only:
+a τ sweep (amount of rescaling), a variant with the text weight fixed (the dominant
+text block), weights shuffled across samples (signal content), an oracle that gives
+zero weight to the known missing modality (room to improve), and text corruption
+K8–K10 with `[UNK]` (when the dominant modality is corrupted). The hypotheses and
+decision criteria were written and committed before the results; τ is selected on
+validation only, and the test runs once. [How to run it](DIAGNOSTICS_V2.md).
 
-Validation sonucu (beş seed): altı karar da önceden yazılan beklentiyle aynı çıktı.
-Zarar, baskın metin bloğunun ölçeklenmesinden gelir (metin ağırlığı sabit
-tutulunca kaybolur); uyum sinyali rastgele karıştırılmış ağırlıklardan daha iyi
-değildir; ses/görüntü bozulmasında oracle bile iyileşme sağlamaz; metin
-bozulduğunda kural yine yardımcı olmaz. Seçilen τ\* = 16 (ağırlıksıza en yakın).
-Test, validation paketi commit edildikten sonra bir kez çalıştı; altı kararın altısı
-testte de tekrarlandı.
-[Validation paketi](diagnostics_v2/validation), [test paketi](diagnostics_v2/evaluation_test),
-[ayrıntılı tablolar](DIAGNOSTICS_V2.md#validation-sonucu-25-ekim-2026-beş-seed-baseline-checkpoint).
+Validation result (five seeds): all six decisions came out as written beforehand. The
+harm comes from rescaling the dominant text block (it disappears when the text weight
+is held fixed); the agreement signal is no better than randomly shuffled weights; even
+the oracle gives no improvement under audio/video corruption; and the rule does not
+help when text is corrupted either. The selected τ\* = 16 (closest to unweighted). The
+test ran once, after the validation package had been committed; all six decisions
+replicated on test.
+[Validation package](diagnostics_v2/validation), [test package](diagnostics_v2/evaluation_test),
+[detailed tables](DIAGNOSTICS_V2.md#validation-result-25-october-2026-five-seeds-baseline-checkpoint).
 
-## Belirsizlik, rapor tabloları ve figürler
+## Uncertainty, report tables and figures
 
-Rapordaki bütün tablo ve figürler depodaki dosyalardan betikle üretilir; GPU,
-veri kümesi veya checkpoint gerekmez. Komutlar depo kökünde çalışır.
+All tables and figures in the report are produced by scripts from files in the
+repository; no GPU, dataset or checkpoint is needed. The commands run in the repository
+root.
 
-| Çıktı | Betik | Girdi |
+| Output | Script | Input |
 |---|---|---|
-| [Sıkıştırılmış test tahminleri](diagnostics_v2/predictions) (2,97 MB, kayıpsız float32) | `export_selfmm_predictions.py` | `runs/` içindeki beş test koşusu (bir kez çalıştırıldı) |
-| [Bootstrap aralıkları](diagnostics_v2/bootstrap/bootstrap_test.csv) | `bootstrap_selfmm_diagnostics.py` | Sıkıştırılmış test tahminleri |
-| [Rapor tabloları](report_tables/tables.md) | `make_selfmm_report_tables.py` | Sonuç paketleri, bootstrap, [eğitim kayıtları](report_tables/training_resources.csv), [yayımlanan skorlar](configs/published_reference.json) |
-| [Figürler](figures) | `make_selfmm_figures.py` | Sonuç paketleri, bootstrap, sıkıştırılmış tahminler |
+| [Compressed test predictions](diagnostics_v2/predictions) (2.97 MB, lossless float32) | `export_selfmm_predictions.py` | The five test runs in `runs/` (run once) |
+| [Bootstrap intervals](diagnostics_v2/bootstrap/bootstrap_test.csv) | `bootstrap_selfmm_diagnostics.py` | Compressed test predictions |
+| [Report tables](report_tables/tables_en.md) | `make_selfmm_report_tables.py --lang en` (Turkish: without `--lang`) | Result packages, bootstrap, [training records](report_tables/training_resources.csv), [published scores](configs/published_reference.json) |
+| [Figures](figures_en) | `make_selfmm_figures.py --lang en` (Turkish: without `--lang`) | Result packages, bootstrap, compressed predictions |
 
-Bootstrap, 686 test örneğini 2000 kez yeniden örnekler; aynı örnek kümesi bütün
-seed, yöntem ve koşullara uygulanır (eşleştirilmiş). İstatistik beş seed ortalamalı
-farktır; aralık %95 yüzdeliktir. Seed SS eğitim değişkenliğini, bootstrap aralığı
-test örneklemesini gösterir; ikisi birlikte raporlanır.
+The bootstrap resamples the 686 test samples 2000 times; the same sample set is
+applied to all seeds, methods and conditions (paired). The statistic is the five-seed
+mean difference; the interval is the 95% percentile interval. The seed SD shows
+training variability and the bootstrap interval test sampling; both are reported.
 
-Yeniden doğrulama (dosya yazmaz):
+Re-verification (writes no files):
 
 ```powershell
 & '..\.venv\Scripts\python.exe' -B '.\research\bootstrap_selfmm_diagnostics.py' --verify '.\research\diagnostics_v2\bootstrap'
 & '..\.venv\Scripts\python.exe' -I -S -B '.\research\make_selfmm_report_tables.py' --verify
 ```
 
-`BOOTSTRAP_DOGRULANDI` ve `TABLOLAR_DOGRULANDI` beklenir. Bootstrap doğrulaması
-byte düzeyindedir ve numpy 1.26.4'e bağlıdır.
+Expect `BOOTSTRAP_DOGRULANDI` and `TABLOLAR_DOGRULANDI`. The bootstrap verification is
+byte-level and depends on numpy 1.26.4. The table verification checks both
+`tables.md` and `tables_en.md`.
 
-Figürler, doğrulanmış GPU ortamını değiştirmemek için ayrı bir venv'de çizilir:
+The figures are drawn in a separate venv so as not to change the verified GPU
+environment:
 
 ```powershell
 py -3.10 -m venv ..\.venv-figures
 & '..\.venv-figures\Scripts\python.exe' -m pip install -r '.\research\requirements-figures.txt'
+& '..\.venv-figures\Scripts\python.exe' -B '.\research\make_selfmm_figures.py' --lang en --replace
 & '..\.venv-figures\Scripts\python.exe' -B '.\research\make_selfmm_figures.py' --replace
 ```
 
-PNG baytları yazı tipi derlemesine göre değişebilir; girdilerin özetleri
-`figures/figures_manifest.json` içindedir.
+PNG bytes can vary with the font build; the input digests are in
+`figures_en/figures_manifest.json` and `figures/figures_manifest.json`.
+`--transparent` draws the figures without a background (used for the slides).
 
-## GPU ortamını yeni bilgisayarda hazırlama
+## Preparing the GPU environment on a new computer
 
-Bu bölüm gerçek eğitim/değerlendirmeyi planlayan okuyucu içindir. Yukarıdaki
-paket kontrolü için bu kurulum gerekmez. Çalışan proje venv’ini değiştirmeden,
-ayrı boş bir proje ana klasöründe uygulanmalıdır.
+This section is for readers who plan to run real training/evaluation. The package
+check above does not need this setup. Apply it in a separate, empty project folder
+without changing a working project venv.
 
 ```powershell
-# Boş bir proje ana klasöründeyken; mevcut MMSA klasörü kullanılıyorsa klonlama adımını geç.
-# Teslim sürümü v1.0-submission tag'idir; çalışma dalı için --branch yzm5110-selfmm kullanılır.
+# In an empty project folder; skip the clone step if you use an existing MMSA folder.
+# The submitted version is the v1.0-submission tag; use --branch yzm5110-selfmm for the working branch.
 git clone --branch v1.0-submission https://github.com/ilaydagencer/yzm5110-robust-selfmm.git MMSA
 py -3.10 -m venv .venv
 Set-Location '.\MMSA'
@@ -313,92 +360,96 @@ Set-Location '.\MMSA'
 & '..\.venv\Scripts\python.exe' -B -c "import sentencepiece; import torch; import MMSA; print(torch.__version__); print(torch.cuda.is_available()); print(MMSA.__file__)"
 ```
 
-PyTorch 2.3.1 CUDA 12.1 wheel komutu
-[resmî eski sürüm yönergesine](https://pytorch.org/get-started/previous-versions/#v231)
-dayanır. CUDA görünürlüğü uygun NVIDIA sürücüsüne bağlıdır. torchvision ve
-torchaudio bu hazır özellik deneyinde kullanılmadığından eklenmemiştir.
-`MMSA.__file__` bu klonun `src/MMSA` klasörünü göstermelidir.
-Windows uyumluluğu için **sentencepiece, torch/MMSA’dan önce import edilir**.
+The PyTorch 2.3.1 CUDA 12.1 wheel command follows the
+[official previous-versions guide](https://pytorch.org/get-started/previous-versions/#v231).
+CUDA visibility depends on a suitable NVIDIA driver. torchvision and torchaudio are not
+used in this pre-extracted-feature experiment and are not installed. `MMSA.__file__`
+should point to the `src/MMSA` folder of this clone.
+For Windows compatibility, **sentencepiece is imported before torch/MMSA**.
 
-`requirements-research.txt`, çalışan Windows Python 3.10.5 ortamının gözlenen
-paket sürümlerini sabitler; torch ve yerel MMSA yukarıdaki ayrı adımlarla kurulur.
-Tam ortam bilgisi [environment-observed.txt](environment-observed.txt) içindedir.
-Bu liste hash kilitli bir lockfile değildir. Aynı bilgisayarda yeni venv’e
-kurulum, paket izolasyonu ve seed 1111 GPU tekrarı doğrulandı. Kullanılan
-kurulum komutları, sürümler ve sınırlar [temiz ortam kaydındadır](CLEAN_ENVIRONMENT.md).
-Başka bilgisayarda kurulum henüz doğrulanmadı.
+`requirements-research.txt` pins the package versions observed in the working Windows
+Python 3.10.5 environment; torch and the local MMSA are installed in the separate steps
+above. Full environment information is in
+[environment-observed.txt](environment-observed.txt). This list is not a hash-locked
+lockfile. Installation into a new venv on the same computer, package isolation and a
+seed 1111 GPU re-run were verified. The installation commands, versions and limits
+used are in the [clean environment record](CLEAN_ENVIRONMENT.md). Installation on
+another computer has not been verified yet.
 
-## Veri ve konfigürasyon
+## Data and configuration
 
-Klasör düzeni:
+Folder layout:
 
 ```text
-proje_ana_klasoru/
+project_root/
   .venv/
-  MMSA/                     # Bu depo
+  MMSA/                     # This repository
   data/MOSI/Processed/unaligned_50.pkl
-  local_configs/            # Makineye özel; Git'e eklenmez
-  runs/                     # Deneyler; Git'e topluca eklenmez
+  local_configs/            # Machine-specific; not added to Git
+  runs/                     # Experiments; not added to Git as a whole
 ```
 
-Hazır MOSI özelliklerine [MMSA veri erişim bölümündeki](https://github.com/thuiar/MMSA#2-datasets)
-resmî bağlantılar üzerinden erişilir. Veri sağlayıcının erişim/kullanım
-koşulları geçerlidir. Bu repo ham videoları veya `.pkl` dosyasını dağıtmaz.
-Bu çalışma BERT girdili `unaligned_50.pkl` kullanır; benzer isimli başka
-özellik dosyasıyla skorların aynı olması beklenmez. İndirdikten sonra:
+The pre-extracted MOSI features are accessed through the official links in the
+[MMSA data access section](https://github.com/thuiar/MMSA#2-datasets). The data
+provider’s access/usage terms apply. This repository does not distribute the raw
+videos or the `.pkl` file. This work uses `unaligned_50.pkl` with BERT input; scores
+are not expected to match with another feature file of a similar name. After
+downloading:
 
 ```powershell
 Get-FileHash -Algorithm SHA256 -LiteralPath '..\data\MOSI\Processed\unaligned_50.pkl'
 ```
 
-Beklenen SHA-256:
+Expected SHA-256:
 `78e0f8b5ef8ff71558e7307848fc1fa929ecb078203f565ab22b9daab2e02524`.
-İlk model kurulumu `bert-base-uncased` dosyalarını indirebilir. Kaynak benchmark’ı
-offline çalışır ve önceden hazırlanmış BERT önbelleğini ister.
+The first model setup may download the `bert-base-uncased` files. The resource
+benchmark runs offline and needs a prepared BERT cache.
 
-[Config örneği](configs/selfmm_mosi_batch4.example.json), kullanılan config’in
-yalnız veri kökü `../data` yapılmış kopyasıdır; repo kökünden çalıştırma varsayılır.
-Batch=4, BERT fine-tuning=True, early_stop=8, update_epochs=4 korunur.
-Bu örnek eski deney kayıtlarının üzerine kopyalanmaz. Mevcut eğitim betikleri
-`--config` seçeneği almaz; yerel config’i kaynak config’den üretir ve önceki
-config ile karşılaştırır. Örnek JSON, deney ayarlarını kişisel yol olmadan
-incelemek içindir; tam taşınabilir GPU başlatıcısı olduğu iddia edilmez.
+The [config example](configs/selfmm_mosi_batch4.example.json) is a copy of the config
+used, with only the data root set to `../data`; running from the repository root is
+assumed. Batch=4, BERT fine-tuning=True, early_stop=8 and update_epochs=4 are kept.
+This example is not copied over old experiment records. The existing training scripts
+do not take a `--config` option; they generate the local config from the source config
+and compare it with the previous config. The example JSON is for inspecting the
+experiment settings without personal paths; it is not claimed to be a fully portable
+GPU launcher.
 
-## Gerçek deney zinciri ve mevcut betikler
+## The actual experiment chain and the existing scripts
 
-Bu betikler önceki adımların çıktılarına bağlı bir deney arşivi oluşturur.
-Checkpoint’ler, `local_configs`, ham tahmin CSV’leri ve orijinal manifestler
-küçük pakete dahil değildir. Manifestlerde makineye özel mutlak yollar ve
-SHA-256 korumaları vardır. `--repo-dir` tek başına taşınmış eski kayıtları
-uyumlu hale getirmez; bu korumaları kapatmak yeniden üretim yöntemi değildir.
+These scripts build an experiment archive that depends on the outputs of earlier steps.
+Checkpoints, `local_configs`, raw prediction CSVs and the original manifests are not in
+the small package. The manifests contain machine-specific absolute paths and SHA-256
+guards. `--repo-dir` alone does not make moved old records compatible; switching off
+these guards is not a reproduction method.
 
-| Sıra | Betik | Ön koşul / ürettiği kanıt |
+| Step | Script | Prerequisite / evidence produced |
 |---|---|---|
-| 1 | run_selfmm_smoke.py | Veri ve kaynak config → seed 1111 baseline/config |
+| 1 | run_selfmm_smoke.py | Data and source config → seed 1111 baseline/config |
 | 2 | run_selfmm_dropout.py | Baseline config/checkpoint → seed 1111 dropout |
-| 3 | evaluate_selfmm_checkpoints.py | İki checkpoint → eski A/B K0–K3 test referansı |
-| 4 | evaluate_selfmm_abcd_valid.py | İki checkpoint → A/B/C/D K0–K3 validation |
-| 5 | check_selfmm_corruptions.py | Veri → train std ve valid bozulma protokolü |
-| 6 | evaluate_selfmm_abcd_corrupt_valid.py | 4 ve 5 → seed 1111 K0–K7 validation |
-| 7 | run_selfmm_seed.py ve evaluate_selfmm_abcd_seed_valid.py | Seed 1111 referansları → 1112–1115 eğitimleri/validation |
-| 8 | analyze_selfmm_five_seeds.py | Beş tam validation kaydı → validation özetleri |
-| 9 | evaluate_selfmm_abcd_test.py | Seed 1111 valid/protokol/eski test kayıtları → K0–K7 test |
-| 10 | evaluate_selfmm_abcd_seed_test.py | Seed 1111 test, seçilen seed eğitim/valid kayıtları → 1112–1115 test |
-| 11 | analyze_selfmm_test_five_seeds.py | Beş tam test kaydı → test özetleri |
-| 12 | benchmark_selfmm_inference.py | Tamamlanmış seed 1111 test kayıtları → K0 kaynak ölçümü |
+| 3 | evaluate_selfmm_checkpoints.py | Two checkpoints → old A/B K0–K3 test reference |
+| 4 | evaluate_selfmm_abcd_valid.py | Two checkpoints → A/B/C/D K0–K3 validation |
+| 5 | check_selfmm_corruptions.py | Data → train std and validation corruption protocol |
+| 6 | evaluate_selfmm_abcd_corrupt_valid.py | 4 and 5 → seed 1111 K0–K7 validation |
+| 7 | run_selfmm_seed.py and evaluate_selfmm_abcd_seed_valid.py | Seed 1111 references → 1112–1115 training/validation |
+| 8 | analyze_selfmm_five_seeds.py | Five complete validation records → validation summaries |
+| 9 | evaluate_selfmm_abcd_test.py | Seed 1111 validation/protocol/old test records → K0–K7 test |
+| 10 | evaluate_selfmm_abcd_seed_test.py | Seed 1111 test, selected seed training/validation records → 1112–1115 test |
+| 11 | analyze_selfmm_test_five_seeds.py | Five complete test records → test summaries |
+| 12 | benchmark_selfmm_inference.py | Completed seed 1111 test records → K0 resource measurement |
 
-**Eski baseline betiğinin özel davranışı:** `run_selfmm_smoke.py --check`
-yerel config dosyasını yazar; diğer yeni `--check` akışlarıyla aynı değildir.
-Bu eski betikte checkpoint/çıktı üzerine yazmayı engelleyen yeni betiklerdeki
-koruma da yoktur. Mevcut seed 1111 arşivinde tekrar çalıştırılmaz. Sıfırdan
-tekrar için ayrı boş proje konumu ve aşağıdaki iki hedefin yokluğu gerekir:
+**Special behaviour of the old baseline script:** `run_selfmm_smoke.py --check` writes
+the local config file; it is not the same as the other, newer `--check` flows. This old
+script also lacks the guard in the newer scripts that prevents overwriting a
+checkpoint/output. It is not run again in the existing seed 1111 archive. A re-run from
+scratch needs a separate, empty project location and the absence of these two targets:
 `../local_configs/selfmm_mosi_batch4.json`, `../runs/selfmm_seed1111`.
 
-Seed 1112–1115 eğitim betiği mevcut hedefte `--check` dahil durur.
-Bu, tamamlanan çalışmayı bozmayı önleyen beklenen davranıştır. Bütün
-deneyleri tekrar başlatan toplu bir komut bu README’de verilmemiştir.
+The seed 1112–1115 training script stops on an existing target, including with
+`--check`. This is the expected behaviour that prevents damaging completed work. This
+README does not give a single command that restarts all experiments.
 
-Yerel tam arşiv mevcutsa, aşağıdaki kontroller yeni boş çıktı adlarıyla yapılabilir:
+If the full local archive exists, the following checks can be run with new, empty
+output names:
 
 ```powershell
 & '..\.venv\Scripts\python.exe' -B '.\research\analyze_selfmm_five_seeds.py' `
@@ -411,141 +462,149 @@ Yerel tam arşiv mevcutsa, aşağıdaki kontroller yeni boş çıktı adlarıyla
     --seed 1111 --output-dir '..\runs\selfmm_inference_repeat_v1' --check
 ```
 
-İlk iki komuttan `--check` kaldırılırsa yeni özet dosyaları yazılır; model
-çalıştırılmaz. Son komuttan kaldırılırsa gerçek GPU çıkarım ölçümü başlar.
-Küçük paket bu yerel arşivin yerine geçmez. Tam arşivi olmayan okuyucu hızlı
-paket kontrolünü kullanabilir. İlk eğitimleri ve arşiv zincirini yeni makinede
-baştan oluşturmanın ayrıca doğrulanması teslim öncesi açık iştir.
+Without `--check`, the first two commands write new summary files; no model is run.
+Without `--check`, the last command starts a real GPU inference measurement. The small
+package does not replace this local archive. A reader without the full archive can use
+the quick package check. Verifying that the first training runs and the archive chain
+can be rebuilt from scratch on a new machine remains open.
 
 `eval_robust.py`, `evaluate_consistency.py`, `evaluate_mask_only.py`,
-`probe_consistency_fusion.py`, `inspect_*` ve `run_lmf_smoke.py` erken
-keşif dosyalarıdır. Bu paketteki nihai A/B/C/D sonuç zincirinin giriş noktaları
-olarak kullanılmaz; burada LMF/MulT yeniden eğitilmiş gibi gösterilmez.
+`probe_consistency_fusion.py`, `inspect_*` and `run_lmf_smoke.py` are early exploration
+files. They are not entry points of the final A/B/C/D result chain in this package;
+LMF/MulT are not presented here as retrained.
 
-## Yorum sınırları ve teslim durumu
+## Limits of interpretation and submission status
 
-MMSA eğitim sonunda otomatik test yapmıştır; daha önceki test incelemeleri de
-vardır. Test, hiç görülmemiş bağımsız holdout diye sunulamaz. Son sabit protokol
-karşılaştırmalarına göre yeni τ, dropout oranı veya iyi görünen seed seçilmedi.
-Metin korunur; tek veri kümesi ve tek bozulma çekilişi vardır. Düşük bozulma
-duyarlılığı tek başına güçlü çok modlu dayanıklılık kanıtı değildir.
+MMSA ran an automatic test at the end of training, and there are earlier test
+inspections too. The test set cannot be presented as a never-seen independent holdout.
+No new τ, dropout rate or good-looking seed was chosen on the basis of the final
+fixed-protocol comparisons. Text is kept in K0–K7; there is one dataset and one
+corruption draw. Low sensitivity to corruption is not, on its own, strong evidence of
+multimodal robustness.
 
-Kaynak kodunda gradyan birikiminin son eksik grubu işlenmez; validation seçim
-Loss’u eşit örnek ağırlıklı MAE ile aynı olmayabilir. Bunlar raporda açıklanan
-miras alınmış sınırlılıklardır; sonuçlardan sonra eski kaynaklar değiştirilmedi.
+In the source code the last incomplete gradient-accumulation group is not processed,
+and the validation selection Loss may differ from the equally weighted MAE. These are
+inherited limitations explained in the report; the old sources were not changed after
+the results.
 
-Teslim sürümü `v1.0-submission` tag’i ile sabitlenir. `provenance.json` v1
-paketlemesinden önceki HEAD’i kaydeder; protokol v2’nin commit sırası
-[DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) ve raporun 6. bölümündedir. GPU gerektirmeyen
-bütün kontroller `run_cpu_checks.py` ile çalışır. Eğitimden baştan tekrar başka bir
-bilgisayarda doğrulanmamıştır.
+The submitted version is pinned by the `v1.0-submission` tag. `provenance.json`
+records the HEAD before the v1 packaging; the commit order of protocol v2 is in
+[DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) and Section 6 of the report. All checks that do
+not need a GPU run with `run_cpu_checks.py`. A re-run from training on another computer
+has not been verified.
 
-Eski keşif ve eğitim betiklerinin bazılarında (ör. `evaluate_selfmm_abcd_valid.py`,
-`run_selfmm_dropout.py`) geliştirme bilgisayarının yolları varsayılan değer olarak
-kalmıştır; bunlar `--repo-dir` / `--project-dir` ile değiştirilir. Bu dosyaların SHA256
-özetleri dondurulmuş kayıtlarda ve eğitim kayıtlarında tutulduğu için kanıt zinciri
-bozulmasın diye değiştirilmemiştir.
+Some of the old exploration and training scripts (e.g. `evaluate_selfmm_abcd_valid.py`,
+`run_selfmm_dropout.py`) keep paths of the development computer as default values;
+they are overridden with `--repo-dir` / `--project-dir`. Because the SHA256 digests of
+these files are kept in frozen records and training records, they were not changed, so
+that the evidence chain stays intact.
 
-Kod taslakları, kontroller, tablo üretimi ve açıklamalarda v1 aşamasında ChatGPT/Codex,
-25 Ekim 2026’dan itibaren Claude (Claude Code) kullanıldı: protokol v2, tanı, özet,
-bootstrap, tablo ve figür betikleri, belgeler ve rapor taslağı. Araçlar ve katkıları
-raporun Ek B’sindedir. Öğrenci bütün GPU komutlarını çalıştırdı ve Git işlemlerini
-kendisi yürüttü; yöntemleri ve kaynakları açıklamak öğrencinin sorumluluğundadır.
+AI tools were used for code drafts, checks, table generation and documentation:
+ChatGPT/Codex in the v1 stage, and from 25 October 2026 Claude (Claude Code) for the
+protocol v2, diagnostic, summary, bootstrap, table and figure scripts, the
+documentation, the report draft and the English translation of the report, slides and
+documentation. The tools and their contributions are listed in Appendix B of the report.
+The student ran all GPU commands and carried out all Git operations; explaining the
+methods and sources is the student’s responsibility.
 
-## Açık dosya yollarıyla gerçek model tekrarı: K0
+## Real model re-run with explicit file paths: K0
 
-Seed 1111 için temiz K0 A/B/C/D çıkarımına yeni giriş noktası eklendi:
+A new entry point was added for clean K0 A/B/C/D inference for seed 1111:
 [`evaluate_selfmm_portable_k0.py`](evaluate_selfmm_portable_k0.py).
-[Adım adım yönerge](PORTABLE_MODEL.md), gerekli config ve bağımlılık manifestini,
-veri/checkpoint/yerel BERT yollarını, çevrimdışı `--check` ve gerçek çalıştırmayı açıklar.
-Bu giriş noktası eski `runs` manifestlerini gerektirmez; public sonuç paketindeki
-16 K0 metriğiyle yeni tahminlerden hesaplanan metrikleri karşılaştırır.
-Eski arşiv betiklerinin yukarıdaki bağımlılıkları değişmemiştir.
+The [step-by-step guide](PORTABLE_MODEL.md) (Turkish) explains the required config and
+dependency manifest, the data/checkpoint/local BERT paths, the offline `--check` and
+the real run. This entry point does not need the old `runs` manifests; it compares the
+metrics computed from new predictions with the 16 K0 metrics in the public result
+package. The dependencies of the old archive scripts above are unchanged.
 
-Mevcut ortamda ve ayrı bir kaynak kopyasında yazmasız `--check` doğrulandı;
-10 CPU sözleşme testi geçti. 19 Ekim 2026 tarihinde kullanıcı mevcut ortamında
-RTX 3050 Ti GPU ile seed 1111 K0 tekrarını tamamladı. Dört yöntemin toplam
-16 referans metrik kontrolü geçti; en büyük mutlak fark 5.55e-16 idi.
-Kaydedilen 1372 tahmin satırından metrikler ayrıca yeniden hesaplandı;
-4 çıktı ve 103 girdi dosyasının SHA256 özetleri doğrulandı.
-[Doğrulama kaydı](verification/portable_k0_seed1111_v1.json).
-Bu giriş noktası K0 ile sınırlıdır; seed 1111 K1–K7 tekrarı aşağıdaki ayrı
-giriş noktasında doğrulandı. Seed 1112–1115'in mevcut ortamdaki taşınabilir
-tekrarları da aşağıdaki ortak girişte tamamlandı. Daha sonra yeni venv ve ayrı
-kaynak kopyasıyla seed 1111 K0–K7 tekrarı doğrulandı; bu gelişme K0 yardımcısının
-kapsamını genişletmez. Eğitimden baştan tekrar henüz doğrulanmadı.
+A non-writing `--check` was verified in the existing environment and in a separate
+source copy; 10 CPU contract tests passed. On 19 October 2026 the user completed the
+seed 1111 K0 re-run in the existing environment with an RTX 3050 Ti GPU. All 16
+reference metric checks of the four methods passed; the largest absolute difference
+was 5.55e-16. The metrics were also recomputed from the 1372 saved prediction rows; the
+SHA256 digests of 4 output and 103 input files were verified.
+[Verification record](verification/portable_k0_seed1111_v1.json).
+This entry point is limited to K0; the seed 1111 K1–K7 re-run was verified with the
+separate entry point below. The portable re-runs of seeds 1112–1115 in the existing
+environment were also completed with the shared entry point below. Later, a seed 1111
+K0–K7 re-run with a new venv and a separate source copy was verified; this does not
+widen the scope of the K0 helper. A re-run from training has not been verified yet.
 
-## Açık dosya yollarıyla K0–K7 tekrarı
+## K0–K7 re-run with explicit file paths
 
-[`evaluate_selfmm_portable_k0_k7.py`](evaluate_selfmm_portable_k0_k7.py), seed 1111
-checkpoint'lerini bütün K0–K7 test koşullarında çalıştırmak için hazırlandı.
-[Adım adım yönerge](PORTABLE_K0_K7.md), train-only gürültü istatistiklerinin
-yeniden hesabını, 128 metrik ve 16 girdi özeti kontrolünü açıklar.
-K0 yardımcısı ve eski deneyler değiştirilmez; eski çalışma manifestleri okunmaz.
+[`evaluate_selfmm_portable_k0_k7.py`](evaluate_selfmm_portable_k0_k7.py) was prepared to
+run the seed 1111 checkpoints on all K0–K7 test conditions. The
+[step-by-step guide](PORTABLE_K0_K7.md) (Turkish) explains the recomputation of the
+train-only noise statistics and the checks of 128 metrics and 16 input digests. The K0
+helper and the old experiments are not changed; old run manifests are not read.
 
-Hazırlıkta 10 CPU kontrol testi geçti. Ayrı gerçek-veri CPU denetiminde iki train
-istatistiği ve sekiz koşulun girdi özetleri referansla eşleşti. Model/veri yüklemesi
-engellenmiş ayrı kaynak kopyasında yazmasız --check doğrulandı.
+During preparation 10 CPU check tests passed. In a separate real-data CPU audit, the
+two train statistics and the input digests of the eight conditions matched the
+reference. A non-writing --check was verified in a separate source copy in which model
+and data loading were blocked.
 
-19 Ekim 2026 tarihinde kullanıcı mevcut RTX 3050 Ti ortamında gerçek K0–K7
-tekrarını tamamladı: 32 metrik satırı, 128/128 referans metrik kontrolü,
-16/16 bozulmuş girdi özeti ve 2/2 train istatistiği kontrolü doğrulandı.
-En büyük referans metrik farkı 5.55e-16, train istatistiği farkı sıfırdı.
-10976 tahmin satırından metrikler ayrıca yeniden hesaplandı; 8 çıktı ve
-106 kayıtlı girdi dosyasının SHA256 özetleri denetim sırasında eşleşti.
-[Doğrulama kaydı](verification/portable_k0_k7_seed1111_v1.json).
+On 19 October 2026 the user completed the real K0–K7 re-run in the existing RTX 3050 Ti
+environment: 32 metric rows, 128/128 reference metric checks, 16/16 corrupted-input
+digests and 2/2 train-statistic checks were verified. The largest reference metric
+difference was 5.55e-16 and the train-statistic difference zero. The metrics were also
+recomputed from 10976 prediction rows; the SHA256 digests of 8 output and 106 recorded
+input files matched at audit time.
+[Verification record](verification/portable_k0_k7_seed1111_v1.json).
 
-Bu tekrar önceki sonuçların mevcut ortamda eski çalışma manifestlerine
-bağlanmadan üretilebildiğini gösterir. Yeni eğitim veya bağımsız deney değildir.
-Seed 1112–1115'in mevcut ortamda K0–K7 tekrarları aşağıdaki giriş noktasında
-tamamlandı. Sonraki ayrı kaynak kopyası ve yeni venv denetimi seed 1111 için
-gerçek GPU sonucuyla tamamlandı; [kanıt ve kapsam](CLEAN_ENVIRONMENT.md).
+This re-run shows that the earlier results can be produced in the existing environment
+without depending on the old run manifests. It is not new training or an independent
+experiment. The K0–K7 re-runs of seeds 1112–1115 in the existing environment were
+completed with the entry point below. The later separate source copy and new venv
+audit was completed for seed 1111 with a real GPU result;
+[evidence and scope](CLEAN_ENVIRONMENT.md).
 
 
-## Eğitim seed'ini seçerek taşınabilir test tekrarı: 1112–1115
+## Portable test re-run by training seed: 1112–1115
 
-[`evaluate_selfmm_portable_seed_test.py`](evaluate_selfmm_portable_seed_test.py),
-`--seed 1112`, `--seed 1113`, `--seed 1114` veya `--seed 1115` ile kayıtlı baseline/dropout checkpoint'lerini
-K0–K7 test koşullarında değerlendirir. [Adım adım yönerge](PORTABLE_SEED_TEST.md).
-Seed 1111 kendi giriş noktalarını kullanır; diğer dört seed bu ortak betiktedir.
+[`evaluate_selfmm_portable_seed_test.py`](evaluate_selfmm_portable_seed_test.py)
+evaluates the recorded baseline/dropout checkpoints on the K0–K7 test conditions with
+`--seed 1112`, `--seed 1113`, `--seed 1114` or `--seed 1115`.
+[Step-by-step guide](PORTABLE_SEED_TEST.md) (Turkish). Seed 1111 uses its own entry
+points; the other four seeds use this shared script.
 
-`configs/selfmm_portable_seed_dependencies.json`, eğitim/test kayıtlarıyla
-karşılaştırılmış checkpoint kimliklerini ve ortak bağımlılıkları saklar.
-Gerçek çalışmada eski run manifestleri ve kişisel config dosyaları okunmaz.
-Bozulma seed'i 1111, batch 4 ve τ=1 sabittir. Train-only std yeniden hesaplanır.
-128 metrik seçilen eğitim seed'inin public paket satırlarıyla; 16 bozulmuş
-girdi özeti ortak seed 1111 referansıyla karşılaştırılır.
+`configs/selfmm_portable_seed_dependencies.json` stores the checkpoint identities
+cross-checked against the training/test records and the shared dependencies. The real
+run does not read old run manifests or personal config files. The corruption seed 1111,
+batch 4 and τ=1 are fixed. The train-only std is recomputed. 128 metrics are compared
+with the public package rows of the selected training seed, and 16 corrupted-input
+digests with the shared seed 1111 reference.
 
-19 Ekim 2026 tarihinde kullanıcı mevcut RTX 3050 Ti ortamında seed 1112
-K0–K7 tekrarını tamamladı: 128/128 metrik, 16/16 girdi ve 2/2 train istatistiği
-kontrolü geçti. En büyük referans metrik farkı 8.88e-16, train istatistiği farkı
-sıfırdı. 10976 tahmin satırından metrikler ayrıca yeniden hesaplandı; 8 çıktı ve
-106 kayıtlı girdinin SHA256 özetleri güncelleme öncesi denetimde eşleşti.
-[Seed 1112 doğrulama kaydı](verification/portable_k0_k7_seed1112_v1.json).
+On 19 October 2026 the user completed the seed 1112 K0–K7 re-run in the existing
+RTX 3050 Ti environment: 128/128 metric, 16/16 input and 2/2 train-statistic checks
+passed. The largest reference metric difference was 8.88e-16 and the train-statistic
+difference zero. The metrics were also recomputed from 10976 prediction rows; the
+SHA256 digests of 8 outputs and 106 recorded inputs matched in the audit before the
+update.
+[Seed 1112 verification record](verification/portable_k0_k7_seed1112_v1.json).
 
-19 Ekim 2026 tarihinde seed 1113 K0–K7 tekrarı da mevcut ortamda tamamlandı.
-128/128 metrik, 16/16 girdi ve 2/2 train istatistiği kontrolü geçti. En büyük
-referans metrik farkı 1.23e-15 altında; MAE ve accuracy farkları sıfırdır.
-10976 tahmin satırından metrikler ayrıca yeniden hesaplandı. 8 çıktı ve
-106 kayıtlı girdinin özeti bu güncelleme öncesi denetimde eşleşti.
-[Seed 1113 doğrulama kaydı](verification/portable_k0_k7_seed1113_v1.json).
+On 19 October 2026 the seed 1113 K0–K7 re-run was also completed in the existing
+environment. 128/128 metric, 16/16 input and 2/2 train-statistic checks passed. The
+largest reference metric difference is below 1.23e-15; the MAE and accuracy differences
+are zero. The metrics were also recomputed from 10976 prediction rows. The digests of
+8 outputs and 106 recorded inputs matched in the audit before this update.
+[Seed 1113 verification record](verification/portable_k0_k7_seed1113_v1.json).
 
-19 Ekim 2026 tarihinde seed 1114 K0–K7 tekrarı da mevcut ortamda tamamlandı.
-128/128 metrik, 16/16 girdi ve 2/2 train istatistiği kontrolü geçti. En büyük
-referans metrik farkı 1e-15 altında; MAE ve accuracy farkları sıfırdır.
-10976 tahmin satırından metrikler ayrıca yeniden hesaplandı. 8 çıktı ve
-106 kayıtlı girdinin özeti bu güncelleme öncesi denetimde eşleşti.
-[Seed 1114 doğrulama kaydı](verification/portable_k0_k7_seed1114_v1.json).
+On 19 October 2026 the seed 1114 K0–K7 re-run was also completed in the existing
+environment. 128/128 metric, 16/16 input and 2/2 train-statistic checks passed. The
+largest reference metric difference is below 1e-15; the MAE and accuracy differences
+are zero. The metrics were also recomputed from 10976 prediction rows. The digests of
+8 outputs and 106 recorded inputs matched in the audit before this update.
+[Seed 1114 verification record](verification/portable_k0_k7_seed1114_v1.json).
 
-## Tamamlanan seed 1115 ve beş-seed taşınabilir tekrarları — 19 Ekim 2026
+## Seed 1115 and the completed five-seed portable re-runs — 19 October 2026
 
-Seed 1115'te 128/128 metrik, 16/16 bozulmuş girdi ve 2/2 train istatistiği
-kontrolü geçti. En büyük referans farkı 1.11023e-15 (Corr), MAE ve accuracy
-farkları sıfırdır. Train istatistiklerinde ve uniform ağırlık identity
-kontrolünde fark sıfırdır. 10976 tahmin satırından bağımsız metrik hesabı
-doğrulandı; float32 MAE ile en büyük fark 1.05e-7 altında (tolerans 1e-6).
-8 çıktı ve 106 girdinin dosya özeti denetim anında eşleşti.
-[Seed 1115 kaydı](verification/portable_k0_k7_seed1115_v1.json).
+For seed 1115, 128/128 metric, 16/16 corrupted-input and 2/2 train-statistic checks
+passed. The largest reference difference is 1.11023e-15 (Corr); the MAE and accuracy
+differences are zero. The difference is zero in the train statistics and in the
+uniform-weight identity check. An independent metric computation from 10976 prediction
+rows was verified; the largest difference from the float32 MAE is below 1.05e-7
+(tolerance 1e-6). The file digests of 8 outputs and 106 inputs matched at audit time.
+[Seed 1115 record](verification/portable_k0_k7_seed1115_v1.json).
 
 | Seed 1115, K0 | Non0 accuracy (%) | MAE | Corr |
 |---|---:|---:|---:|
@@ -554,29 +613,31 @@ doğrulandı; float32 MAE ile en büyük fark 1.05e-7 altında (tolerans 1e-6).
 | C | 84.45 | 0.7965 | 0.7681 |
 | D | 82.93 | 0.8539 | 0.7512 |
 
-K0 MAE farkları yaklaşık B−A +0.0314, C−A +0.0816 ve D−B +0.1076'dır.
-K0–K7'nin tümünde B'nin MAE'si A'dan, C'nin A'dan ve D'nin B'den yüksektir.
-C, K0 accuracy'sini korurken duygu şiddeti hatasını artırır. Bu önceki test
-bulgusunun yeniden üretimidir; beş-seed istatistiğine yeni gözlem eklenmez.
-200.42 saniye toplam tekrar süresidir; çıkarım benchmark'ı değildir.
+The K0 MAE differences are about B−A +0.0314, C−A +0.0816 and D−B +0.1076. In all of
+K0–K7, the MAE of B is higher than A, C higher than A and D higher than B. C keeps the
+K0 accuracy while increasing the sentiment intensity error. This is a reproduction of
+the earlier test finding; no new observation is added to the five-seed statistics.
+200.42 seconds is the total re-run time; it is not an inference benchmark.
 
-Seed 1111–1115'in tamamı mevcut ortamda tekrarlandı. Toplam 640 metrik,
-80 girdi ve 10 train istatistiği kontrolü başarılıdır. Beş çalışmanın manifest
-kimlikleri ve toplam 40 çıktı dosyası yeniden denetlendi. En büyük referans
-metrik farkı 1.23e-15 altındadır. Bu toplamlar bağımsız deney sayısı değildir.
-[Beş-seed doğrulama özeti](verification/portable_five_seeds_v1.json).
+All of seeds 1111–1115 were re-run in the existing environment. In total, 640 metric,
+80 input and 10 train-statistic checks succeeded. The manifest identities of the five
+runs and 40 output files in total were re-audited. The largest reference metric
+difference is below 1.23e-15. These totals are not a number of independent experiments.
+[Five-seed verification summary](verification/portable_five_seeds_v1.json).
 
-Bu adım değerlendirme betiklerini, kayıtlı checkpoint kimliklerini veya sabit
-protokolü değiştirmez. Sonraki temiz ortam aşaması seed 1111 için tamamlandı:
-[sonuçlar ve yeniden kurulum yönergesi](CLEAN_ENVIRONMENT.md).
-Eski doğrulama JSON'ları kendi tarihsel kapsamlarıyla korunur; yeni kanıt ayrı kayıttadır.
+This step does not change the evaluation scripts, the recorded checkpoint identities or
+the fixed protocol. The next clean environment stage was completed for seed 1111:
+[results and setup guide](CLEAN_ENVIRONMENT.md) (Turkish).
+The old verification JSONs are kept with their historical scope; the new evidence is in
+a separate record.
 
 
-Temiz ortam hazırlığı için iki stdlib tabanlı araç eklendi:
-`prepare_selfmm_clean_copy.py`, seçili küçük kaynakları ayrı klasöre kopyalar;
-`check_selfmm_clean_environment.py`, yeni venv'in izolasyonunu, sürümlerini,
-paket/kaynak yollarını, `pip check` sonucunu ve CUDA görünürlüğünü denetler.
-Kullanıcı yeni ortamın paket kurulumunu ve seed 1111 gerçek GPU tekrarını
-tamamladı. 51 paketin ortam içindeki yolları, 125 kopya kaynak ve dört kurulum
-logunun dosya özetleri denetlendi. Bu araçların --check sonucu ile gerçek GPU
-sonucu ayrı kanıtlardır; ikisi yeni doğrulama kaydında birlikte izlenebilir.
+Two standard-library tools were added to prepare the clean environment:
+`prepare_selfmm_clean_copy.py` copies selected small sources into a separate folder;
+`check_selfmm_clean_environment.py` audits the new venv’s isolation, versions,
+package/source paths, the `pip check` result and CUDA visibility. The user completed
+the package installation of the new environment and the seed 1111 real GPU re-run. The
+in-environment paths of 51 packages and the file digests of 125 copied sources and four
+installation logs were audited. The --check result of these tools and the real GPU
+result are separate pieces of evidence; both can be traced together in the new
+verification record.

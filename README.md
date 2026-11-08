@@ -15,11 +15,16 @@ Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 202
 
 | What you are looking for | Where |
 |---|---|
+| Report and presentation | [research/report](research/report) |
 | Reader's guide: what was done, what was found, how to verify it | [research/README.md](research/README.md) |
 | Short project summary | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
-| Tables and figures used in the report | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures_en](research/figures_en) (English), [research/figures](research/figures) (Turkish) |
-| Pre-registered diagnostic protocol and its results | [research/selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
+| Tables and figures used in the report | [research/report_tables/tables_en.md](research/report_tables/tables_en.md), [research/figures_en](research/figures_en) |
+| Pre-registered diagnostic protocol and its results | [research/selfmm_diagnostics_protocol_v2_en.md](research/selfmm_diagnostics_protocol_v2_en.md) (English translation of the Turkish original [selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md)), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
 | Saved result packages | [research/results_package_v1](research/results_package_v1), [research/diagnostics_v2](research/diagnostics_v2) |
+
+A few records written during the work are kept in Turkish because their hashes are
+recorded elsewhere or they are dated logs; the [language note](research/README.md#language-note)
+lists them with one-line English summaries.
 
 Checks that need no GPU, dataset, checkpoint or internet connection (run from the
 repository root with Python 3.10):
@@ -28,7 +33,7 @@ repository root with Python 3.10):
 py -3.10 -B .\research\run_cpu_checks.py
 ```
 
-The last line should read `KONTROLLER_TAMAM` ("all checks done"). The script
+The last line should read `ALL_CHECKS_PASSED`. The script
 recomputes the saved result packages, hypothesis decisions, report tables, bootstrap
 intervals and figures and compares them with the committed files. Each check is
 reported as `[PASS]`, `[FAIL]` or `[SKIP]`; a check whose optional package is missing
