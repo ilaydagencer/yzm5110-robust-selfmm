@@ -104,18 +104,19 @@ Venv'i etkinleştirmek gerekmez; her komutta doğru python.exe yolu kullanılır
 
 ## 1. Kaynak repoyu seç
 
-Araçlar artık repodadır; eski teslim paketini yeniden kurma. Aşağıdaki örnek
-tamamlanan yerel çalışmanın yollarını kullanır. Bir sonraki baştan kurulumda
-henüz kullanılmamış kök seç.
+Araçlar artık repodadır; eski teslim paketini yeniden kurma. Özgün koşu geliştirme
+bilgisayarında yapıldı; aşağıdaki komutlar başka bilgisayarda da çalışsın diye göreli
+yollarla yazılmıştır. Yeni bir kurulumda henüz kullanılmamış bir kök seç.
 
 ```powershell
-Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
+# Depo kökünde (MMSA klasörü) çalıştırın; veri ve runs klasörleri bir üst klasördedir.
+$projectRoot = Split-Path (Get-Location) -Parent
 ```
 
 ## 2. Kaynak kopyasının kontrolü ve oluşturulması
 
 ```powershell
-$cleanRoot = 'C:\Users\ilayda\YZM5110_clean_replay_v1'
+$cleanRoot = Join-Path $env:USERPROFILE 'YZM5110_clean_replay_v1'
 & '..\.venv\Scripts\python.exe' -I -S -B `
     '.\research\prepare_selfmm_clean_copy.py' `
     --target-root $cleanRoot --check
@@ -230,9 +231,9 @@ if (-not (Test-Path -LiteralPath "$cleanRoot\runs")) {
 $bertDir = Join-Path $env:USERPROFILE '.cache\huggingface\hub\models--bert-base-uncased\snapshots\86b5e0934494bd15c9632b12f734a8a67f723594'
 $cleanArgs = @(
     '--repo-dir', $cleanRepo,
-    '--data-file', 'C:\Users\ilayda\YZM5110\data\MOSI\Processed\unaligned_50.pkl',
-    '--baseline-checkpoint', 'C:\Users\ilayda\YZM5110\runs\selfmm_seed1111\saved_models\self_mm-mosi.pth',
-    '--dropout-checkpoint', 'C:\Users\ilayda\YZM5110\runs\selfmm_dropout_a20_v20_seed1111\saved_models\self_mm-mosi.pth',
+    '--data-file', "$projectRoot\data\MOSI\Processed\unaligned_50.pkl",
+    '--baseline-checkpoint', "$projectRoot\runs\selfmm_seed1111\saved_models\self_mm-mosi.pth",
+    '--dropout-checkpoint', "$projectRoot\runs\selfmm_dropout_a20_v20_seed1111\saved_models\self_mm-mosi.pth",
     '--bert-dir', $bertDir,
     '--output-dir', "$cleanRoot\runs\selfmm_portable_k0_k7_test_seed1111_v1"
 )

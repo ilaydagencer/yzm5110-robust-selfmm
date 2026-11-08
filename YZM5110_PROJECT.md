@@ -69,15 +69,15 @@ PyTorch 2.3.1 + CUDA 12.1 · MMSA 2.2.1. Paket sürümleri:
 [requirements-research.txt](research/requirements-research.txt),
 [environment-observed.txt](research/environment-observed.txt).
 
-## Durum (25 Ekim 2026)
+## Durum (8 Kasım 2026)
 
 - Tamamlandı: beş seed A/B eğitimi; A/B/C/D K0–K7 validation ve test
   değerlendirmesi; çıkarım maliyeti ölçümü; beş seed'in checkpoint'ten gerçek
   GPU tekrarı; seed 1111'in yeni venv'de tekrarı; ağırlıklandırmanın neden
   başarısız olduğunu ayıran, önceden kaydedilmiş tanı deneyleri (protokol v2,
-  validation ve tek test koşusu).
-- Açık: bootstrap aralıkları, figür/tablo betikleri, son rapor PDF'i, sunum ve
-  teslim tag'i.
+  validation ve tek test koşusu); bootstrap aralıkları; rapor tabloları ve
+  figürleri üreten betikler; tek komutluk CPU kontrolü (`research/run_cpu_checks.py`).
+- Teslim sürümü `v1.0-submission` tag'i ile sabitlenir.
 
 ## Tanı deneylerinin sonucu (protokol v2)
 

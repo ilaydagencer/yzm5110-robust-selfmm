@@ -8,27 +8,29 @@ olarak sınanması.
 Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 2021
 ([arXiv:2102.04830](https://arxiv.org/abs/2102.04830)).
 
-**Öğrenci:** İlayda Gençer · **Çalışma dalı:** `yzm5110-selfmm`
+**Öğrenci:** İlayda Gençer · **Teslim sürümü:** tag `v1.0-submission` · **Çalışma dalı:** `yzm5110-selfmm`
 
 | Aradığın | Yeri |
 |---|---|
-| Kurulum, veri erişimi, komutlar, yöntemler ve sonuç tabloları | [research/README.md](research/README.md) |
+| Okuyucu için kısa yol: ne yapıldı, ne bulundu, nasıl doğrulanır | [research/README.md](research/README.md) |
 | Kısa proje özeti | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
-| Kaydedilmiş validation, test ve çıkarım maliyeti sonuçları | [research/results_package_v1](research/results_package_v1) |
-| Gerçek model tekrarlarının doğrulama kayıtları | [research/verification](research/verification) |
+| Rapordaki tablolar ve figürler | [research/report_tables/tables.md](research/report_tables/tables.md), [research/figures](research/figures) |
+| Önceden kaydedilmiş tanı protokolü ve sonuçları | [research/selfmm_diagnostics_protocol_v2.md](research/selfmm_diagnostics_protocol_v2.md), [research/DIAGNOSTICS_V2.md](research/DIAGNOSTICS_V2.md) |
+| Kaydedilmiş sonuç paketleri | [research/results_package_v1](research/results_package_v1), [research/diagnostics_v2](research/diagnostics_v2) |
 
-GPU, veri kümesi veya checkpoint gerektirmeyen hızlı kontrol (depo kökünde,
-Python 3.10+):
+GPU, veri kümesi, checkpoint veya internet gerektirmeyen kontroller (depo kökünde,
+Python 3.10):
 
 ```powershell
-py -3.10 -I -S -B .\research\verify_results_package.py --check
+py -3.10 -B .\research\run_cpu_checks.py
 ```
 
-Beklenen son satır `PAKET_KONTROLU_BASARILI` olur. Bu kontrol kaydedilmiş
-metriklerden ortalama, standart sapma ve eşleştirilmiş farkları yeniden hesaplar;
-modeli yeniden çalıştırmaz. Gerçek eğitim ve değerlendirme için gereken CUDA
-ortamı, MOSI özellik dosyası ve checkpoint'ler [research/README.md](research/README.md)
-içinde açıklanmıştır.
+Sonda `KONTROLLER_TAMAM` beklenir. Betik kaydedilmiş sonuç paketlerini, hipotez
+kararlarını, rapor tablolarını, bootstrap aralıklarını ve figürleri yeniden üretip
+karşılaştırır; isteğe bağlı paketi eksik olan kontrolü nedeniyle birlikte ATLANDI
+olarak bildirir. Gerçek eğitim ve değerlendirme için gereken CUDA ortamı, MOSI
+özellik dosyası ve checkpoint'ler [research/README.md](research/README.md) içinde
+açıklanmıştır.
 
 Bu bölümün altındaki metin MMSA'nın değiştirilmemiş özgün README'sidir. MMSA,
 [MIT lisansı](LICENSE) ile dağıtılır; çerçeveyi kullanırken aşağıdaki atıf

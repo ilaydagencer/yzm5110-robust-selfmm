@@ -5,25 +5,71 @@ tek modlu tahmin uyumunun eksik/gürültülü modalitelerde füzyon ağırlığ�
 incelenmesi. Kod tabanı [MMSA](https://github.com/thuiar/MMSA), temel çalışma
 [Self-MM](https://arxiv.org/abs/2102.04830)’dir.
 
-Beş eğitim seed’i için validation ve test değerlendirmeleri tamamlandı.
-İncelenen τ=1 ağırlıklandırması her seed ve K0–K7 koşulunda MAE’yi artırdı.
-Dropout’un küçük ortalama validation kazanımı testte korunmadı. Seed 1111 K0
-kaynak ölçümünde C/D yaklaşık 2,04 kat süre kullandı; eşleştirilmiş tepe
-allocated bellek artışı 6,5 KiB oldu. Bu sonuç belirli kural ve protokole aittir.
+## Okuyucu için kısa yol
 
-## Önce hangi işlemi yapacağım?
+**Ne yapıldı?** Self-MM, CMU-MOSI’de 4 GB GPU’ya uyarlanmış ayarlarla beş eğitim
+seed’i kullanılarak yeniden üretildi. Tek modlu tahmin uyumuna dayalı ek
+parametresiz füzyon ağırlığı (C/D) ve eğitimde ses/görüntü dropout’u (B) on bir
+koşulda (K0–K10) sınandı. Olumsuz sonucun nedeni, sonuçlardan önce commit edilen
+bir tanı protokolüyle ([protokol v2](selfmm_diagnostics_protocol_v2.md)) ayrıştırıldı.
 
-| Amaç | Gerekenler | Başlangıç |
-|---|---|---|
-| Raporun özet tablolarını kontrol etmek | Python 3.10+, bu küçük paket | Aşağıdaki hızlı kontrol |
-| Özet CSV’leri yeniden hesaplamak | Aynı dosyalar; boş bir çıktı yolu | Özetleri yeniden üretme |
-| Gerçek modelle değerlendirme veya eğitim | CUDA ortamı, MOSI özellikleri, checkpoint/config ve referans kayıtları | GPU ortamı ve deney zinciri |
+**Ne bulundu?**
 
-**Küçük paket kontrolü bağımsız doğrulandı; beş seed'in gerçek model tekrarı da mevcut ortamda tamamlandı.**
-Bu yol GPU, PyTorch, internet, veri kümesi veya checkpoint istemez.
-Kaydedilmiş seed metriklerinden ortalama/SS/farkları, kaydedilmiş batch
-sürelerinden kaynak özetlerini yeniden hesaplar. Tahminleri yeniden üretmez.
-GPU deney zincirinin başka bilgisayarda eğitimden baştan sona tekrarı henüz doğrulanmadı.
+- Temiz test MAE’si 0,7240 ± 0,0146 (makalede 0,713); Non0 accuracy makalenin 2,08 yüzde puan altında.
+- τ=1 ağırlıklandırması K0–K7’nin her koşulunda ve her seed’de MAE’yi artırdı
+  (K0’da +0,118, %95 bootstrap aralığı [+0,091; +0,148]) ve çıkarım süresini yaklaşık
+  iki katına çıkardı. Dropout’un küçük validation kazancı testte korunmadı.
+- Protokol v2’nin altı kararının altısı da önceden yazılan beklentiyle uyuştu ve testte
+  tekrarlandı: zarar baskın metin bloğunun ölçeklenmesinden gelir; uyum sinyali rastgele
+  karıştırılmış ağırlıklardan iyi değildir; ses/görüntü bozulmasında oracle ağırlık bile
+  iyileşme sağlamaz; metin bozulduğunda kural metne daha çok ağırlık verir.
+
+**Tek komutla kontrol.** GPU, veri kümesi, checkpoint veya internet gerekmez. Depo
+kökünde (bu klasörün bir üstü, `MMSA`) çalıştırın:
+
+```powershell
+py -3.10 -B .\research\run_cpu_checks.py
+```
+
+Sonda `KONTROLLER_TAMAM` beklenir. Betik yedi kontrolü ayrı süreçlerde çalıştırır ve
+her birini GEÇTİ, KALDI ya da ATLANDI olarak bildirir. Eksik isteğe bağlı paket bir
+kontrolü başarısız saymaz; ATLANDI satırı neyin kurulacağını söyler.
+
+| Kontrol | Gereken |
+|---|---|
+| v1 sonuç paketi, iki protokol v2 özeti, rapor tabloları | Yalnız Python 3.10 standart kütüphanesi |
+| Bootstrap aralıkları (byte düzeyinde) | numpy 1.26.4 |
+| Figürlerin geçici klasöre yeniden çizimi | [requirements-figures.txt](requirements-figures.txt) |
+| Tanı betiği öz-testi (sahte modelle CPU hattı) | Aşağıdaki GPU ortamı bölümündeki araştırma ortamı |
+
+İlk altı kontrolü tek seferde çalıştırmak için ayrı bir venv yeterlidir:
+
+```powershell
+py -3.10 -m venv ..\.venv-check
+& '..\.venv-check\Scripts\python.exe' -m pip install -r '.\research\requirements-figures.txt'
+& '..\.venv-check\Scripts\python.exe' -B '.\research\run_cpu_checks.py'
+```
+
+**Nerede ne var?**
+
+| Konu | Yer |
+|---|---|
+| Rapordaki bütün tablolar | [report_tables/tables.md](report_tables/tables.md) |
+| Rapordaki figürler | [figures/](figures) |
+| Ön kayıt: hipotezler ve karar ölçütleri | [selfmm_diagnostics_protocol_v2.md](selfmm_diagnostics_protocol_v2.md) |
+| Tanı deneylerinin sonuçları ve komutları | [DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) |
+| v1 sonuç paketi (A/B/C/D, K0–K7, maliyet) | [results_package_v1/](results_package_v1) |
+| v2 paketleri, sıkıştırılmış test tahminleri, bootstrap | [diagnostics_v2/](diagnostics_v2) |
+| GPU gerektiren checkpoint tekrarları | [PORTABLE_MODEL.md](PORTABLE_MODEL.md), [PORTABLE_K0_K7.md](PORTABLE_K0_K7.md), [PORTABLE_SEED_TEST.md](PORTABLE_SEED_TEST.md), [CLEAN_ENVIRONMENT.md](CLEAN_ENVIRONMENT.md) |
+| Kurulum, sürümler, veri erişimi | Bu dosyada aşağıda |
+
+**Ek kaynak gerektiren sonuçlar.** Eğitim ve model değerlendirmeleri CUDA’lı bir ortam,
+lisans koşullarıyla ayrıca indirilen MOSI özellik dosyası ve on checkpoint (beş seed ×
+baseline/dropout) gerektirir. Checkpoint’ler boyutları nedeniyle depoda yoktur; bu
+sonuçlar depodaki kayıtlarla doğrulanır, sıfırdan yeniden üretmek için eğitimin tekrar
+edilmesi gerekir. Eğitimden baştan tekrar başka bir bilgisayarda doğrulanmamıştır.
+
+## Doğrulama geçmişi
 
 19 Ekim 2026: aynı bilgisayarda yeni, izole venv ve ayrı kaynak kopyasıyla
 **seed 1111 K0–K7 gerçek GPU tekrarı tamamlandı**. 128/128 metrik, 16/16 girdi
@@ -237,7 +283,8 @@ ayrı boş bir proje ana klasöründe uygulanmalıdır.
 
 ```powershell
 # Boş bir proje ana klasöründeyken; mevcut MMSA klasörü kullanılıyorsa klonlama adımını geç.
-git clone --branch yzm5110-selfmm https://github.com/ilaydagencer/yzm5110-robust-selfmm.git MMSA
+# Teslim sürümü v1.0-submission tag'idir; çalışma dalı için --branch yzm5110-selfmm kullanılır.
+git clone --branch v1.0-submission https://github.com/ilaydagencer/yzm5110-robust-selfmm.git MMSA
 py -3.10 -m venv .venv
 Set-Location '.\MMSA'
 
@@ -369,35 +416,23 @@ Kaynak kodunda gradyan birikiminin son eksik grubu işlenmez; validation seçim
 Loss’u eşit örnek ağırlıklı MAE ile aynı olmayabilir. Bunlar raporda açıklanan
 miras alınmış sınırlılıklardır; sonuçlardan sonra eski kaynaklar değiştirilmedi.
 
-Paket kontrolü gözlenen Python 3.10 ortamında, yalnız teslim dosyaları bulunan
-ayrı bir klasöre taşınarak `-I -S -B` ile başarıyla çalıştırılmıştır. 11 özet
-CSV yeniden yazılmış; kaynak dosyaların değişmediği kontrol edilmiştir. Sekiz
-kontrol testi, bozuk özet/tekrar kayıt/son batch ve üzerine yazma durumlarını da sınar.
-Bu, yeni GPU ortamı kurma veya gerçek bir uzak Git klonu testi değildir.
-Doğrulama sonucu ve teslim commit’i ayrı
-değerlendirilmelidir. `provenance.json` paketleme öncesi HEAD’i kaydeder;
-son teslim commit/tag’i öğrenci tarafından Fork üzerinden sabitlenecektir.
-Word raporunun son içerik/sayfa denetimi ve nihai
-`Gencer_YZM5110_Research.pdf` teslimi ayrıca tamamlanacaktır.
+Teslim sürümü `v1.0-submission` tag’i ile sabitlenir. `provenance.json` v1
+paketlemesinden önceki HEAD’i kaydeder; protokol v2’nin commit sırası
+[DIAGNOSTICS_V2.md](DIAGNOSTICS_V2.md) ve raporun 6. bölümündedir. GPU gerektirmeyen
+bütün kontroller `run_cpu_checks.py` ile çalışır. Eğitimden baştan tekrar başka bir
+bilgisayarda doğrulanmamıştır.
 
-Kod taslakları, kontroller, tablo üretimi ve açıklamalarda ChatGPT/Codex
-desteği kullanıldı. Öğrenci GPU komutlarını çalıştırdı ve Git işlemlerini
-kendisi yürütür. Öğrencinin yöntemleri ve kaynakları anlayıp açıklaması gerekir.
+Eski keşif ve eğitim betiklerinin bazılarında (ör. `evaluate_selfmm_abcd_valid.py`,
+`run_selfmm_dropout.py`) geliştirme bilgisayarının yolları varsayılan değer olarak
+kalmıştır; bunlar `--repo-dir` / `--project-dir` ile değiştirilir. Bu dosyaların SHA256
+özetleri dondurulmuş kayıtlarda ve eğitim kayıtlarında tutulduğu için kanıt zinciri
+bozulmasın diye değiştirilmemiştir.
 
-## Fork üzerinden eklenecek dosyalar
-
-Bu teslim adımında `.gitattributes`, README, kontrol betiği, ortam listeleri, config örneği ve
-`results_package_v1` seçilerek stage edilir. Veri, `.venv`, checkpoint,
-kişisel `local_configs`, bütün `runs` klasörü ve eski mutlak yollu manifestler
-eklenmez. Kaynak `src/MMSA/config/config_regression.json` içindeki kişisel
-veri yolu değişikliği bu commit’e dahil edilmez. Word son aşamada güncellenecektir.
-
-Önerilen başlık: `docs: add Self-MM research guide and verifiable result package`
-
-Önerilen açıklama: Document methods, setup, data requirements and the frozen
-experiment chain. Add portable quality/resource summaries and a standard-library
-verifier that recalculates means, sample SDs and paired differences. Record
-provenance and distinguish package checks from full GPU reproduction.
+Kod taslakları, kontroller, tablo üretimi ve açıklamalarda v1 aşamasında ChatGPT/Codex,
+25 Ekim 2026’dan itibaren Claude (Claude Code) kullanıldı: protokol v2, tanı, özet,
+bootstrap, tablo ve figür betikleri, belgeler ve rapor taslağı. Araçlar ve katkıları
+raporun Ek B’sindedir. Öğrenci bütün GPU komutlarını çalıştırdı ve Git işlemlerini
+kendisi yürüttü; yöntemleri ve kaynakları açıklamak öğrencinin sorumluluğundadır.
 
 ## Açık dosya yollarıyla gerçek model tekrarı: K0
 

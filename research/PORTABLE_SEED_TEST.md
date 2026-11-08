@@ -69,30 +69,16 @@ içe aktarılır. Betik çevrimdışıdır, BERT indirmez. Mevcut çalışan ven
 Farklı bir repo kopyasında çalıştırırken MMSA kurulumu da o kopyanın `src` yolunu
 kullanmalıdır; yanlış yerel kurulum kontrol sırasında reddedilir.
 
-## 1. Dosyaları yerleştir
+## 1. Dosyalar
 
-```powershell
-Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
-$deliveryDir = 'C:\Users\ilayda\Documents\Codex\2026-10-17\referenced-chatgpt-conversation-this-is-an\outputs\research_portable_seed1115_v1'
-& "$deliveryDir\Install-PortableSeed1115.ps1" -CheckOnly
-```
-
-`YERLESTIRME_KONTROLU_BASARILI` gelirse:
-
-```powershell
-& "$deliveryDir\Install-PortableSeed1115.ps1"
-```
-
-Altı mevcut dosya güncellenir, bir doğrulama kaydı eklenir. Tüm hedefler yazmadan önce kontrol
-edilir; beklenmeyen içerik varsa üzerine yazılmaz. Aynı paket ikinci kez
-çalıştırıldığında `PAKET_ZATEN_YERINDE` ile dosya değiştirmeden biter. Git işlemi yoktur.
+Bu adımın betiği, bağımlılık kaydı ve doğrulama kaydı depodadır; ayrıca yerleştirme gerekmez. Özgün çalışmada bu dosyalar ayrı bir teslim klasöründen tek seferlik bir kopyalama betiğiyle eklenmişti.
 
 ## 2. Eğitim/model yüklemesi yapmadan --check
 
 Aşağıdaki blok yeni PowerShell oturumunda da kullanılabilir:
 
 ```powershell
-Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
+# Depo kökünde (MMSA klasörü) çalıştırın. Özgün koşu geliştirme bilgisayarında yapıldı; yollar göreli yazılmıştır.
 $bertDir = Join-Path $env:USERPROFILE '.cache\huggingface\hub\models--bert-base-uncased\snapshots\86b5e0934494bd15c9632b12f734a8a67f723594'
 $portable1115Args = @(
     '--seed', '1115',

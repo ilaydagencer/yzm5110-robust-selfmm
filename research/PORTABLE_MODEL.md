@@ -88,7 +88,7 @@ atlamayın; farkı inceleyin.
 bu bilgisayarda bulunan snapshot'a aittir; başka ortamda yerel BERT yolunu yazın.
 
 ```powershell
-Set-Location 'C:\Users\ilayda\YZM5110\MMSA'
+# Depo kökünde (MMSA klasörü) çalıştırın. Özgün koşu geliştirme bilgisayarında yapıldı; yollar göreli yazılmıştır.
 $bertDir = Join-Path $env:USERPROFILE '.cache\huggingface\hub\models--bert-base-uncased\snapshots\86b5e0934494bd15c9632b12f734a8a67f723594'
 $k0Args = @(
     '--data-file', '..\data\MOSI\Processed\unaligned_50.pkl',
