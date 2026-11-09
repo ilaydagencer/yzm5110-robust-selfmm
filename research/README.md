@@ -29,8 +29,8 @@ result was separated with a diagnostic protocol committed before the results
   text more weight.
 
 **Report.** The submitted report is
-[report/Gencer_YZM5110_Research.pdf](report/Gencer_YZM5110_Research.pdf); its Word source
-sits next to it. The presentation is given in class and is not part of the repository.
+[report/Gencer_YZM5110_Research.pdf](report/Gencer_YZM5110_Research.pdf). The presentation
+is given in class and is not part of the repository.
 
 **One-command check.** No GPU, dataset, checkpoint or internet connection is needed.
 Run it from the repository root (the folder above this one, `MMSA`):

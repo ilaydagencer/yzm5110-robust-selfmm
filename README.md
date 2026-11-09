@@ -15,7 +15,7 @@ Self-Supervised Multi-Task Learning for Multimodal Sentiment Analysis*, AAAI 202
 
 | What you are looking for | Where |
 |---|---|
-| Report (PDF and its Word source) | [research/report](research/report) |
+| Report (PDF) | [research/report/Gencer_YZM5110_Research.pdf](research/report/Gencer_YZM5110_Research.pdf) |
 | Reader's guide: what was done, what was found, how to verify it | [research/README.md](research/README.md) |
 | Short project summary | [YZM5110_PROJECT.md](YZM5110_PROJECT.md) |
 | Tables and figures used in the report | [research/report_tables/tables_en.md](research/report_tables/tables_en.md), [research/figures_en](research/figures_en) |
