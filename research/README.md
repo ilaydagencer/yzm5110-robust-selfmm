@@ -28,9 +28,9 @@ result was separated with a diagnostic protocol committed before the results
   do not help under audio/video corruption; when text is corrupted, the rule gives
   text more weight.
 
-**Report and presentation.** The submitted report is
-[report/Gencer_YZM5110_Research_Report.docx](report) (the PDF export sits next to it);
-the slides are in the same folder.
+**Report.** The submitted report is
+[report/Gencer_YZM5110_Research.pdf](report/Gencer_YZM5110_Research.pdf); its Word source
+sits next to it. The presentation is given in class and is not part of the repository.
 
 **One-command check.** No GPU, dataset, checkpoint or internet connection is needed.
 Run it from the repository root (the folder above this one, `MMSA`):
@@ -338,7 +338,7 @@ py -3.10 -m venv ..\.venv-figures
 
 PNG bytes can vary with the font build; the input digests are in
 `figures_en/figures_manifest.json` and `figures/figures_manifest.json`.
-`--transparent` draws the figures without a background (used for the slides).
+`--transparent` draws the figures without a background (for example, for slides).
 
 ## Preparing the GPU environment on a new computer
 

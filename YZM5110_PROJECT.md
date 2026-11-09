@@ -62,7 +62,7 @@ Source files: [test summary](research/results_package_v1/evaluation_test/summary
 [validation summary](research/results_package_v1/validation/summary_metrics.csv),
 [inference cost](research/results_package_v1/inference/paired_summary.csv).
 The scores published in the paper and these measurements are given in separate tables in the report
-([research/report/Gencer_YZM5110_Research_Report.docx](research/report/Gencer_YZM5110_Research_Report.docx)).
+([research/report/Gencer_YZM5110_Research.pdf](research/report/Gencer_YZM5110_Research.pdf)).
 
 ## Environment
 
@@ -80,7 +80,7 @@ PyTorch 2.3.1 + CUDA 12.1 · MMSA 2.2.1. Package versions:
   bootstrap intervals; scripts that produce the report tables and figures
   ([research/report_tables/tables_en.md](research/report_tables/tables_en.md),
   [research/figures_en](research/figures_en)); a one-command CPU check
-  (`research/run_cpu_checks.py`); the English report and slides in [research/report](research/report).
+  (`research/run_cpu_checks.py`); the English report (PDF and Word source) in [research/report](research/report).
 - The submitted version is fixed by the tag `v1.0-submission`.
 
 ## Result of the diagnostic experiments (protocol v2)
